@@ -1,0 +1,15 @@
+{
+  "bindings": [
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/independent-cloud-review",
+      "notes": "Bootstrap binding for PR #3. Branch and PR metadata are resolved by the authority workflow.",
+      "pr_number": 3,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "kowen9024AI/miskatonic-control-plane"
+    }
+  ],
+  "schema_version": "trusted-producer-bindings-v1"
+}

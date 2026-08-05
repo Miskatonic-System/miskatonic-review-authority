@@ -1,0 +1,45 @@
+name: Authority Candidate Verification
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: authority-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONPATH: src
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact workflow commit without external actions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          git init .
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin "$TARGET_SHA"
+          git checkout --detach FETCH_HEAD
+
+      - name: Record Python runtime
+        run: python3 --version
+
+      - name: Compile
+        run: PYTHONPATH=src python3 -m compileall -q src
+
+      - name: Enforce immutable action references
+        run: PYTHONPATH=src python3 -m miskatonic_review_authority audit-actions --root .
+
+      - name: Run tests
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v

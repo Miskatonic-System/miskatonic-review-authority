@@ -1,0 +1,13 @@
+{
+  "authority_repository": "kowen9024AI/miskatonic-review-authority",
+  "commit_sha": "98161a4a9f66420fd293f37cd88473a427585093",
+  "designation": "GENESIS_PRIOR_VERIFIER",
+  "notes": "Commit SHA is the canonical Git object binding. Runtime evidence also records the resolved tree SHA.",
+  "ratification_role": "one-time constitutional bootstrap",
+  "ratified_at": "2026-08-05T16:13:00Z",
+  "ratified_by": "trusted-starter:kowen9024AI",
+  "release_manifest_path": "provenance/release-manifest-v0.1.json",
+  "release_manifest_sha256": "048c4341689d48adfbfe489ba7aacdb1f3a63c072e7955d1540cfe29e75d1878",
+  "repository": "kowen9024AI/miskatonic-control-plane",
+  "schema_version": "authority-root-v1"
+}

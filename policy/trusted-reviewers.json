@@ -1,0 +1,17 @@
+{
+  "allowed_verdicts": [
+    "APPROVE",
+    "REQUEST_CHANGES",
+    "REJECT"
+  ],
+  "authority_principal": "github-app:miskatonic-review-authority",
+  "max_diff_characters": 500000,
+  "notes": "MSK_CLOUD_REVIEW_MODEL selects the reviewer model. Missing provider credentials fail closed.",
+  "policy_version": "1.0.0",
+  "provider": "openai-responses",
+  "release_requires": "APPROVE",
+  "require_prior_verification": true,
+  "require_signed_attestation": true,
+  "reviewer_principal": "cloud-review-service:openai-responses-independent",
+  "schema_version": "reviewer-policy-v1"
+}

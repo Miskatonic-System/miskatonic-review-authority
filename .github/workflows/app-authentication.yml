@@ -1,0 +1,67 @@
+name: Authority App Authentication
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: src
+
+jobs:
+  authenticate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ratified authority main without external actions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git init .
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin main
+          git checkout --detach FETCH_HEAD
+
+      - name: Prepare GitHub App private key
+        env:
+          MSK_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+        run: |
+          umask 077
+          printf '%s' "$MSK_PRIVATE_KEY" > "$RUNNER_TEMP/review-app-private.pem"
+
+      - name: Create scoped GitHub App token
+        id: app-token
+        env:
+          MSK_REVIEW_APP_ID: ${{ vars.MSK_REVIEW_APP_ID }}
+        run: |
+          python3 -m miskatonic_review_authority create-app-token \
+            --private-key "$RUNNER_TEMP/review-app-private.pem" \
+            --owner "${{ github.repository_owner }}" \
+            --repository miskatonic-review-authority \
+            --repository miskatonic-control-plane \
+            --repository miskatonic-discord-bot
+
+      - name: Derive public verification key
+        run: |
+          openssl pkey -in "$RUNNER_TEMP/review-app-private.pem" -pubout -out "$RUNNER_TEMP/review-app-public.pem"
+          echo "PUBLIC_KEY_FINGERPRINT=$(python3 -m miskatonic_review_authority key-fingerprint --public-key "$RUNNER_TEMP/review-app-public.pem")"
+          echo "BEGIN_MSK_PUBLIC_KEY_BASE64"
+          base64 -w0 "$RUNNER_TEMP/review-app-public.pem"
+          echo
+          echo "END_MSK_PUBLIC_KEY_BASE64"
+
+      - name: Publish authenticated self-test check
+        env:
+          GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          head_sha=$(git rev-parse HEAD)
+          python3 -m miskatonic_review_authority publish-check \
+            --repository "${{ github.repository }}" \
+            --head-sha "$head_sha" \
+            --name "miskatonic/authority-app-authentication" \
+            --conclusion success \
+            --title "GitHub App authority authenticated" \
+            --summary "The ratified authority main workflow created this check with a scoped App installation token." \
+            --details-url "$DETAILS_URL"
