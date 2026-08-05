@@ -12,5 +12,6 @@
   "release_requires": "APPROVE",
   "require_prior_verification": true,
   "require_signed_attestation": true,
+  "reviewer_principal": "cloud-review-service:openai-responses-independent",
   "schema_version": "reviewer-policy-v1"
 }
