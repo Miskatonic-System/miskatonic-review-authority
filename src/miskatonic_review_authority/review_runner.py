@@ -163,6 +163,11 @@ def run_review(
         raise AuthorityError("REVIEWER_POLICY_SCHEMA_UNSUPPORTED")
     if reviewer_policy.get("provider") != "openai-responses":
         raise AuthorityError("REVIEW_PROVIDER_UNSUPPORTED")
+    reviewer_principal = str(reviewer_policy.get("reviewer_principal", ""))
+    if not reviewer_principal:
+        raise AuthorityError("REVIEWER_PRINCIPAL_MISSING")
+    if reviewer_principal == producer.get("producer_principal"):
+        raise AuthorityError("REVIEWER_PRODUCER_PRINCIPAL_COLLISION")
     diff_text = Path(diff_path).read_text(encoding="utf-8", errors="replace")
     max_chars = int(reviewer_policy.get("max_diff_characters", 500000))
     if len(diff_text) > max_chars:
@@ -193,6 +198,7 @@ def run_review(
         "head_sha": head_sha,
         "candidate_digest": digest,
         "producer_binding": producer,
+        "reviewer_principal": reviewer_principal,
         "review_provider": "openai-responses",
         "review_model_requested": model,
         "review_execution": provider_evidence,
