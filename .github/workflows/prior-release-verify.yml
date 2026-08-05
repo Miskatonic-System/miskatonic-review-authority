@@ -1,0 +1,120 @@
+name: Prior Release Verification
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_repository:
+        description: owner/repository
+        required: true
+        default: kowen9024AI/miskatonic-control-plane
+      base_sha:
+        description: Exact base commit SHA
+        required: true
+      head_sha:
+        description: Exact candidate head commit SHA
+        required: true
+      check_name:
+        description: Check-run name
+        required: true
+        default: miskatonic/prior-release-verify
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: src
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout authority
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+
+      - name: Create scoped GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          app-id: ${{ vars.MSK_REVIEW_APP_ID }}
+          private-key: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: miskatonic-control-plane
+          permission-actions: read
+          permission-checks: write
+          permission-contents: read
+          permission-pull-requests: read
+
+      - name: Checkout exact target head
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: ${{ inputs.target_repository }}
+          ref: ${{ inputs.head_sha }}
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          path: target
+
+      - name: Checkout previous trusted control release
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: kowen9024AI/miskatonic-control-plane
+          ref: 98161a4a9f66420fd293f37cd88473a427585093
+          fetch-depth: 1
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          path: prior-control
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.12"
+
+      - name: Run prior trusted verifier
+        id: verify
+        continue-on-error: true
+        env:
+          TARGET_REPOSITORY: ${{ inputs.target_repository }}
+          BASE_SHA: ${{ inputs.base_sha }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+        run: |
+          set +e
+          python -m miskatonic_review_authority prior-verify \
+            --repository "$TARGET_REPOSITORY" \
+            --target-path target \
+            --base-sha "$BASE_SHA" \
+            --head-sha "$HEAD_SHA" \
+            --prior-control-path prior-control \
+            --root-record roots/control-plane-v0.1.0.json \
+            --policy policy/control-plane-upgrade-v1.json \
+            --evidence-out evidence/prior-release.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Publish authenticated prior-release check
+        if: always()
+        env:
+          GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET_REPOSITORY: ${{ inputs.target_repository }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+          CHECK_NAME: ${{ inputs.check_name }}
+          EXIT_CODE: ${{ steps.verify.outputs.exit_code }}
+          DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$EXIT_CODE" = "0" ]; then conclusion=success; title="Previous trusted control release verified candidate"; else conclusion=failure; title="Previous trusted control release rejected candidate"; fi
+          evidence_arg=""
+          if [ -f evidence/prior-release.json ]; then evidence_arg="--evidence evidence/prior-release.json"; fi
+          python -m miskatonic_review_authority publish-check \
+            --repository "$TARGET_REPOSITORY" \
+            --head-sha "$HEAD_SHA" \
+            --name "$CHECK_NAME" \
+            --conclusion "$conclusion" \
+            --title "$title" \
+            --summary "Authority workflow run ${{ github.run_id }}" \
+            $evidence_arg \
+            --details-url "$DETAILS_URL"
+
+      - name: Fail workflow when verification failed
+        if: steps.verify.outputs.exit_code != '0'
+        run: exit 1

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_repository": {
+      "type": "string"
+    },
+    "commit_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "designation": {
+      "const": "GENESIS_PRIOR_VERIFIER"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "ratification_role": {
+      "type": "string"
+    },
+    "ratified_at": {
+      "type": "string"
+    },
+    "ratified_by": {
+      "type": "string"
+    },
+    "release_manifest_path": {
+      "type": "string"
+    },
+    "release_manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "authority-root-v1"
+    }
+  },
+  "required": [
+    "schema_version",
+    "repository",
+    "commit_sha",
+    "release_manifest_path",
+    "release_manifest_sha256",
+    "designation",
+    "ratified_by",
+    "ratification_role",
+    "ratified_at",
+    "authority_repository",
+    "notes"
+  ],
+  "title": "AuthorityRootV1",
+  "type": "object"
+}

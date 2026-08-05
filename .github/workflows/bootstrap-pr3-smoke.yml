@@ -1,0 +1,87 @@
+name: Bootstrap PR3 Authority Smoke
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  PYTHONPATH: src
+
+jobs:
+  prior-verifier-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout authority candidate
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+
+      - name: Create scoped GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          app-id: ${{ vars.MSK_REVIEW_APP_ID }}
+          private-key: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            miskatonic-review-authority
+            miskatonic-control-plane
+          permission-actions: read
+          permission-checks: write
+          permission-contents: read
+          permission-pull-requests: read
+
+      - name: Checkout control-plane PR3 candidate
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: kowen9024AI/miskatonic-control-plane
+          ref: 885e9e8aae420f881d8cd7581934efa65440c714
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          path: target
+
+      - name: Checkout previous trusted control release
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: kowen9024AI/miskatonic-control-plane
+          ref: 98161a4a9f66420fd293f37cd88473a427585093
+          fetch-depth: 1
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          path: prior-control
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.12"
+
+      - name: Install and run bootstrap prior verifier
+        run: |
+          python -m pip install -e .
+          python -m miskatonic_review_authority prior-verify \
+            --repository kowen9024AI/miskatonic-control-plane \
+            --target-path target \
+            --base-sha 98161a4a9f66420fd293f37cd88473a427585093 \
+            --head-sha 885e9e8aae420f881d8cd7581934efa65440c714 \
+            --prior-control-path prior-control \
+            --root-record roots/control-plane-v0.1.0.json \
+            --policy policy/control-plane-upgrade-v1.json \
+            --evidence-out evidence/prior-release.json
+
+      - name: Publish non-authoritative bootstrap smoke check
+        env:
+          GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python -m miskatonic_review_authority publish-check \
+            --repository kowen9024AI/miskatonic-control-plane \
+            --head-sha 885e9e8aae420f881d8cd7581934efa65440c714 \
+            --name "miskatonic/bootstrap-prior-release-smoke" \
+            --conclusion success \
+            --title "Bootstrap authority reproduced prior-release verification" \
+            --evidence evidence/prior-release.json \
+            --details-url "$DETAILS_URL"

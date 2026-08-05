@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority_principal": {
+      "type": "string"
+    },
+    "authority_workflow_run_id": {
+      "type": "string"
+    },
+    "base_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "candidate_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "findings": {
+      "type": "array"
+    },
+    "head_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "issued_at": {
+      "type": "string"
+    },
+    "pr_number": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "producer_binding": {
+      "type": "object"
+    },
+    "release_authorized": {
+      "type": "boolean"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "review_execution": {
+      "type": "object"
+    },
+    "review_model_requested": {
+      "type": "string"
+    },
+    "review_provider": {
+      "type": "string"
+    },
+    "reviewer_policy_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "review-attestation-v1"
+    },
+    "signature": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "RSASSA-PKCS1-v1_5-SHA256"
+        },
+        "key_id": {
+          "type": "string"
+        },
+        "value_base64": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "key_id",
+        "value_base64"
+      ],
+      "type": "object"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "APPROVE",
+        "REQUEST_CHANGES",
+        "REJECT"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "authority_principal",
+    "authority_workflow_run_id",
+    "repository",
+    "pr_number",
+    "base_sha",
+    "head_sha",
+    "candidate_digest",
+    "producer_binding",
+    "review_provider",
+    "review_model_requested",
+    "review_execution",
+    "verdict",
+    "release_authorized",
+    "summary",
+    "findings",
+    "confidence",
+    "reviewer_policy_version",
+    "issued_at",
+    "signature"
+  ],
+  "title": "MiskatonicReviewAttestationV1",
+  "type": "object"
+}
