@@ -8,10 +8,38 @@ from pathlib import Path
 
 from .attestation import public_key_fingerprint, verify_attestation
 from .check_publisher import publish_check
+from .github_app import create_installation_token
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
 from .util import AuthorityError, read_json
 from .workflow_audit import require_pinned_workflows
+
+
+def _create_app_token(args: argparse.Namespace) -> int:
+    app_id = os.environ.get(args.app_id_env, "")
+    result = create_installation_token(
+        app_id=app_id,
+        private_key_path=args.private_key,
+        owner=args.owner,
+        repositories=args.repository,
+        permissions={
+            "actions": "read",
+            "checks": "write",
+            "contents": "read",
+            "pull_requests": "read",
+        },
+    )
+    token = result["token"]
+    print(f"::add-mask::{token}")
+    output_path = os.environ.get("GITHUB_OUTPUT")
+    if not output_path:
+        raise AuthorityError("GITHUB_OUTPUT_MISSING")
+    with open(output_path, "a", encoding="utf-8") as handle:
+        handle.write(f"token={token}\n")
+        handle.write(f"installation_id={result['installation_id']}\n")
+        handle.write(f"expires_at={result['expires_at']}\n")
+    print(json.dumps({"installation_id": result["installation_id"], "expires_at": result["expires_at"]}, sort_keys=True))
+    return 0
 
 
 def _prior_verify(args: argparse.Namespace) -> int:
@@ -94,6 +122,13 @@ def _audit_actions(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Miskatonic external review authority")
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    app_token = subparsers.add_parser("create-app-token")
+    app_token.add_argument("--app-id-env", default="MSK_REVIEW_APP_ID")
+    app_token.add_argument("--private-key", required=True)
+    app_token.add_argument("--owner", required=True)
+    app_token.add_argument("--repository", action="append", required=True)
+    app_token.set_defaults(func=_create_app_token)
 
     prior = subparsers.add_parser("prior-verify")
     prior.add_argument("--repository", required=True)

@@ -1,8 +1,7 @@
 name: Bootstrap PR3 Authority Smoke
 
 on:
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,55 +13,47 @@ jobs:
   prior-verifier-smoke:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout authority candidate
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          persist-credentials: false
-
-      - name: Create scoped GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
-        with:
-          app-id: ${{ vars.MSK_REVIEW_APP_ID }}
-          private-key: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: |
-            miskatonic-review-authority
-            miskatonic-control-plane
-          permission-actions: read
-          permission-checks: write
-          permission-contents: read
-          permission-pull-requests: read
-
-      - name: Checkout control-plane PR3 candidate
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          repository: kowen9024AI/miskatonic-control-plane
-          ref: 885e9e8aae420f881d8cd7581934efa65440c714
-          fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: false
-          path: target
-
-      - name: Checkout previous trusted control release
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          repository: kowen9024AI/miskatonic-control-plane
-          ref: 98161a4a9f66420fd293f37cd88473a427585093
-          fetch-depth: 1
-          token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: false
-          path: prior-control
-
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.12"
-
-      - name: Install and run bootstrap prior verifier
+      - name: Checkout ratified authority main
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          python -m pip install -e .
-          python -m miskatonic_review_authority prior-verify \
+          git init .
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin main
+          git checkout --detach FETCH_HEAD
+
+      - name: Prepare GitHub App key and token
+        id: app-token
+        env:
+          MSK_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          MSK_REVIEW_APP_ID: ${{ vars.MSK_REVIEW_APP_ID }}
+        run: |
+          umask 077
+          printf '%s' "$MSK_PRIVATE_KEY" > "$RUNNER_TEMP/review-app-private.pem"
+          python3 -m miskatonic_review_authority create-app-token \
+            --private-key "$RUNNER_TEMP/review-app-private.pem" \
+            --owner "${{ github.repository_owner }}" \
+            --repository miskatonic-review-authority \
+            --repository miskatonic-control-plane
+
+      - name: Checkout exact control-plane candidate and prior release
+        env:
+          GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          auth=$(printf 'x-access-token:%s' "$GH_APP_TOKEN" | base64 -w0)
+          git init target
+          git -C target remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C target -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin 885e9e8aae420f881d8cd7581934efa65440c714
+          git -C target checkout --detach FETCH_HEAD
+          git init prior-control
+          git -C prior-control remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C prior-control -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin 98161a4a9f66420fd293f37cd88473a427585093
+          git -C prior-control checkout --detach FETCH_HEAD
+
+      - name: Run bootstrap prior verifier
+        run: |
+          python3 -m miskatonic_review_authority prior-verify \
             --repository kowen9024AI/miskatonic-control-plane \
             --target-path target \
             --base-sha 98161a4a9f66420fd293f37cd88473a427585093 \
@@ -77,7 +68,7 @@ jobs:
           GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
           DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python -m miskatonic_review_authority publish-check \
+          python3 -m miskatonic_review_authority publish-check \
             --repository kowen9024AI/miskatonic-control-plane \
             --head-sha 885e9e8aae420f881d8cd7581934efa65440c714 \
             --name "miskatonic/bootstrap-prior-release-smoke" \

@@ -19,6 +19,7 @@ on:
       head_sha:
         description: Exact candidate head commit SHA
         required: true
+
 permissions:
   contents: read
 
@@ -29,48 +30,44 @@ jobs:
   review:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout authority
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          persist-credentials: false
+      - name: Checkout ratified authority main
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git init .
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin main
+          git checkout --detach FETCH_HEAD
 
-      - name: Create scoped GitHub App token
+      - name: Prepare GitHub App key and token
         id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
-        with:
-          app-id: ${{ vars.MSK_REVIEW_APP_ID }}
-          private-key: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: miskatonic-control-plane
-          permission-actions: read
-          permission-checks: write
-          permission-contents: read
-          permission-pull-requests: read
+        env:
+          MSK_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          MSK_REVIEW_APP_ID: ${{ vars.MSK_REVIEW_APP_ID }}
+        run: |
+          umask 077
+          printf '%s' "$MSK_PRIVATE_KEY" > "$RUNNER_TEMP/review-app-private.pem"
+          python3 -m miskatonic_review_authority create-app-token \
+            --private-key "$RUNNER_TEMP/review-app-private.pem" \
+            --owner "${{ github.repository_owner }}" \
+            --repository miskatonic-control-plane
 
-      - name: Checkout exact candidate
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          repository: ${{ inputs.target_repository }}
-          ref: ${{ inputs.head_sha }}
-          fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: false
-          path: target
-
-      - name: Checkout previous trusted control release
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          repository: kowen9024AI/miskatonic-control-plane
-          ref: 98161a4a9f66420fd293f37cd88473a427585093
-          fetch-depth: 1
-          token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: false
-          path: prior-control
-
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.12"
+      - name: Checkout exact candidate and prior release
+        env:
+          GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET_REPOSITORY: ${{ inputs.target_repository }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+        run: |
+          auth=$(printf 'x-access-token:%s' "$GH_APP_TOKEN" | base64 -w0)
+          git init target
+          git -C target remote add origin "https://github.com/$TARGET_REPOSITORY.git"
+          git -C target -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$HEAD_SHA"
+          git -C target checkout --detach FETCH_HEAD
+          git init prior-control
+          git -C prior-control remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C prior-control -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin 98161a4a9f66420fd293f37cd88473a427585093
+          git -C prior-control checkout --detach FETCH_HEAD
 
       - name: Reproduce prior-release evidence
         env:
@@ -78,7 +75,7 @@ jobs:
           BASE_SHA: ${{ inputs.base_sha }}
           HEAD_SHA: ${{ inputs.head_sha }}
         run: |
-          python -m miskatonic_review_authority prior-verify \
+          python3 -m miskatonic_review_authority prior-verify \
             --repository "$TARGET_REPOSITORY" \
             --target-path target \
             --base-sha "$BASE_SHA" \
@@ -94,14 +91,10 @@ jobs:
           HEAD_SHA: ${{ inputs.head_sha }}
         run: git -C target diff --no-ext-diff --binary --full-index --find-renames=0 "$BASE_SHA" "$HEAD_SHA" -- > evidence/candidate.diff
 
-      - name: Prepare signing key
-        env:
-          MSK_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+      - name: Prepare signing identity
         run: |
-          umask 077
-          printf '%s' "$MSK_PRIVATE_KEY" > "$RUNNER_TEMP/review-app-private.pem"
           openssl pkey -in "$RUNNER_TEMP/review-app-private.pem" -pubout -out "$RUNNER_TEMP/review-app-public.pem"
-          python -m miskatonic_review_authority key-fingerprint --public-key "$RUNNER_TEMP/review-app-public.pem" > "$RUNNER_TEMP/key-id"
+          python3 -m miskatonic_review_authority key-fingerprint --public-key "$RUNNER_TEMP/review-app-public.pem" > "$RUNNER_TEMP/key-id"
 
       - name: Run independent cloud review
         id: review
@@ -116,7 +109,7 @@ jobs:
           HEAD_SHA: ${{ inputs.head_sha }}
         run: |
           set +e
-          python -m miskatonic_review_authority review \
+          python3 -m miskatonic_review_authority review \
             --repository "$TARGET_REPOSITORY" \
             --pr-number "$PR_NUMBER" \
             --head-branch "$HEAD_BRANCH" \
@@ -130,7 +123,7 @@ jobs:
             --key-id "$(cat "$RUNNER_TEMP/key-id")" \
             --diff evidence/candidate.diff \
             --output evidence/review-attestation.json \
-            --authority-principal "github-app:${{ steps.app-token.outputs.app-slug }}" \
+            --authority-principal "github-app:miskatonic-review-authority" \
             --workflow-run-id "${{ github.run_id }}"
           code=$?
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
@@ -148,12 +141,12 @@ jobs:
           conclusion=failure
           title="Independent cloud review unavailable or rejected candidate"
           if [ "$EXIT_CODE" = "0" ]; then
-            verdict=$(python -c 'import json; print(json.load(open("evidence/review-attestation.json"))["verdict"])')
+            verdict=$(python3 -c 'import json; print(json.load(open("evidence/review-attestation.json"))["verdict"])')
             if [ "$verdict" = "APPROVE" ]; then conclusion=success; title="Independent cloud reviewer approved exact candidate"; else conclusion=failure; title="Independent cloud reviewer requested changes"; fi
           fi
           evidence_arg=""
           if [ -f evidence/review-attestation.json ]; then evidence_arg="--evidence evidence/review-attestation.json"; fi
-          python -m miskatonic_review_authority publish-check \
+          python3 -m miskatonic_review_authority publish-check \
             --repository "$TARGET_REPOSITORY" \
             --head-sha "$HEAD_SHA" \
             --name "miskatonic/independent-cloud-review" \
@@ -170,7 +163,7 @@ jobs:
       - name: Enforce approval verdict
         if: steps.review.outputs.exit_code == '0'
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           import json
           value = json.load(open('evidence/review-attestation.json'))
           if value['verdict'] != 'APPROVE' or value['release_authorized'] is not True:

@@ -1,8 +1,6 @@
 name: Authority App Authentication
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -15,40 +13,39 @@ jobs:
   authenticate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout authority
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          persist-credentials: false
+      - name: Checkout ratified authority main without external actions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git init .
+          git remote add origin "https://github.com/${{ github.repository }}.git"
+          auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin main
+          git checkout --detach FETCH_HEAD
 
-      - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.12"
-
-      - name: Create scoped GitHub App token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
-        with:
-          app-id: ${{ vars.MSK_REVIEW_APP_ID }}
-          private-key: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: |
-            miskatonic-review-authority
-            miskatonic-control-plane
-            miskatonic-discord-bot
-          permission-actions: read
-          permission-checks: write
-          permission-contents: read
-          permission-pull-requests: read
-
-      - name: Derive public verification key
+      - name: Prepare GitHub App private key
         env:
           MSK_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
         run: |
           umask 077
           printf '%s' "$MSK_PRIVATE_KEY" > "$RUNNER_TEMP/review-app-private.pem"
+
+      - name: Create scoped GitHub App token
+        id: app-token
+        env:
+          MSK_REVIEW_APP_ID: ${{ vars.MSK_REVIEW_APP_ID }}
+        run: |
+          python3 -m miskatonic_review_authority create-app-token \
+            --private-key "$RUNNER_TEMP/review-app-private.pem" \
+            --owner "${{ github.repository_owner }}" \
+            --repository miskatonic-review-authority \
+            --repository miskatonic-control-plane \
+            --repository miskatonic-discord-bot
+
+      - name: Derive public verification key
+        run: |
           openssl pkey -in "$RUNNER_TEMP/review-app-private.pem" -pubout -out "$RUNNER_TEMP/review-app-public.pem"
-          echo "PUBLIC_KEY_FINGERPRINT=$(python -m miskatonic_review_authority key-fingerprint --public-key "$RUNNER_TEMP/review-app-public.pem")"
+          echo "PUBLIC_KEY_FINGERPRINT=$(python3 -m miskatonic_review_authority key-fingerprint --public-key "$RUNNER_TEMP/review-app-public.pem")"
           echo "BEGIN_MSK_PUBLIC_KEY_BASE64"
           base64 -w0 "$RUNNER_TEMP/review-app-public.pem"
           echo
@@ -57,14 +54,14 @@ jobs:
       - name: Publish authenticated self-test check
         env:
           GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          python -m miskatonic_review_authority publish-check \
+          head_sha=$(git rev-parse HEAD)
+          python3 -m miskatonic_review_authority publish-check \
             --repository "${{ github.repository }}" \
-            --head-sha "$HEAD_SHA" \
+            --head-sha "$head_sha" \
             --name "miskatonic/authority-app-authentication" \
             --conclusion success \
             --title "GitHub App authority authenticated" \
-            --summary "The Miskatonic Review Authority GitHub App created this check using its scoped installation token." \
+            --summary "The ratified authority main workflow created this check with a scoped App installation token." \
             --details-url "$DETAILS_URL"
