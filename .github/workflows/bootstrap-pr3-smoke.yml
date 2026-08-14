@@ -43,18 +43,18 @@ jobs:
         run: |
           auth=$(printf 'x-access-token:%s' "$GH_APP_TOKEN" | base64 -w0)
           git init target
-          git -C target remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C target remote add origin https://github.com/Miskatonic-System/miskatonic-control-plane.git
           git -C target -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin 885e9e8aae420f881d8cd7581934efa65440c714
           git -C target checkout --detach FETCH_HEAD
           git init prior-control
-          git -C prior-control remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C prior-control remote add origin https://github.com/Miskatonic-System/miskatonic-control-plane.git
           git -C prior-control -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin 98161a4a9f66420fd293f37cd88473a427585093
           git -C prior-control checkout --detach FETCH_HEAD
 
       - name: Run bootstrap prior verifier
         run: |
           python3 -m miskatonic_review_authority prior-verify \
-            --repository kowen9024AI/miskatonic-control-plane \
+            --repository Miskatonic-System/miskatonic-control-plane \
             --target-path target \
             --base-sha 98161a4a9f66420fd293f37cd88473a427585093 \
             --head-sha 885e9e8aae420f881d8cd7581934efa65440c714 \
@@ -69,7 +69,7 @@ jobs:
           DETAILS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           python3 -m miskatonic_review_authority publish-check \
-            --repository kowen9024AI/miskatonic-control-plane \
+            --repository Miskatonic-System/miskatonic-control-plane \
             --head-sha 885e9e8aae420f881d8cd7581934efa65440c714 \
             --name "miskatonic/bootstrap-prior-release-smoke" \
             --conclusion success \
