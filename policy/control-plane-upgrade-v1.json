@@ -52,7 +52,7 @@
   ],
   "policy_version": "1.0.0",
   "project_specific_control_files": [],
-  "repository": "kowen9024AI/miskatonic-control-plane",
+  "repository": "Miskatonic-System/miskatonic-control-plane",
   "required_manifest_entries": [
     "pyproject.toml",
     "schemas/project-profile-v1.schema.json",

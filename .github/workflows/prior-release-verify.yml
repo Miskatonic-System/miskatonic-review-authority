@@ -6,7 +6,7 @@ on:
       target_repository:
         description: owner/repository
         required: true
-        default: kowen9024AI/miskatonic-control-plane
+        default: Miskatonic-System/miskatonic-control-plane
       base_sha:
         description: Exact base commit SHA
         required: true
@@ -63,7 +63,7 @@ jobs:
           git -C target -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$HEAD_SHA"
           git -C target checkout --detach FETCH_HEAD
           git init prior-control
-          git -C prior-control remote add origin https://github.com/kowen9024AI/miskatonic-control-plane.git
+          git -C prior-control remote add origin https://github.com/Miskatonic-System/miskatonic-control-plane.git
           git -C prior-control -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin 98161a4a9f66420fd293f37cd88473a427585093
           git -C prior-control checkout --detach FETCH_HEAD
 
