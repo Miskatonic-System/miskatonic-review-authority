@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "External verification and independent cloud-review authority for Miskatonic Systems"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "jsonschema>=4.0.0",
+]
 
 [project.scripts]
 msk-review-authority = "miskatonic_review_authority.cli:main"
@@ -12,4 +14,3 @@ msk-review-authority = "miskatonic_review_authority.cli:main"
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
-

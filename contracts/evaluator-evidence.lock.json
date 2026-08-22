@@ -1,0 +1,17 @@
+{
+  "schema_version": "miskatonic.upstream-evidence-lock.v1",
+  "evaluator_repository": "Miskatonic-System/miskatonic-agent-evaluator",
+  "evaluator_sha": "1f93eff471aa67486738742f70eaa396b9d70f8e",
+  "request_schema_path": "schemas/evaluation-request-v1.schema.json",
+  "request_schema_id": "miskatonic.evaluation-request.v1",
+  "request_schema_sha256": "330791179f2c27bebc2161752d0cf3f3eb75c65182b69787055a3558d593576f",
+  "result_schema_path": "schemas/evaluation-result-v2.schema.json",
+  "result_schema_id": "miskatonic.evaluation.v2",
+  "result_schema_sha256": "5091affee5a7281cea41a480d94bc31fddeb2eed1605e06fdf55f0c0c8e7a658",
+  "control_plane_repository": "Miskatonic-System/miskatonic-control-plane",
+  "control_plane_sha": "7bbb2ff093ea6201d4c20d43a094b372821c0239",
+  "custody_schema_path": "schemas/evaluator-result-custody-receipt-v1.schema.json",
+  "custody_schema_id": "miskatonic.evaluator-result-custody-receipt.v1",
+  "custody_schema_sha256": "52db2f1019bfa81c93d7fff3548c914d5905205e05a402651ddf359fc5e6fa4a",
+  "modification_policy": "REFERENCE_ONLY"
+}
