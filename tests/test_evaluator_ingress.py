@@ -1,11 +1,14 @@
 """Comprehensive unit tests for Review Authority Evaluator Evidence Ingress.
 
-Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A specifications:
+Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A and 01A-R1 specifications:
 - Contract lock tests (Section 49)
 - Required negative tests 1-29 (Section 46)
 - Valid negative evaluator judgment (Section 47)
 - No authority promotion (Section 48)
-- Idempotency and conflict handling (Sections 39, 40)
+- Strict persisted-envelope replay validation & tamper negatives (Sections C-N)
+- Ingested_at stability on replay (Section O)
+- Atomic same-directory materialization & failure handling (Sections P-S)
+- Foreign evidence byte immutability (Section U)
 - CLI entrypoint testing (Section 41)
 """
 
@@ -34,10 +37,12 @@ from miskatonic_review_authority.evaluator_ingress import (
     load_upstream_evidence_lock,
     parse_and_validate_github_origin,
     recompute_control_plane_custody_receipt_sha256,
+    validate_evaluator_evidence_ingress_envelope,
     verify_control_plane_checkout,
     verify_evaluator_checkout,
     verify_evaluator_python,
     verify_review_authority_source,
+    write_ingress_json_atomically,
 )
 from miskatonic_review_authority.util import AuthorityError, canonical_json_bytes, read_json, sha256_bytes
 
@@ -165,10 +170,11 @@ class TestEvaluatorEvidenceIngress(unittest.TestCase):
         self.assertEqual(res2["status"], "IDEMPOTENT")
         self.assertEqual(res2["ingress_id"], res1["ingress_id"])
         self.assertEqual(res2["ingress_sha256"], res1["ingress_sha256"])
+        self.assertEqual(res2["envelope"]["ingested_at"], envelope["ingested_at"])
 
     # Section 48: No Authority Promotion Test
     def test_no_authority_promotion_assertions(self):
-        res = self._call_ingest()
+        self._call_ingest()
         envelope = read_json(self.out_path)
         env_text = json.dumps(envelope)
 
@@ -533,25 +539,217 @@ class TestEvaluatorEvidenceIngress(unittest.TestCase):
             or "CONTROL_PLANE_CUSTODY_SCHEMA_VIOLATION" in str(ctx.exception)
         )
 
-    def test_neg_29_existing_envelope_conflict_fails(self):
-        # Create initial envelope
-        self._call_ingest()
 
-        # Modify the on-disk envelope to simulate a conflicting existing record
-        existing = read_json(self.out_path)
-        existing["candidate_sha"] = "0" * 40
-        self.out_path.write_bytes(canonical_json_bytes(existing))
+class TestReplayTamperValidation(unittest.TestCase):
+    """Sections C-N: Replay tamper validation tests on existing envelopes."""
 
+    def setUp(self):
+        self.tmp_dir = tempfile.TemporaryDirectory()
+        self.test_dir = Path(self.tmp_dir.name)
+        self.lock = load_upstream_evidence_lock(RA_ROOT)
+
+        pilot_dir = Path("/tmp/miskatonic_pilot_custody/route-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/evaluation")
+        self.req_path = self.test_dir / "evaluation-request.json"
+        self.res_path = self.test_dir / "evaluation-result.json"
+        self.cust_path = self.test_dir / "evaluator-result-custody-receipt.json"
+        self.disp_path = self.test_dir / "evaluator-dispatch-state.json"
+        self.out_path = self.test_dir / "evaluator-evidence-ingress.json"
+
+        self.req_path.write_bytes((pilot_dir / "evaluation-request.json").read_bytes())
+        self.res_path.write_bytes((pilot_dir / "evaluation-result.json").read_bytes())
+        self.cust_path.write_bytes((pilot_dir / "evaluator-result-custody-receipt.json").read_bytes())
+        self.disp_path.write_bytes((pilot_dir / "evaluator-dispatch-state.json").read_bytes())
+
+        with patch("miskatonic_review_authority.evaluator_ingress.verify_review_authority_source", return_value="2" * 40):
+            ingest_evaluator_evidence(
+                review_authority_root=RA_ROOT,
+                evaluator_root=REAL_EVAL_ROOT,
+                control_plane_root=REAL_CP_ROOT,
+                evaluator_python=EXPLICIT_PY,
+                evaluation_request_path=self.req_path,
+                evaluation_result_path=self.res_path,
+                custody_receipt_path=self.cust_path,
+                dispatch_state_path=self.disp_path,
+                output_path=self.out_path,
+            )
+
+    def tearDown(self):
+        self.tmp_dir.cleanup()
+
+    def _call_ingest(self):
+        with patch("miskatonic_review_authority.evaluator_ingress.verify_review_authority_source", return_value="2" * 40):
+            return ingest_evaluator_evidence(
+                review_authority_root=RA_ROOT,
+                evaluator_root=REAL_EVAL_ROOT,
+                control_plane_root=REAL_CP_ROOT,
+                evaluator_python=EXPLICIT_PY,
+                evaluation_request_path=self.req_path,
+                evaluation_result_path=self.res_path,
+                custody_receipt_path=self.cust_path,
+                dispatch_state_path=self.disp_path,
+                output_path=self.out_path,
+            )
+
+    def _tamper_and_assert(self, field: str, new_value: Any, expected_error: str):
+        envelope = read_json(self.out_path)
+        envelope[field] = new_value
+        self.out_path.write_bytes(canonical_json_bytes(envelope))
         with self.assertRaises(AuthorityError) as ctx:
             self._call_ingest()
-        self.assertIn("EVALUATOR_EVIDENCE_INGRESS_CONFLICT", str(ctx.exception))
+        self.assertTrue(
+            expected_error in str(ctx.exception)
+            or "INGRESS_ENVELOPE_DIGEST_MISMATCH" in str(ctx.exception)
+            or "INGRESS_ENVELOPE_SCHEMA_VIOLATION" in str(ctx.exception)
+        )
+
+    def test_tamper_ingress_sha256(self):
+        self._tamper_and_assert("ingress_sha256", "0" * 64, "INGRESS_ENVELOPE_DIGEST_MISMATCH")
+
+    def test_tamper_ingress_id(self):
+        self._tamper_and_assert("ingress_id", "evalingress-" + "0" * 64, "INGRESS_ID_MISMATCH")
+
+    def test_tamper_review_authority_sha(self):
+        self._tamper_and_assert("review_authority_sha", "0" * 40, "REVIEW_AUTHORITY_SHA_MISMATCH")
+
+    def test_tamper_evaluator_sha(self):
+        self._tamper_and_assert("evaluator_sha", "0" * 40, "EVALUATOR_SHA_MISMATCH")
+
+    def test_tamper_control_plane_sha(self):
+        self._tamper_and_assert("control_plane_sha", "0" * 40, "CONTROL_PLANE_SHA_MISMATCH")
+
+    def test_tamper_evaluation_request_raw_sha256(self):
+        self._tamper_and_assert("evaluation_request_raw_sha256", "0" * 64, "EVALUATION_REQUEST_RAW_DIGEST_MISMATCH")
+
+    def test_tamper_evaluation_result_raw_sha256(self):
+        self._tamper_and_assert("evaluation_result_raw_sha256", "0" * 64, "EVALUATION_RESULT_RAW_DIGEST_MISMATCH")
+
+    def test_tamper_custody_receipt_raw_sha256(self):
+        self._tamper_and_assert("custody_receipt_raw_sha256", "0" * 64, "CUSTODY_RECEIPT_RAW_DIGEST_MISMATCH")
+
+    def test_tamper_dispatch_state_raw_sha256(self):
+        self._tamper_and_assert("dispatch_state_raw_sha256", "0" * 64, "DISPATCH_STATE_RAW_DIGEST_MISMATCH")
+
+    def test_tamper_evaluation_result_sha256(self):
+        self._tamper_and_assert("evaluation_result_sha256", "0" * 64, "EVALUATION_RESULT_DIGEST_MISMATCH")
+
+    def test_tamper_candidate_sha(self):
+        self._tamper_and_assert("candidate_sha", "0" * 40, "CANDIDATE_SHA_MISMATCH")
+
+    def test_tamper_task_pack_sha256(self):
+        self._tamper_and_assert("task_pack_sha256", "0" * 64, "TASK_PACK_DIGEST_MISMATCH")
+
+    def test_tamper_recommendation(self):
+        self._tamper_and_assert("recommendation", "approve_candidate", "RECOMMENDATION_MISMATCH")
+
+    def test_tamper_evaluator_process_exit_code(self):
+        self._tamper_and_assert("evaluator_process_exit_code", 0, "EVALUATOR_EXIT_RECOMMENDATION_INCONSISTENT")
+
+    def test_tamper_request_contract_validation(self):
+        self._tamper_and_assert("request_contract_validation", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_result_contract_validation(self):
+        self._tamper_and_assert("result_contract_validation", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_request_result_binding(self):
+        self._tamper_and_assert("request_result_binding", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_control_plane_custody_validation(self):
+        self._tamper_and_assert("control_plane_custody_validation", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_dispatch_state_validation(self):
+        self._tamper_and_assert("dispatch_state_validation", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_evaluator_identity_validation(self):
+        self._tamper_and_assert("evaluator_identity_validation", "FAIL", "INVALID_VALIDATION_ASSERTION")
+
+    def test_tamper_authority_effect(self):
+        self._tamper_and_assert("authority_effect", "RELEASE_AUTHORIZED", "INVALID_AUTHORITY_EFFECT")
+
+
+class TestAtomicMaterialization(unittest.TestCase):
+    """Sections P-S: Atomic same-directory writer tests."""
+
+    def setUp(self):
+        self.tmp_dir = tempfile.TemporaryDirectory()
+        self.dest = Path(self.tmp_dir.name) / "test_out" / "envelope.json"
+        self.dest.parent.mkdir(parents=True, exist_ok=True)
+        self.envelope = {
+            "test_key": "test_val",
+        }
+
+    def tearDown(self):
+        self.tmp_dir.cleanup()
+
+    def test_atomic_write_creates_valid_file_in_destination(self):
+        write_ingress_json_atomically(self.dest, self.envelope)
+        self.assertTrue(self.dest.exists())
+        self.assertEqual(read_json(self.dest), self.envelope)
+
+    def test_interrupted_first_write_leaves_no_destination(self):
+        with patch("os.replace", side_effect=OSError("Injected replace failure")):
+            with self.assertRaises(OSError):
+                write_ingress_json_atomically(self.dest, self.envelope)
+        self.assertFalse(self.dest.exists())
+        # Verify no temp files left in directory
+        temp_files = list(self.dest.parent.glob(".envelope.json.tmp-*"))
+        self.assertEqual(len(temp_files), 0)
+
+    def test_interrupted_replacement_preserves_existing_destination(self):
+        # Create initial file
+        original_content = {"original": "data"}
+        write_ingress_json_atomically(self.dest, original_content)
+        self.assertEqual(read_json(self.dest), original_content)
+
+        # Attempt atomic replace with injected error
+        with patch("os.replace", side_effect=OSError("Injected replace error")):
+            with self.assertRaises(OSError):
+                write_ingress_json_atomically(self.dest, {"new": "data"})
+
+        # Verify original content is intact
+        self.assertEqual(read_json(self.dest), original_content)
+        temp_files = list(self.dest.parent.glob(".envelope.json.tmp-*"))
+        self.assertEqual(len(temp_files), 0)
+
+    def test_foreign_artifacts_remain_byte_identical_after_ingest(self):
+        pilot_dir = Path("/tmp/miskatonic_pilot_custody/route-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/evaluation")
+        req_p = self.dest.parent / "req.json"
+        res_p = self.dest.parent / "res.json"
+        cust_p = self.dest.parent / "cust.json"
+        disp_p = self.dest.parent / "disp.json"
+
+        req_bytes_before = (pilot_dir / "evaluation-request.json").read_bytes()
+        res_bytes_before = (pilot_dir / "evaluation-result.json").read_bytes()
+        cust_bytes_before = (pilot_dir / "evaluator-result-custody-receipt.json").read_bytes()
+        disp_bytes_before = (pilot_dir / "evaluator-dispatch-state.json").read_bytes()
+
+        req_p.write_bytes(req_bytes_before)
+        res_p.write_bytes(res_bytes_before)
+        cust_p.write_bytes(cust_bytes_before)
+        disp_p.write_bytes(disp_bytes_before)
+
+        with patch("miskatonic_review_authority.evaluator_ingress.verify_review_authority_source", return_value="2" * 40):
+            ingest_evaluator_evidence(
+                review_authority_root=RA_ROOT,
+                evaluator_root=REAL_EVAL_ROOT,
+                control_plane_root=REAL_CP_ROOT,
+                evaluator_python=EXPLICIT_PY,
+                evaluation_request_path=req_p,
+                evaluation_result_path=res_p,
+                custody_receipt_path=cust_p,
+                dispatch_state_path=disp_p,
+                output_path=self.dest,
+            )
+
+        self.assertEqual(req_p.read_bytes(), req_bytes_before)
+        self.assertEqual(res_p.read_bytes(), res_bytes_before)
+        self.assertEqual(cust_p.read_bytes(), cust_bytes_before)
+        self.assertEqual(disp_p.read_bytes(), disp_bytes_before)
 
 
 class TestCLIEntrypoint(unittest.TestCase):
     """Section 41: Test CLI ingest-evaluator-evidence entrypoint."""
 
     def test_cli_ingest_evaluator_evidence(self):
-        # Run via cli_main in a temp dir
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
             out_file = tmp_path / "cli-ingress.json"

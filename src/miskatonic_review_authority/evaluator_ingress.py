@@ -1,6 +1,6 @@
 """Independent Evaluator Evidence Ingress for Review Authority.
 
-Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A.
+Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A and 01A-R1.
 Independently verifies EvaluationRequest v1, EvaluationResult v2,
 Control Plane result custody receipt v1, and dispatch state v1,
 producing a verified EvaluatorEvidenceIngress envelope as sidecar evidence
@@ -16,6 +16,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
@@ -461,6 +462,186 @@ def compute_ingress_envelope_id(
     return f"evalingress-{digest}"
 
 
+def validate_evaluator_evidence_ingress_envelope(
+    envelope: Dict[str, Any],
+    *,
+    ingress_schema: Dict[str, Any],
+    expected_ingress_id: str,
+    expected_review_authority_sha: str,
+    expected_evaluator_repository: str,
+    expected_evaluator_sha: str,
+    expected_control_plane_repository: str,
+    expected_control_plane_sha: str,
+    expected_request_facts: Dict[str, Any],
+    expected_result_facts: Dict[str, Any],
+    expected_custody: Dict[str, Any],
+    expected_dispatch: Dict[str, Any],
+    raw_request_sha256: str,
+    raw_result_sha256: str,
+    raw_custody_sha256: str,
+    raw_dispatch_sha256: str,
+) -> None:
+    """Canonical validator for EvaluatorEvidenceIngress envelopes.
+    
+    Fails closed if any property, schema rule, digest, binding, identity,
+    assertion, or exit consistency check fails.
+    """
+    # 1. Schema validation (Section D)
+    try:
+        jsonschema.validate(instance=envelope, schema=ingress_schema)
+    except Exception as err:
+        raise AuthorityError("INGRESS_ENVELOPE_SCHEMA_VIOLATION", str(err)) from err
+
+    # 2. Ingress digest validation (Section E)
+    env_for_digest = {k: v for k, v in envelope.items() if k != "ingress_sha256"}
+    recomputed_ingress_sha256 = sha256_bytes(canonical_json_bytes(env_for_digest))
+    if envelope.get("ingress_sha256", "").lower() != recomputed_ingress_sha256.lower():
+        raise AuthorityError(
+            "INGRESS_ENVELOPE_DIGEST_MISMATCH",
+            f"declared '{envelope.get('ingress_sha256')}' != computed '{recomputed_ingress_sha256}'",
+        )
+
+    # 3. Identity validation (Section F)
+    if envelope.get("ingress_id") != expected_ingress_id:
+        raise AuthorityError(
+            "INGRESS_ID_MISMATCH",
+            f"envelope ingress_id '{envelope.get('ingress_id')}' != expected '{expected_ingress_id}'",
+        )
+    if envelope.get("review_authority_repository") != EXPECTED_REVIEW_AUTHORITY_REPO:
+        raise AuthorityError("REVIEW_AUTHORITY_REPOSITORY_MISMATCH")
+    if envelope.get("review_authority_sha", "").lower() != expected_review_authority_sha.lower():
+        raise AuthorityError("REVIEW_AUTHORITY_SHA_MISMATCH")
+    if envelope.get("evaluator_repository", "").lower() != expected_evaluator_repository.lower():
+        raise AuthorityError("EVALUATOR_REPOSITORY_MISMATCH")
+    if envelope.get("evaluator_sha", "").lower() != expected_evaluator_sha.lower():
+        raise AuthorityError("EVALUATOR_SHA_MISMATCH")
+    if envelope.get("control_plane_repository", "").lower() != expected_control_plane_repository.lower():
+        raise AuthorityError("CONTROL_PLANE_REPOSITORY_MISMATCH")
+    if envelope.get("control_plane_sha", "").lower() != expected_control_plane_sha.lower():
+        raise AuthorityError("CONTROL_PLANE_SHA_MISMATCH")
+
+    # 4. Raw artifact digest revalidation (Section G)
+    if envelope.get("evaluation_request_raw_sha256", "").lower() != raw_request_sha256.lower():
+        raise AuthorityError("EVALUATION_REQUEST_RAW_DIGEST_MISMATCH")
+    if envelope.get("evaluation_result_raw_sha256", "").lower() != raw_result_sha256.lower():
+        raise AuthorityError("EVALUATION_RESULT_RAW_DIGEST_MISMATCH")
+    if envelope.get("custody_receipt_raw_sha256", "").lower() != raw_custody_sha256.lower():
+        raise AuthorityError("CUSTODY_RECEIPT_RAW_DIGEST_MISMATCH")
+    if envelope.get("dispatch_state_raw_sha256", "").lower() != raw_dispatch_sha256.lower():
+        raise AuthorityError("DISPATCH_STATE_RAW_DIGEST_MISMATCH")
+
+    # 5. Request / Result binding revalidation (Section H)
+    if envelope.get("evaluation_request_id") != expected_request_facts.get("request_id"):
+        raise AuthorityError("EVALUATION_REQUEST_ID_MISMATCH")
+    if envelope.get("evaluation_request_sha256", "").lower() != expected_request_facts.get("request_sha256", "").lower():
+        raise AuthorityError("EVALUATION_REQUEST_DIGEST_MISMATCH")
+    if envelope.get("evaluation_id") != expected_result_facts.get("evaluation_id"):
+        raise AuthorityError("EVALUATION_ID_MISMATCH")
+    if envelope.get("evaluation_result_sha256", "").lower() != expected_result_facts.get("result_sha256", "").lower():
+        raise AuthorityError("EVALUATION_RESULT_DIGEST_MISMATCH")
+    if envelope.get("evaluation_result_schema") != expected_result_facts.get("schema_version", "miskatonic.evaluation.v2"):
+        raise AuthorityError("EVALUATION_RESULT_SCHEMA_MISMATCH")
+    if envelope.get("recommendation") != expected_result_facts.get("recommendation"):
+        raise AuthorityError("RECOMMENDATION_MISMATCH")
+
+    # 6. Candidate / Task pack binding (Section I)
+    if envelope.get("candidate_repository") != expected_result_facts.get("candidate_repository"):
+        raise AuthorityError("CANDIDATE_REPOSITORY_MISMATCH")
+    if envelope.get("baseline_sha", "").lower() != expected_result_facts.get("baseline_sha", "").lower():
+        raise AuthorityError("BASELINE_SHA_MISMATCH")
+    if envelope.get("candidate_sha", "").lower() != expected_result_facts.get("candidate_sha", "").lower():
+        raise AuthorityError("CANDIDATE_SHA_MISMATCH")
+    if envelope.get("task_pack_id") != expected_result_facts.get("task_pack_id"):
+        raise AuthorityError("TASK_PACK_ID_MISMATCH")
+    if envelope.get("task_pack_sha256", "").lower() != expected_result_facts.get("task_pack_sha256", "").lower():
+        raise AuthorityError("TASK_PACK_DIGEST_MISMATCH")
+
+    # 7. Custody / Dispatch binding (Section J)
+    if envelope.get("custody_receipt_sha256", "").lower() != expected_custody.get("receipt_sha256", "").lower():
+        raise AuthorityError("CUSTODY_RECEIPT_DIGEST_MISMATCH")
+    if envelope.get("dispatch_id") != expected_custody.get("dispatch_id"):
+        raise AuthorityError("DISPATCH_ID_MISMATCH")
+
+    # 8. Validation assertions (Section K)
+    if envelope.get("request_contract_validation") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "request_contract_validation must be PASS")
+    if envelope.get("result_contract_validation") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "result_contract_validation must be PASS")
+    if envelope.get("request_result_binding") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "request_result_binding must be PASS")
+    if envelope.get("control_plane_custody_validation") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "control_plane_custody_validation must be PASS")
+    if envelope.get("dispatch_state_validation") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "dispatch_state_validation must be PASS")
+    if envelope.get("evaluator_identity_validation") != "PASS":
+        raise AuthorityError("INVALID_VALIDATION_ASSERTION", "evaluator_identity_validation must be PASS")
+    if envelope.get("authority_effect") != "EVIDENCE_ONLY":
+        raise AuthorityError("INVALID_AUTHORITY_EFFECT", "authority_effect must be EVIDENCE_ONLY")
+
+    # 9. Exit / Recommendation consistency (Section L)
+    rec = envelope.get("recommendation")
+    proc_rc = envelope.get("evaluator_process_exit_code")
+    if rec == "approve_candidate" and proc_rc != 0:
+        raise AuthorityError("EVALUATOR_EXIT_RECOMMENDATION_INCONSISTENT", f"approve_candidate requires exit 0, got {proc_rc}")
+    elif rec == "reject" and proc_rc != 1:
+        raise AuthorityError("EVALUATOR_EXIT_RECOMMENDATION_INCONSISTENT", f"reject requires exit 1, got {proc_rc}")
+
+
+def write_ingress_json_atomically(destination: Path, envelope: Dict[str, Any]) -> None:
+    """Atomically writes an EvaluatorEvidenceIngress envelope to destination.
+    
+    Required sequence (WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A-R1):
+    1. ensure destination parent exists;
+    2. canonical serialize envelope once;
+    3. create temporary file in SAME directory;
+    4. write complete bytes;
+    5. flush;
+    6. os.fsync(file descriptor);
+    7. os.replace(temp, destination);
+    8. fsync parent directory where supported;
+    9. clean temporary file on failure.
+    """
+    dest = Path(destination).resolve()
+    dest_dir = dest.parent
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
+    content_bytes = canonical_json_bytes(envelope)
+    tmp_path: Optional[Path] = None
+
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            dir=dest_dir,
+            prefix=f".{dest.name}.tmp-",
+            delete=False,
+        ) as tmp_file:
+            tmp_path = Path(tmp_file.name)
+            tmp_file.write(content_bytes)
+            tmp_file.flush()
+            os.fsync(tmp_file.fileno())
+
+        os.replace(tmp_path, dest)
+        tmp_path = None
+
+        # Fsync parent directory where supported
+        try:
+            dir_fd = os.open(dest_dir, os.O_RDONLY)
+            try:
+                os.fsync(dir_fd)
+            finally:
+                os.close(dir_fd)
+        except Exception:
+            pass
+
+    except Exception:
+        if tmp_path and tmp_path.exists():
+            try:
+                tmp_path.unlink()
+            except Exception:
+                pass
+        raise
+
+
 def ingest_evaluator_evidence(
     review_authority_root: Path,
     evaluator_root: Path,
@@ -631,42 +812,49 @@ def ingest_evaluator_evidence(
         review_authority_sha=ra_sha,
     )
 
-    # 17. Check Existing Output for Idempotency or Conflict
+    # 17. Load Ingress Schema
+    ingress_schema_path = ra_root / "schemas" / "evaluator-evidence-ingress-v1.schema.json"
+    if not ingress_schema_path.exists():
+        raise AuthorityError("INGRESS_SCHEMA_MISSING", str(ingress_schema_path))
+    ingress_schema = read_json(ingress_schema_path)
+
+    # 18. Check Existing Output for Full Idempotent Revalidation (Section M)
     if out_path.exists():
         try:
             existing = read_json(out_path)
         except Exception as err:
             raise AuthorityError("EXISTING_INGRESS_ENVELOPE_MALFORMED", str(err)) from err
 
-        # Verify stable identity
-        if (
-            existing.get("ingress_id") == ingress_id
-            and existing.get("evaluation_request_id") == facts["request_id"]
-            and existing.get("evaluation_request_sha256") == facts["request_sha256"]
-            and existing.get("evaluation_id") == facts["evaluation_id"]
-            and existing.get("evaluation_result_sha256") == facts["result_sha256"]
-            and existing.get("evaluation_result_raw_sha256") == raw_res_sha256
-            and existing.get("custody_receipt_sha256") == cust_data["receipt_sha256"]
-            and existing.get("dispatch_id") == cust_data["dispatch_id"]
-            and existing.get("candidate_sha") == facts["candidate_sha"]
-            and existing.get("recommendation") == facts["recommendation"]
-            and existing.get("authority_effect") == "EVIDENCE_ONLY"
-        ):
-            return {
-                "status": "IDEMPOTENT",
-                "ingress_id": existing["ingress_id"],
-                "ingress_sha256": existing["ingress_sha256"],
-                "recommendation": existing["recommendation"],
-                "authority_effect": existing["authority_effect"],
-                "envelope": existing,
-            }
-        else:
-            raise AuthorityError(
-                "EVALUATOR_EVIDENCE_INGRESS_CONFLICT",
-                f"existing envelope at {out_path} conflicts with incoming evidence",
-            )
+        # Perform strict canonical revalidation across all envelope fields
+        validate_evaluator_evidence_ingress_envelope(
+            existing,
+            ingress_schema=ingress_schema,
+            expected_ingress_id=ingress_id,
+            expected_review_authority_sha=ra_sha,
+            expected_evaluator_repository=lock["evaluator_repository"],
+            expected_evaluator_sha=lock["evaluator_sha"],
+            expected_control_plane_repository=lock["control_plane_repository"],
+            expected_control_plane_sha=lock["control_plane_sha"],
+            expected_request_facts=facts,
+            expected_result_facts=facts,
+            expected_custody=cust_data,
+            expected_dispatch=disp_data,
+            raw_request_sha256=raw_req_sha256,
+            raw_result_sha256=raw_res_sha256,
+            raw_custody_sha256=raw_cust_sha256,
+            raw_dispatch_sha256=raw_disp_sha256,
+        )
 
-    # 18. Assemble Ingress Envelope
+        return {
+            "status": "IDEMPOTENT",
+            "ingress_id": existing["ingress_id"],
+            "ingress_sha256": existing["ingress_sha256"],
+            "recommendation": existing["recommendation"],
+            "authority_effect": existing["authority_effect"],
+            "envelope": existing,
+        }
+
+    # 19. Assemble New Ingress Envelope
     now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
     envelope = {
         "schema_version": "evaluator-evidence-ingress-v1",
@@ -708,18 +896,28 @@ def ingest_evaluator_evidence(
     env_for_digest = {k: v for k, v in envelope.items() if k != "ingress_sha256"}
     envelope["ingress_sha256"] = sha256_bytes(canonical_json_bytes(env_for_digest))
 
-    # 19. Validate with Ingress Schema
-    ingress_schema_path = ra_root / "schemas" / "evaluator-evidence-ingress-v1.schema.json"
-    if not ingress_schema_path.exists():
-        raise AuthorityError("INGRESS_SCHEMA_MISSING", str(ingress_schema_path))
-    ingress_schema = read_json(ingress_schema_path)
-    try:
-        jsonschema.validate(instance=envelope, schema=ingress_schema)
-    except Exception as err:
-        raise AuthorityError("INGRESS_ENVELOPE_SCHEMA_VIOLATION", str(err)) from err
+    # 20. Pre-write Validation (Section T)
+    validate_evaluator_evidence_ingress_envelope(
+        envelope,
+        ingress_schema=ingress_schema,
+        expected_ingress_id=ingress_id,
+        expected_review_authority_sha=ra_sha,
+        expected_evaluator_repository=lock["evaluator_repository"],
+        expected_evaluator_sha=lock["evaluator_sha"],
+        expected_control_plane_repository=lock["control_plane_repository"],
+        expected_control_plane_sha=lock["control_plane_sha"],
+        expected_request_facts=facts,
+        expected_result_facts=facts,
+        expected_custody=cust_data,
+        expected_dispatch=disp_data,
+        raw_request_sha256=raw_req_sha256,
+        raw_result_sha256=raw_res_sha256,
+        raw_custody_sha256=raw_cust_sha256,
+        raw_dispatch_sha256=raw_disp_sha256,
+    )
 
-    # 20. Atomic Output Materialization
-    write_json(out_path, envelope)
+    # 21. Atomic Output Materialization (Section P, Q, R)
+    write_ingress_json_atomically(out_path, envelope)
 
     return {
         "status": "INGRESS_READY",
