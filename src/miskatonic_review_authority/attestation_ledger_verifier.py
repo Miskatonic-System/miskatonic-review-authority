@@ -68,7 +68,7 @@ def verify_execution_evidence_attestation(
     if res_run_id and res_run_id != run_id:
         raise AuthorityError("RUN_ID_MISMATCH", f"Result run_id '{res_run_id}' != requested run_id '{run_id}'")
 
-    # 5. Parse ledger events and validate sequence monotonicity & schema (Section 25)
+    # 5. Parse ledger events and validate sequence monotonicity & schema (Section 37, 38, 39)
     lines = ledger_file.read_text(encoding="utf-8").splitlines()
     events: list[dict[str, Any]] = []
     seq_set: set[int] = set()
@@ -78,11 +78,42 @@ def verify_execution_evidence_attestation(
         if not line.strip():
             continue
         try:
-            event = json.loads(line)
+            raw_item = json.loads(line)
         except Exception as e:
             raise AuthorityError("EXECUTION_LEDGER_CORRUPT", f"Line {line_idx} is not valid JSON: {e}") from e
 
-        seq = event.get("sequence")
+        if raw_item.get("event_kind") == "EXECUTION_RECEIPT" and "receipt" in raw_item:
+            seq = raw_item.get("ledger_sequence") or line_idx
+            rec = raw_item["receipt"]
+            if not isinstance(rec, dict):
+                raise AuthorityError("EXECUTION_RECEIPT_CORRUPT", f"Line {line_idx} receipt is not a dict")
+
+            # Verify receipt identity agreement (Section 39)
+            rec_wo = rec.get("work_order_id") or rec.get("wo_id")
+            if rec_wo and rec_wo != work_order_id:
+                raise AuthorityError("WORK_ORDER_ID_MISMATCH", f"Receipt work_order_id '{rec_wo}' != '{work_order_id}'")
+            if rec.get("run_id") and rec["run_id"] != run_id:
+                raise AuthorityError("RUN_ID_MISMATCH", f"Receipt run_id '{rec['run_id']}' != '{run_id}'")
+            if rec.get("attempt_id") and rec["attempt_id"] != attempt_id:
+                raise AuthorityError("ATTEMPT_ID_MISMATCH", f"Receipt attempt_id '{rec['attempt_id']}' != '{attempt_id}'")
+
+            # Re-compute receipt digest (Section 38)
+            cpy = dict(rec)
+            provided_digest = cpy.pop("receipt_digest", None)
+            if not provided_digest:
+                raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISSING", f"Line {line_idx} receipt missing receipt_digest")
+
+            computed_digest = f"sha256:{hashlib.sha256((json.dumps(cpy, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode('utf-8')).hexdigest()}"
+            if provided_digest != computed_digest:
+                raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISMATCH", f"Line {line_idx} receipt digest mismatch")
+
+            event = rec
+            event["ledger_sequence"] = seq
+        else:
+            event = raw_item
+            seq = event.get("ledger_sequence") or event.get("sequence") or line_idx
+            event["ledger_sequence"] = seq
+
         if seq != expected_seq:
             raise AuthorityError("EXECUTION_LEDGER_SEQUENCE_NON_MONOTONIC", f"Line {line_idx} sequence {seq} != expected {expected_seq}")
         expected_seq += 1
@@ -98,7 +129,6 @@ def verify_execution_evidence_attestation(
     git_val = result_data.get("fields", {}).get("git", {}).get("value")
     observed_sha = git_val.get("candidate_sha") if isinstance(git_val, dict) else None
     if not observed_sha:
-        # Check in events
         for e in reversed(events):
             if e.get("observed_head_sha"):
                 observed_sha = e["observed_head_sha"]
@@ -112,7 +142,7 @@ def verify_execution_evidence_attestation(
     if observed_sha.lower() != candidate_sha.lower():
         raise AuthorityError("CANDIDATE_SHA_MISMATCH", f"Observed candidate SHA {observed_sha} != expected {candidate_sha}")
 
-    # 7. Verify Evidence Sequences (Section 27)
+    # 7. Verify Evidence Sequences & Relevance (Section 27, 40)
     fields = result_data.get("fields", {})
     for field_name, field_obj in fields.items():
         if isinstance(field_obj, dict):
@@ -123,9 +153,13 @@ def verify_execution_evidence_attestation(
                         "EVIDENCE_SEQUENCE_INVALID",
                         f"Field '{field_name}' references non-existent sequence {seq}."
                     )
+                # Verify evidence sequence relevance
+                matching_event = next((e for e in events if e.get("ledger_sequence") == seq or e.get("sequence") == seq), None)
+                if matching_event:
+                    if field_name == "pytest" and "pytest" not in matching_event.get("command_summary", "").lower():
+                        raise AuthorityError("EVIDENCE_SEQUENCE_IRRELEVANT", f"Field '{field_name}' references irrelevant event sequence {seq}.")
 
     # 8. Independent Result Re-Derivation (Section 24, 26)
-    # Re-derive pytest status
     pytest_events = [e for e in events if "pytest" in e.get("command_summary", "").lower()]
     if pytest_events:
         has_fail = any(e.get("exit_code", 0) != 0 or e.get("status") == "FAIL" for e in pytest_events)
@@ -149,7 +183,8 @@ def verify_execution_evidence_attestation(
             f"Result pytest status '{res_pytest_status}' != independently derived status '{derived_pytest_status}'"
         )
 
-    return {
+    # Compute signed attestation digest
+    attestation_payload = {
         "verified": True,
         "work_order_id": work_order_id,
         "run_id": run_id,
@@ -160,3 +195,8 @@ def verify_execution_evidence_attestation(
         "executor_principal": executor_principal,
         "reviewer_principal": reviewer_principal,
     }
+    att_bytes = (json.dumps(attestation_payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode("utf-8")
+    attestation_signature = f"sha256:{hashlib.sha256(att_bytes).hexdigest()}"
+    attestation_payload["review_signature"] = attestation_signature
+
+    return attestation_payload
