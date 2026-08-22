@@ -1,4 +1,4 @@
-"""Review Authority Execution Evidence Attestation Verifier (WO-MSK-EXECUTION-EVIDENCE-ORG-01A Section 18, 19, 20)."""
+"""Review Authority Independent Execution Evidence Verifier (WO-MSK-EXECUTION-EVIDENCE-ORG-01A-R1 Section 24-31)."""
 
 from __future__ import annotations
 
@@ -21,15 +21,18 @@ def verify_execution_evidence_attestation(
     executor_principal: str,
     reviewer_principal: str,
 ) -> dict[str, Any]:
-    """Verifies work-order execution evidence ledger & derived result digests and attests validity (Section 18, 19, 20).
+    """Independently verifies execution evidence ledger & derived result contract (Section 24-31).
     
     Fails closed if:
     - ledger or result file absent
-    - digest mismatch
-    - missing provenance
-    - executor_principal == reviewer_principal (Section 20 self-attestation prohibition)
+    - ledger or result digest mismatch
+    - result not derivable from ledger (Section 26)
+    - run_id mismatch (Section 28)
+    - candidate_sha missing or mismatch (Section 29)
+    - evidence sequence invalid (Section 27)
+    - executor_principal == reviewer_principal (Section 30 self-attestation prohibition)
     """
-    # Rule 1: Producer/Reviewer Separation (Section 20)
+    # Rule 1: Producer/Reviewer Separation (Section 30)
     if executor_principal.lower() == reviewer_principal.lower():
         raise AuthorityError("EXECUTOR_REVIEWER_PRINCIPAL_COLLISION", f"Executor principal '{executor_principal}' cannot be review principal.")
 
@@ -41,34 +44,110 @@ def verify_execution_evidence_attestation(
     if not result_file.exists():
         raise AuthorityError("EXECUTION_RESULT_ABSENT", f"Execution result missing at {result_path}")
 
-    # Compute actual ledger sha256
+    # 1. Compute actual ledger sha256
     ledger_bytes = ledger_file.read_bytes()
     ledger_digest = f"sha256:{hashlib.sha256(ledger_bytes).hexdigest()}"
 
     result_data = read_json(str(result_file))
 
-    # Verify ledger digest binding
+    # 2. Verify ledger digest binding
     if result_data.get("ledger_sha256") != ledger_digest:
         raise AuthorityError(
             "EXECUTION_LEDGER_DIGEST_MISMATCH",
             f"Result ledger_sha256 {result_data.get('ledger_sha256')} != computed {ledger_digest}"
         )
 
-    # Verify work_order_id & attempt_id binding
-    if result_data.get("wo_id") != work_order_id:
+    # 3. Verify work_order_id & attempt_id binding
+    if result_data.get("wo_id") != work_order_id and result_data.get("work_order_id") != work_order_id:
         raise AuthorityError("WORK_ORDER_ID_MISMATCH", f"Result wo_id {result_data.get('wo_id')} != {work_order_id}")
     if result_data.get("attempt_id") != attempt_id:
         raise AuthorityError("ATTEMPT_ID_MISMATCH", f"Result attempt_id {result_data.get('attempt_id')} != {attempt_id}")
 
-    # Check git candidate SHA if present in fields
+    # 4. Verify run_id binding (Section 28)
+    res_run_id = result_data.get("run_id")
+    if res_run_id and res_run_id != run_id:
+        raise AuthorityError("RUN_ID_MISMATCH", f"Result run_id '{res_run_id}' != requested run_id '{run_id}'")
+
+    # 5. Parse ledger events and validate sequence monotonicity & schema (Section 25)
+    lines = ledger_file.read_text(encoding="utf-8").splitlines()
+    events: list[dict[str, Any]] = []
+    seq_set: set[int] = set()
+    expected_seq = 1
+
+    for line_idx, line in enumerate(lines, 1):
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except Exception as e:
+            raise AuthorityError("EXECUTION_LEDGER_CORRUPT", f"Line {line_idx} is not valid JSON: {e}") from e
+
+        seq = event.get("sequence")
+        if seq != expected_seq:
+            raise AuthorityError("EXECUTION_LEDGER_SEQUENCE_NON_MONOTONIC", f"Line {line_idx} sequence {seq} != expected {expected_seq}")
+        expected_seq += 1
+        seq_set.add(seq)
+        events.append(event)
+
+        # Verify executor principal separation on event level
+        evt_executor = event.get("executor_principal")
+        if evt_executor and evt_executor.lower() == reviewer_principal.lower():
+            raise AuthorityError("EXECUTOR_REVIEWER_PRINCIPAL_COLLISION", f"Event executor '{evt_executor}' matches review principal.")
+
+    # 6. Verify Candidate SHA (Section 29)
     git_val = result_data.get("fields", {}).get("git", {}).get("value")
-    if git_val and isinstance(git_val, dict):
-        observed_sha = git_val.get("candidate_sha")
-        if observed_sha and observed_sha.lower() != candidate_sha.lower():
-            raise AuthorityError(
-                "CANDIDATE_SHA_MISMATCH",
-                f"Result candidate_sha {observed_sha} != expected {candidate_sha}"
-            )
+    observed_sha = git_val.get("candidate_sha") if isinstance(git_val, dict) else None
+    if not observed_sha:
+        # Check in events
+        for e in reversed(events):
+            if e.get("observed_head_sha"):
+                observed_sha = e["observed_head_sha"]
+                break
+            elif e.get("git_head"):
+                observed_sha = e["git_head"]
+                break
+
+    if not observed_sha:
+        raise AuthorityError("CANDIDATE_SHA_MISSING", "Candidate git SHA is absent in ledger/result evidence.")
+    if observed_sha.lower() != candidate_sha.lower():
+        raise AuthorityError("CANDIDATE_SHA_MISMATCH", f"Observed candidate SHA {observed_sha} != expected {candidate_sha}")
+
+    # 7. Verify Evidence Sequences (Section 27)
+    fields = result_data.get("fields", {})
+    for field_name, field_obj in fields.items():
+        if isinstance(field_obj, dict):
+            ev_seqs = field_obj.get("evidence_sequence", [])
+            for seq in ev_seqs:
+                if seq not in seq_set:
+                    raise AuthorityError(
+                        "EVIDENCE_SEQUENCE_INVALID",
+                        f"Field '{field_name}' references non-existent sequence {seq}."
+                    )
+
+    # 8. Independent Result Re-Derivation (Section 24, 26)
+    # Re-derive pytest status
+    pytest_events = [e for e in events if "pytest" in e.get("command_summary", "").lower()]
+    if pytest_events:
+        has_fail = any(e.get("exit_code", 0) != 0 or e.get("status") == "FAIL" for e in pytest_events)
+        last_event = pytest_events[-1]
+        last_pass = (last_event.get("exit_code") == 0 and last_event.get("status") in ("PASS", "PASS_AFTER_RETRY"))
+        if has_fail and last_pass:
+            derived_pytest_status = "PASS_AFTER_RETRY"
+        elif last_pass:
+            derived_pytest_status = "PASS"
+        else:
+            derived_pytest_status = "FAIL"
+    else:
+        derived_pytest_status = "NOT_RUN"
+
+    res_pytest_val = fields.get("pytest", {}).get("value")
+    res_pytest_status = res_pytest_val.get("status") if isinstance(res_pytest_val, dict) else "NOT_RUN"
+
+    if derived_pytest_status != res_pytest_status:
+        raise AuthorityError(
+            "RESULT_NOT_DERIVABLE",
+            f"Result pytest status '{res_pytest_status}' != independently derived status '{derived_pytest_status}'"
+        )
 
     return {
         "verified": True,

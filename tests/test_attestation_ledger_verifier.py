@@ -1,6 +1,7 @@
-"""Acceptance test suite for Review Authority Execution Evidence Verifier (WO-MSK-EXECUTION-EVIDENCE-ORG-01A Section 18, 19, 20)."""
+"""Acceptance test suite for Review Authority Execution Evidence Verifier (WO-MSK-EXECUTION-EVIDENCE-ORG-01A-R1 Section 24-31, 35, 36)."""
 
 import json
+import hashlib
 import pathlib
 import pytest
 
@@ -21,6 +22,14 @@ def tmp_evidence(tmp_path):
         "attempt_id": "attempt_01",
         "phase": "VALIDATION",
         "event_type": "COMMAND_EXECUTION",
+        "executor_principal": "agent-os-worker",
+        "executor_provider": "agent-os",
+        "authorization_decision_id": "dec-100",
+        "capability_id": "val.exec",
+        "repository_identity": "miskatonic-control-plane",
+        "observed_head_sha": "1288045a7c805d6d19c657f7f28addcaf76d7283",
+        "receipt_id": "rec-100",
+        "receipt_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         "cwd": "/tmp",
         "command_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         "command_summary": "pytest -q",
@@ -34,12 +43,12 @@ def tmp_evidence(tmp_path):
     }) + "\n"
     ledger_file.write_text(ledger_line, encoding="utf-8")
 
-    import hashlib
     ledger_digest = f"sha256:{hashlib.sha256(ledger_line.encode('utf-8')).hexdigest()}"
 
     result_data = {
         "schema_version": "miskatonic.execution-result.v1",
         "wo_id": "WO-ORG-TEST-01A",
+        "run_id": "run_01",
         "attempt_id": "attempt_01",
         "derived_at": "2026-08-22T00:00:01Z",
         "ledger_sha256": ledger_digest,
@@ -47,6 +56,10 @@ def tmp_evidence(tmp_path):
         "fields": {
             "git": {
                 "value": {"candidate_sha": "1288045a7c805d6d19c657f7f28addcaf76d7283"},
+                "evidence_sequence": [1]
+            },
+            "pytest": {
+                "value": {"status": "PASS", "attempts": 1, "exit_code": 0},
                 "evidence_sequence": [1]
             }
         },
@@ -67,17 +80,18 @@ def test_verify_execution_evidence_attestation_success(tmp_evidence):
         ledger_path=ledger_file,
         result_path=result_file,
         candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-        executor_principal="agent-os-executor",
+        executor_principal="agent-os-worker",
         reviewer_principal="review-authority-checker",
     )
 
     assert res["verified"] is True
     assert res["work_order_id"] == "WO-ORG-TEST-01A"
+    assert res["run_id"] == "run_01"
     assert res["attempt_id"] == "attempt_01"
 
 
 def test_executor_reviewer_principal_collision_fails_closed(tmp_evidence):
-    """Test Section 20: executor principal cannot be reviewer principal for same result."""
+    """Test Section 30: executor principal cannot be reviewer principal for same result."""
     ledger_file, result_file, _ = tmp_evidence
 
     with pytest.raises(AuthorityError) as exc_info:
@@ -95,7 +109,7 @@ def test_executor_reviewer_principal_collision_fails_closed(tmp_evidence):
 
 
 def test_ledger_digest_mismatch_fails_closed(tmp_evidence):
-    """Test Section 18: digest mismatch fails closed."""
+    """Test Section 36: post-attestation ledger mutation invalidates verification."""
     ledger_file, result_file, _ = tmp_evidence
     ledger_file.write_text("modified ledger content\n", encoding="utf-8")
 
@@ -107,7 +121,46 @@ def test_ledger_digest_mismatch_fails_closed(tmp_evidence):
             ledger_path=ledger_file,
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-            executor_principal="agent-os-executor",
+            executor_principal="agent-os-worker",
             reviewer_principal="review-authority-checker",
         )
     assert "EXECUTION_LEDGER_DIGEST_MISMATCH" in str(exc_info.value)
+
+
+def test_result_not_derivable_fails_closed(tmp_evidence):
+    """Test Section 35: Modifying result.json pytest status without ledger support raises RESULT_NOT_DERIVABLE."""
+    ledger_file, result_file, _ = tmp_evidence
+    res_data = json.loads(result_file.read_text(encoding="utf-8"))
+    res_data["fields"]["pytest"]["value"]["status"] = "FAIL"
+    result_file.write_text(json.dumps(res_data, indent=2) + "\n", encoding="utf-8")
+
+    with pytest.raises(AuthorityError) as exc_info:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            executor_principal="agent-os-worker",
+            reviewer_principal="review-authority-checker",
+        )
+    assert "RESULT_NOT_DERIVABLE" in str(exc_info.value)
+
+
+def test_run_id_mismatch_fails_closed(tmp_evidence):
+    """Test Section 28: run_id mismatch fails closed."""
+    ledger_file, result_file, _ = tmp_evidence
+
+    with pytest.raises(AuthorityError) as exc_info:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="wrong_run_id",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            executor_principal="agent-os-worker",
+            reviewer_principal="review-authority-checker",
+        )
+    assert "RUN_ID_MISMATCH" in str(exc_info.value)
