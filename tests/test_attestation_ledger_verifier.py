@@ -9,6 +9,16 @@ from miskatonic_review_authority import verify_execution_evidence_attestation
 from miskatonic_review_authority.util import AuthorityError
 
 
+import subprocess
+import tempfile
+
+@pytest.fixture
+def dummy_key_path(tmp_path):
+    key_path = tmp_path / "test_private_key.pem"
+    subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
+    return key_path
+
+
 @pytest.fixture
 def tmp_evidence(tmp_path):
     ledger_file = tmp_path / "execution.jsonl"
@@ -70,7 +80,7 @@ def tmp_evidence(tmp_path):
     return ledger_file, result_file, ledger_digest
 
 
-def test_verify_execution_evidence_attestation_success(tmp_evidence):
+def test_verify_execution_evidence_attestation_success(tmp_evidence, dummy_key_path):
     ledger_file, result_file, _ = tmp_evidence
 
     res = verify_execution_evidence_attestation(
@@ -82,6 +92,7 @@ def test_verify_execution_evidence_attestation_success(tmp_evidence):
         candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
         executor_principal="agent-os-worker",
         reviewer_principal="review-authority-checker",
+        private_key_path=dummy_key_path,
     )
 
     assert res["verified"] is True
@@ -90,7 +101,26 @@ def test_verify_execution_evidence_attestation_success(tmp_evidence):
     assert res["attempt_id"] == "attempt_01"
 
 
-def test_executor_reviewer_principal_collision_fails_closed(tmp_evidence):
+def test_missing_private_key_fails_closed(tmp_evidence):
+    """Test Section 24: Trusted signer unavailable fails closed without ephemeral openssl genrsa fallback."""
+    ledger_file, result_file, _ = tmp_evidence
+
+    with pytest.raises(AuthorityError) as exc_info:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            executor_principal="agent-os-worker",
+            reviewer_principal="review-authority-checker",
+            private_key_path=None,
+        )
+    assert "TRUSTED_SIGNER_UNAVAILABLE" in str(exc_info.value)
+
+
+def test_executor_reviewer_principal_collision_fails_closed(tmp_evidence, dummy_key_path):
     """Test Section 30: executor principal cannot be reviewer principal for same result."""
     ledger_file, result_file, _ = tmp_evidence
 
@@ -104,11 +134,12 @@ def test_executor_reviewer_principal_collision_fails_closed(tmp_evidence):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             executor_principal="same-principal",
             reviewer_principal="same-principal",
+            private_key_path=dummy_key_path,
         )
     assert "EXECUTOR_REVIEWER_PRINCIPAL_COLLISION" in str(exc_info.value)
 
 
-def test_ledger_digest_mismatch_fails_closed(tmp_evidence):
+def test_ledger_digest_mismatch_fails_closed(tmp_evidence, dummy_key_path):
     """Test Section 36: post-attestation ledger mutation invalidates verification."""
     ledger_file, result_file, _ = tmp_evidence
     ledger_file.write_text("modified ledger content\n", encoding="utf-8")
@@ -123,11 +154,12 @@ def test_ledger_digest_mismatch_fails_closed(tmp_evidence):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             executor_principal="agent-os-worker",
             reviewer_principal="review-authority-checker",
+            private_key_path=dummy_key_path,
         )
     assert "EXECUTION_LEDGER_DIGEST_MISMATCH" in str(exc_info.value)
 
 
-def test_result_not_derivable_fails_closed(tmp_evidence):
+def test_result_not_derivable_fails_closed(tmp_evidence, dummy_key_path):
     """Test Section 35: Modifying result.json pytest status without ledger support raises RESULT_NOT_DERIVABLE."""
     ledger_file, result_file, _ = tmp_evidence
     res_data = json.loads(result_file.read_text(encoding="utf-8"))
@@ -144,11 +176,12 @@ def test_result_not_derivable_fails_closed(tmp_evidence):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             executor_principal="agent-os-worker",
             reviewer_principal="review-authority-checker",
+            private_key_path=dummy_key_path,
         )
     assert "RESULT_NOT_DERIVABLE" in str(exc_info.value)
 
 
-def test_run_id_mismatch_fails_closed(tmp_evidence):
+def test_run_id_mismatch_fails_closed(tmp_evidence, dummy_key_path):
     """Test Section 28: run_id mismatch fails closed."""
     ledger_file, result_file, _ = tmp_evidence
 
@@ -162,5 +195,57 @@ def test_run_id_mismatch_fails_closed(tmp_evidence):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             executor_principal="agent-os-worker",
             reviewer_principal="review-authority-checker",
+            private_key_path=dummy_key_path,
         )
     assert "RUN_ID_MISMATCH" in str(exc_info.value)
+
+
+def test_control_event_only_ledger_fails_closed(tmp_path, dummy_key_path):
+    """Test Section 24: Ledgers with CONTROL_EVENT entries only are rejected."""
+    ledger_file = tmp_path / "execution.jsonl"
+    result_file = tmp_path / "result.json"
+
+    ledger_line = json.dumps({
+        "schema_version": "miskatonic.work-order-ledger-event.v1",
+        "ledger_sequence": 1,
+        "work_order_id": "WO-CTRL-ONLY-01",
+        "run_id": "run_01",
+        "attempt_id": "attempt_01",
+        "event_kind": "CONTROL_EVENT",
+        "timestamp": "2026-08-22T00:00:00Z",
+        "control_payload": {"event_type": "ARTIFACT_WITNESS"},
+    }) + "\n"
+    ledger_file.write_text(ledger_line, encoding="utf-8")
+    ledger_digest = f"sha256:{hashlib.sha256(ledger_line.encode('utf-8')).hexdigest()}"
+
+    result_data = {
+        "schema_version": "miskatonic.execution-result.v1",
+        "wo_id": "WO-CTRL-ONLY-01",
+        "run_id": "run_01",
+        "attempt_id": "attempt_01",
+        "derived_at": "2026-08-22T00:00:01Z",
+        "ledger_sha256": ledger_digest,
+        "terminal_verdict": "EXECUTION_EVIDENCE_LEDGER_READY",
+        "fields": {
+            "git": {
+                "value": {"candidate_sha": "1288045a7c805d6d19c657f7f28addcaf76d7283"},
+                "evidence_sequence": [1]
+            }
+        },
+        "contradictions": [],
+    }
+    result_file.write_text(json.dumps(result_data, indent=2) + "\n", encoding="utf-8")
+
+    with pytest.raises(AuthorityError) as exc_info:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-CTRL-ONLY-01",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            executor_principal="agent-os-worker",
+            reviewer_principal="review-authority-checker",
+            private_key_path=dummy_key_path,
+        )
+    assert "NO_AUTHENTICATED_EXECUTION_EVIDENCE" in str(exc_info.value)

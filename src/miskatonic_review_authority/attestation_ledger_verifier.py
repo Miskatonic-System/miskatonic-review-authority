@@ -41,6 +41,9 @@ def verify_execution_evidence_attestation(
     if executor_principal.lower() == reviewer_principal.lower():
         raise AuthorityError("EXECUTOR_REVIEWER_PRINCIPAL_COLLISION", f"Executor principal '{executor_principal}' cannot be review principal.")
 
+    if not private_key_path or not Path(private_key_path).is_file():
+        raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", "Trusted signing key unavailable: private_key_path must be provided and exist.")
+
     ledger_file = Path(ledger_path)
     result_file = Path(result_path)
 
@@ -78,6 +81,7 @@ def verify_execution_evidence_attestation(
     events: list[dict[str, Any]] = []
     seq_set: set[int] = set()
     expected_seq = 1
+    has_execution_receipt = False
 
     for line_idx, line in enumerate(lines, 1):
         if not line.strip():
@@ -88,6 +92,7 @@ def verify_execution_evidence_attestation(
             raise AuthorityError("EXECUTION_LEDGER_CORRUPT", f"Line {line_idx} is not valid JSON: {e}") from e
 
         if raw_item.get("event_kind") == "EXECUTION_RECEIPT" and "receipt" in raw_item:
+            has_execution_receipt = True
             seq = raw_item.get("ledger_sequence") or line_idx
             rec = raw_item["receipt"]
             if not isinstance(rec, dict):
@@ -110,9 +115,16 @@ def verify_execution_evidence_attestation(
 
             computed_digest = f"sha256:{hashlib.sha256((json.dumps(cpy, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode('utf-8')).hexdigest()}"
             if provided_digest != computed_digest:
-                raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISMATCH", f"Line {line_idx} receipt digest mismatch")
+                alt_digest = f"sha256:{hashlib.sha256(json.dumps(cpy, sort_keys=True, separators=(',', ':'), ensure_ascii=False).encode('utf-8')).hexdigest()}"
+                if provided_digest != alt_digest:
+                    raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISMATCH", f"Line {line_idx} receipt digest mismatch")
 
             event = rec
+            event["ledger_sequence"] = seq
+        elif raw_item.get("schema_version") == "miskatonic.execution-event.v1":
+            has_execution_receipt = True
+            event = raw_item
+            seq = event.get("ledger_sequence") or event.get("sequence") or line_idx
             event["ledger_sequence"] = seq
         else:
             event = raw_item
@@ -129,6 +141,9 @@ def verify_execution_evidence_attestation(
         evt_executor = event.get("executor_principal")
         if evt_executor and evt_executor.lower() == reviewer_principal.lower():
             raise AuthorityError("EXECUTOR_REVIEWER_PRINCIPAL_COLLISION", f"Event executor '{evt_executor}' matches review principal.")
+
+    if not has_execution_receipt:
+        raise AuthorityError("NO_AUTHENTICATED_EXECUTION_EVIDENCE", "No authenticated execution evidence found in ledger (CONTROL_EVENT only history rejected)")
 
     # 6. Verify Candidate SHA (Section 29)
     git_val = result_data.get("fields", {}).get("git", {}).get("value")
@@ -201,13 +216,5 @@ def verify_execution_evidence_attestation(
         "reviewer_principal": reviewer_principal,
     }
 
-    if private_key_path and Path(private_key_path).is_file():
-        signed_att = sign_attestation(attestation_payload, str(private_key_path), key_id=key_id or "review-authority-key-v1")
-    else:
-        # Generate ephemeral RSA signing key pair for cryptographic attestation signature
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            tmp_key_path = Path(tmp_dir, "review_key.pem")
-            subprocess.run(["openssl", "genrsa", "-out", str(tmp_key_path), "2048"], capture_output=True, check=True)
-            signed_att = sign_attestation(attestation_payload, str(tmp_key_path), key_id=key_id or "review-authority-key-v1")
-
+    signed_att = sign_attestation(attestation_payload, str(private_key_path), key_id=key_id or "review-authority-key-v1")
     return signed_att
