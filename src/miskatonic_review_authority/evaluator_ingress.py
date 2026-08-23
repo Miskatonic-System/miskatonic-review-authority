@@ -1,6 +1,6 @@
 """Independent Evaluator Evidence Ingress for Review Authority.
 
-Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A and 01A-R1.
+Implements WO-RA-EVALUATOR-EVIDENCE-INGRESS-01A, 01A-R1, and WO-RA-EVALUATOR-ATTESTATION-BINDING-01A.
 Independently verifies EvaluationRequest v1, EvaluationResult v2,
 Control Plane result custody receipt v1, and dispatch state v1,
 producing a verified EvaluatorEvidenceIngress envelope as sidecar evidence
@@ -114,6 +114,42 @@ def load_upstream_evidence_lock(review_authority_root: Path) -> Dict[str, Any]:
         if field not in lock_data or not lock_data[field]:
             raise AuthorityError("UPSTREAM_EVIDENCE_LOCK_FIELD_MISSING", field)
 
+    require_full_sha(lock_data["evaluator_sha"], field="evaluator_sha")
+    require_full_sha(lock_data["control_plane_sha"], field="control_plane_sha")
+
+    return lock_data
+
+
+def load_evaluator_ingress_attestation_lock(review_authority_root: Path) -> Dict[str, Any]:
+    """Loads and validates contracts/evaluator-ingress-attestation.lock.json."""
+    root = Path(review_authority_root).resolve()
+    lock_path = root / "contracts" / "evaluator-ingress-attestation.lock.json"
+    if not lock_path.exists():
+        raise AuthorityError("EVALUATOR_INGRESS_ATTESTATION_LOCK_NOT_FOUND", str(lock_path))
+
+    try:
+        lock_data = read_json(lock_path)
+    except Exception as err:
+        raise AuthorityError("EVALUATOR_INGRESS_ATTESTATION_LOCK_MALFORMED", str(err)) from err
+
+    if lock_data.get("schema_version") != "miskatonic.evaluator-ingress-attestation-lock.v1":
+        raise AuthorityError("EVALUATOR_INGRESS_ATTESTATION_LOCK_INVALID_VERSION", lock_data.get("schema_version"))
+
+    for field in [
+        "ingress_repository",
+        "ingress_source_sha",
+        "ingress_schema_path",
+        "ingress_schema_version",
+        "ingress_schema_sha256",
+        "evaluator_repository",
+        "evaluator_sha",
+        "control_plane_repository",
+        "control_plane_sha",
+    ]:
+        if field not in lock_data or not lock_data[field]:
+            raise AuthorityError("EVALUATOR_INGRESS_ATTESTATION_LOCK_FIELD_MISSING", field)
+
+    require_full_sha(lock_data["ingress_source_sha"], field="ingress_source_sha")
     require_full_sha(lock_data["evaluator_sha"], field="evaluator_sha")
     require_full_sha(lock_data["control_plane_sha"], field="control_plane_sha")
 
@@ -642,7 +678,8 @@ def write_ingress_json_atomically(destination: Path, envelope: Dict[str, Any]) -
         raise
 
 
-def ingest_evaluator_evidence(
+def verify_evaluator_evidence_source_set(
+    *,
     review_authority_root: Path,
     evaluator_root: Path,
     control_plane_root: Path,
@@ -651,9 +688,12 @@ def ingest_evaluator_evidence(
     evaluation_result_path: Path,
     custody_receipt_path: Path,
     dispatch_state_path: Path,
-    output_path: Path,
+    lock: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """Principal evidence ingestion function for Review Authority."""
+    """Independently verifies the foreign evaluator and control plane evidence chain.
+    
+    Returns immutable dictionary of verified facts, raw digests, and decoded structures.
+    """
     ra_root = Path(review_authority_root).resolve()
     eval_root = Path(evaluator_root).resolve()
     cp_root = Path(control_plane_root).resolve()
@@ -663,15 +703,14 @@ def ingest_evaluator_evidence(
     res_path = Path(evaluation_result_path).resolve()
     cust_path = Path(custody_receipt_path).resolve()
     disp_path = Path(dispatch_state_path).resolve()
-    out_path = Path(output_path).resolve()
 
     # 1. Upstream Evidence Lock Validation
-    lock = load_upstream_evidence_lock(ra_root)
+    if lock is None:
+        lock = load_upstream_evidence_lock(ra_root)
 
     # 2. Checkouts and Runtime Verification
-    verify_evaluator_checkout(eval_root, lock, eval_py)
+    eval_info = verify_evaluator_checkout(eval_root, lock, eval_py)
     cp_info = verify_control_plane_checkout(cp_root, lock)
-    ra_sha = verify_review_authority_source(ra_root)
 
     # 3. Read Foreign Artifacts (Strictly Read-Only)
     if not req_path.exists() or not req_path.is_file():
@@ -800,7 +839,180 @@ def ingest_evaluator_evidence(
     if cust_data.get("authority_effect") != "NONE":
         raise AuthorityError("INVALID_SOURCE_AUTHORITY_EFFECT", f"expected 'NONE', got '{cust_data.get('authority_effect')}'")
 
-    # 16. Ingress ID Computation
+    return {
+        "lock": lock,
+        "eval_info": eval_info,
+        "cp_info": cp_info,
+        "req_data": req_data,
+        "res_data": res_data,
+        "cust_data": cust_data,
+        "disp_data": disp_data,
+        "raw_req_sha256": raw_req_sha256,
+        "raw_res_sha256": raw_res_sha256,
+        "raw_cust_sha256": raw_cust_sha256,
+        "raw_disp_sha256": raw_disp_sha256,
+        "facts": facts,
+        "proc_rc": proc_rc,
+    }
+
+
+def verify_evaluator_ingress_for_attestation(
+    *,
+    evaluator_ingress_path: Path,
+    review_authority_root: Path,
+    evaluator_root: Path,
+    control_plane_root: Path,
+    evaluator_python: Path,
+    evaluation_request_path: Path,
+    evaluation_result_path: Path,
+    custody_receipt_path: Path,
+    dispatch_state_path: Path,
+) -> Dict[str, Any]:
+    """Independently verifies accepted evaluator ingress envelope against raw foreign evidence and locks."""
+    ra_root = Path(review_authority_root).resolve()
+    ingr_path = Path(evaluator_ingress_path).resolve()
+
+    if not ingr_path.exists() or not ingr_path.is_file():
+        raise AuthorityError("EVALUATOR_INGRESS_NOT_FOUND", str(ingr_path))
+
+    # 1. Load Attestation Ingress Lock
+    att_lock = load_evaluator_ingress_attestation_lock(ra_root)
+
+    # 2. Check Ingress Schema File and Digest
+    ingr_schema_path = ra_root / att_lock["ingress_schema_path"]
+    if not ingr_schema_path.exists() or not ingr_schema_path.is_file():
+        raise AuthorityError("INGRESS_SCHEMA_MISSING", str(ingr_schema_path))
+    actual_ingr_schema_sha = sha256_file(ingr_schema_path).lower()
+    expected_ingr_schema_sha = att_lock["ingress_schema_sha256"].lower().removeprefix("sha256:")
+    if actual_ingr_schema_sha != expected_ingr_schema_sha:
+        raise AuthorityError(
+            "INGRESS_SCHEMA_DIGEST_MISMATCH",
+            f"actual '{actual_ingr_schema_sha}' != locked '{expected_ingr_schema_sha}'",
+        )
+    ingress_schema = read_json(ingr_schema_path)
+
+    # 3. Verify Foreign Evidence Chain
+    verified_foreign = verify_evaluator_evidence_source_set(
+        review_authority_root=ra_root,
+        evaluator_root=evaluator_root,
+        control_plane_root=control_plane_root,
+        evaluator_python=evaluator_python,
+        evaluation_request_path=evaluation_request_path,
+        evaluation_result_path=evaluation_result_path,
+        custody_receipt_path=custody_receipt_path,
+        dispatch_state_path=dispatch_state_path,
+    )
+
+    facts = verified_foreign["facts"]
+    cust_data = verified_foreign["cust_data"]
+    disp_data = verified_foreign["disp_data"]
+    raw_req_sha256 = verified_foreign["raw_req_sha256"]
+    raw_res_sha256 = verified_foreign["raw_res_sha256"]
+    raw_cust_sha256 = verified_foreign["raw_cust_sha256"]
+    raw_disp_sha256 = verified_foreign["raw_disp_sha256"]
+
+    # 4. Load Ingress Envelope
+    try:
+        envelope = read_json(ingr_path)
+    except Exception as err:
+        raise AuthorityError("EVALUATOR_INGRESS_MALFORMED", str(err)) from err
+
+    # 5. Compute Expected Ingress ID using Accepted Ingress Source SHA
+    expected_ingr_id = compute_ingress_envelope_id(
+        request_sha256=facts["request_sha256"],
+        result_sha256=facts["result_sha256"],
+        raw_result_sha256=raw_res_sha256,
+        custody_receipt_sha256=cust_data["receipt_sha256"],
+        raw_dispatch_state_sha256=raw_disp_sha256,
+        evaluator_sha=att_lock["evaluator_sha"],
+        control_plane_sha=att_lock["control_plane_sha"],
+        review_authority_sha=att_lock["ingress_source_sha"],
+    )
+
+    # 6. Validate Persisted Envelope
+    validate_evaluator_evidence_ingress_envelope(
+        envelope,
+        ingress_schema=ingress_schema,
+        expected_ingress_id=expected_ingr_id,
+        expected_review_authority_sha=att_lock["ingress_source_sha"],
+        expected_evaluator_repository=att_lock["evaluator_repository"],
+        expected_evaluator_sha=att_lock["evaluator_sha"],
+        expected_control_plane_repository=att_lock["control_plane_repository"],
+        expected_control_plane_sha=att_lock["control_plane_sha"],
+        expected_request_facts=facts,
+        expected_result_facts=facts,
+        expected_custody=cust_data,
+        expected_dispatch=disp_data,
+        raw_request_sha256=raw_req_sha256,
+        raw_result_sha256=raw_res_sha256,
+        raw_custody_sha256=raw_cust_sha256,
+        raw_dispatch_sha256=raw_disp_sha256,
+    )
+
+    return {
+        "schema_version": "evaluator-evidence-ingress-v1",
+        "ingress_id": envelope["ingress_id"],
+        "ingress_sha256": envelope["ingress_sha256"],
+        "ingress_review_authority_sha": envelope["review_authority_sha"],
+        "evaluator_repository": envelope["evaluator_repository"],
+        "evaluator_sha": envelope["evaluator_sha"],
+        "control_plane_repository": envelope["control_plane_repository"],
+        "control_plane_sha": envelope["control_plane_sha"],
+        "evaluation_id": envelope["evaluation_id"],
+        "evaluation_result_sha256": envelope["evaluation_result_sha256"],
+        "recommendation": envelope["recommendation"],
+        "task_pack_id": envelope["task_pack_id"],
+        "task_pack_sha256": envelope["task_pack_sha256"],
+        "authority_effect": "EVIDENCE_ONLY",
+        "candidate_repository": envelope["candidate_repository"],
+        "baseline_sha": envelope["baseline_sha"],
+        "candidate_sha": envelope["candidate_sha"],
+        "evaluator_process_exit_code": envelope["evaluator_process_exit_code"],
+        "envelope": envelope,
+    }
+
+
+def ingest_evaluator_evidence(
+    review_authority_root: Path,
+    evaluator_root: Path,
+    control_plane_root: Path,
+    evaluator_python: Path,
+    evaluation_request_path: Path,
+    evaluation_result_path: Path,
+    custody_receipt_path: Path,
+    dispatch_state_path: Path,
+    output_path: Path,
+) -> Dict[str, Any]:
+    """Principal evidence ingestion function for Review Authority."""
+    ra_root = Path(review_authority_root).resolve()
+    out_path = Path(output_path).resolve()
+
+    # 1. Independently verify foreign evidence chain
+    foreign = verify_evaluator_evidence_source_set(
+        review_authority_root=ra_root,
+        evaluator_root=evaluator_root,
+        control_plane_root=control_plane_root,
+        evaluator_python=evaluator_python,
+        evaluation_request_path=evaluation_request_path,
+        evaluation_result_path=evaluation_result_path,
+        custody_receipt_path=custody_receipt_path,
+        dispatch_state_path=dispatch_state_path,
+    )
+
+    lock = foreign["lock"]
+    facts = foreign["facts"]
+    cust_data = foreign["cust_data"]
+    disp_data = foreign["disp_data"]
+    raw_req_sha256 = foreign["raw_req_sha256"]
+    raw_res_sha256 = foreign["raw_res_sha256"]
+    raw_cust_sha256 = foreign["raw_cust_sha256"]
+    raw_disp_sha256 = foreign["raw_disp_sha256"]
+    proc_rc = foreign["proc_rc"]
+
+    # 2. Verify Review Authority source
+    ra_sha = verify_review_authority_source(ra_root)
+
+    # 3. Ingress ID Computation
     ingress_id = compute_ingress_envelope_id(
         request_sha256=facts["request_sha256"],
         result_sha256=facts["result_sha256"],
@@ -812,13 +1024,13 @@ def ingest_evaluator_evidence(
         review_authority_sha=ra_sha,
     )
 
-    # 17. Load Ingress Schema
+    # 4. Load Ingress Schema
     ingress_schema_path = ra_root / "schemas" / "evaluator-evidence-ingress-v1.schema.json"
     if not ingress_schema_path.exists():
         raise AuthorityError("INGRESS_SCHEMA_MISSING", str(ingress_schema_path))
     ingress_schema = read_json(ingress_schema_path)
 
-    # 18. Check Existing Output for Full Idempotent Revalidation (Section M)
+    # 5. Check Existing Output for Full Idempotent Revalidation (Section M)
     if out_path.exists():
         try:
             existing = read_json(out_path)
@@ -854,7 +1066,7 @@ def ingest_evaluator_evidence(
             "envelope": existing,
         }
 
-    # 19. Assemble New Ingress Envelope
+    # 6. Assemble New Ingress Envelope
     now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
     envelope = {
         "schema_version": "evaluator-evidence-ingress-v1",
@@ -896,7 +1108,7 @@ def ingest_evaluator_evidence(
     env_for_digest = {k: v for k, v in envelope.items() if k != "ingress_sha256"}
     envelope["ingress_sha256"] = sha256_bytes(canonical_json_bytes(env_for_digest))
 
-    # 20. Pre-write Validation (Section T)
+    # 7. Pre-write Validation (Section T)
     validate_evaluator_evidence_ingress_envelope(
         envelope,
         ingress_schema=ingress_schema,
@@ -916,7 +1128,7 @@ def ingest_evaluator_evidence(
         raw_dispatch_sha256=raw_disp_sha256,
     )
 
-    # 21. Atomic Output Materialization (Section P, Q, R)
+    # 8. Atomic Output Materialization (Section P, Q, R)
     write_ingress_json_atomically(out_path, envelope)
 
     return {

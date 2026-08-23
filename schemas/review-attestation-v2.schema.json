@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MiskatonicReviewAttestationV2",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "review-attestation-v2"},
+    "authority_principal": {"type": "string"},
+    "authority_workflow_run_id": {"type": "string"},
+    "review_authority_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+    "attestation_mode": {
+      "enum": ["PRODUCTION_REVIEW", "CONTROLLED_INTEGRATION"],
+      "type": "string"
+    },
+    "repository": {"type": "string"},
+    "pr_number": {"minimum": 1, "type": "integer"},
+    "base_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+    "head_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+    "candidate_digest": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+    "producer_binding": {"type": "object"},
+    "reviewer_principal": {"type": "string"},
+    "review_provider": {"type": "string"},
+    "review_model_requested": {"type": "string"},
+    "review_execution": {"type": "object"},
+    "verdict": {
+      "enum": ["APPROVE", "REQUEST_CHANGES", "REJECT"],
+      "type": "string"
+    },
+    "release_authorized": {"type": "boolean"},
+    "summary": {"type": "string"},
+    "findings": {"type": "array"},
+    "confidence": {"maximum": 1, "minimum": 0, "type": "number"},
+    "reviewer_policy_version": {"type": "string"},
+    "evaluator_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {"const": "evaluator-evidence-ingress-v1"},
+        "ingress_id": {"pattern": "^evalingress-[0-9a-f]{64}$", "type": "string"},
+        "ingress_sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+        "ingress_review_authority_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "evaluator_repository": {"type": "string"},
+        "evaluator_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "control_plane_repository": {"type": "string"},
+        "control_plane_sha": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "evaluation_id": {"type": "string"},
+        "evaluation_result_sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+        "recommendation": {
+          "enum": ["approve_candidate", "reject"],
+          "type": "string"
+        },
+        "task_pack_id": {"type": "string"},
+        "task_pack_sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+        "authority_effect": {"const": "EVIDENCE_ONLY"}
+      },
+      "required": [
+        "schema_version",
+        "ingress_id",
+        "ingress_sha256",
+        "ingress_review_authority_sha",
+        "evaluator_repository",
+        "evaluator_sha",
+        "control_plane_repository",
+        "control_plane_sha",
+        "evaluation_id",
+        "evaluation_result_sha256",
+        "recommendation",
+        "task_pack_id",
+        "task_pack_sha256",
+        "authority_effect"
+      ]
+    },
+    "release_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy_version": {"const": "evaluator-gated-review-v1"},
+        "review_verdict_allows_release": {"type": "boolean"},
+        "evaluator_recommendation_allows_release": {"type": "boolean"},
+        "attestation_mode_allows_release": {"type": "boolean"}
+      },
+      "required": [
+        "policy_version",
+        "review_verdict_allows_release",
+        "evaluator_recommendation_allows_release",
+        "attestation_mode_allows_release"
+      ]
+    },
+    "issued_at": {"type": "string"},
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {"const": "RSASSA-PKCS1-v1_5-SHA256"},
+        "key_id": {"type": "string"},
+        "value_base64": {"type": "string"}
+      },
+      "required": ["algorithm", "key_id", "value_base64"]
+    }
+  },
+  "required": [
+    "schema_version",
+    "authority_principal",
+    "authority_workflow_run_id",
+    "review_authority_sha",
+    "attestation_mode",
+    "repository",
+    "pr_number",
+    "base_sha",
+    "head_sha",
+    "candidate_digest",
+    "producer_binding",
+    "reviewer_principal",
+    "review_provider",
+    "review_model_requested",
+    "review_execution",
+    "verdict",
+    "release_authorized",
+    "summary",
+    "findings",
+    "confidence",
+    "reviewer_policy_version",
+    "evaluator_evidence",
+    "release_gate",
+    "issued_at",
+    "signature"
+  ]
+}
