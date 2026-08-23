@@ -39,8 +39,10 @@ def compute_auth_decision_digest(dec: dict) -> str:
 @pytest.fixture
 def dummy_keypair(tmp_path, monkeypatch):
     key_path = tmp_path / "test_private_key.pem"
+    pub_key_path = tmp_path / "test_public_key.pem"
     der_path = tmp_path / "key.der"
     subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
+    subprocess.run(["openssl", "rsa", "-in", str(key_path), "-pubout", "-out", str(pub_key_path)], capture_output=True, check=True)
     subprocess.run(["openssl", "pkey", "-in", str(key_path), "-pubout", "-outform", "DER", "-out", str(der_path)], capture_output=True, check=True)
     fp = f"sha256:{hashlib.sha256(der_path.read_bytes()).hexdigest()}"
     signer_config = {
@@ -49,6 +51,7 @@ def dummy_keypair(tmp_path, monkeypatch):
         "reviewer_principal": "review-authority-checker",
         "key_id": "review-authority-key-v1",
         "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+        "public_key_path": str(pub_key_path),
         "public_key_fingerprint": fp,
         "trust_root_version": "1.0.0",
         "lifecycle_state": "ACTIVE",
@@ -338,7 +341,7 @@ def test_neg_k_trusted_fingerprint_mismatch(tmp_path, dummy_keypair, monkeypatch
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
         )
-    assert "REVIEW_SIGNER_NOT_TRUSTED" in str(exc.value)
+    assert ("REVIEW_TRUST_ROOT_INVALID" in str(exc.value) or "REVIEW_SIGNER_NOT_TRUSTED" in str(exc.value))
 
 
 # Test L: reviewer_principal mismatch with trusted signer config -> REJECT (REVIEW_SIGNER_NOT_TRUSTED)

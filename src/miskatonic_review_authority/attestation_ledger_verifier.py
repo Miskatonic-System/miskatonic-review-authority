@@ -164,7 +164,7 @@ def verify_execution_evidence_attestation(
 
     # Check for forbidden wildcard values (Section 2, 24)
     wildcards = [
-        k for k in ("authority_id", "reviewer_principal", "key_id", "public_key_fingerprint")
+        k for k in ("authority_id", "reviewer_principal", "key_id", "algorithm", "public_key_path", "public_key_fingerprint")
         if trusted_signer.get(k) == "*"
     ]
     if wildcards:
@@ -176,10 +176,37 @@ def verify_execution_evidence_attestation(
         raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", f"Trusted signer lifecycle state '{lifecycle_state}' is not ACTIVE/TRUSTED.")
 
     # Check concrete required non-null fields (Section 5)
-    required_concrete = ["authority_id", "reviewer_principal", "key_id", "algorithm", "public_key_fingerprint", "trust_root_version"]
+    required_concrete = ["authority_id", "reviewer_principal", "key_id", "algorithm", "public_key_path", "public_key_fingerprint", "trust_root_version"]
     missing_concrete = [f for f in required_concrete if not trusted_signer.get(f)]
     if missing_concrete:
         raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", f"Trusted signer config missing concrete fields: {missing_concrete}")
+
+    # Resolve public_key_path relative to Review Authority policy root or repo root (Section 4)
+    pk_rel = trusted_signer["public_key_path"]
+    pk_path = Path(pk_rel)
+    if not pk_path.is_absolute():
+        cand_repo = TRUSTED_SIGNERS_POLICY_PATH.parent.parent / pk_rel
+        cand_policy = TRUSTED_SIGNERS_POLICY_PATH.parent / pk_rel
+        pk_path = cand_repo if cand_repo.exists() else cand_policy
+
+    if not pk_path.is_file():
+        raise AuthorityError("REVIEW_TRUST_ROOT_INVALID", f"Public key file missing at {pk_path}")
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        pub_der_path = Path(tmp_dir, "pubkey.der")
+        res_pk = subprocess.run(
+            ["openssl", "pkey", "-pubin", "-in", str(pk_path), "-pubout", "-outform", "DER", "-out", str(pub_der_path)],
+            capture_output=True,
+        )
+        if res_pk.returncode != 0:
+            raise AuthorityError("REVIEW_TRUST_ROOT_INVALID", f"Public key file at {pk_path} is invalid")
+        computed_pub_fp = f"sha256:{hashlib.sha256(pub_der_path.read_bytes()).hexdigest()}"
+
+    if computed_pub_fp != trusted_signer["public_key_fingerprint"]:
+        raise AuthorityError(
+            "REVIEW_TRUST_ROOT_INVALID",
+            f"Computed public key fingerprint '{computed_pub_fp}' != configured '{trusted_signer['public_key_fingerprint']}'",
+        )
 
     # Match derived fingerprint against trusted signer
     configured_fingerprint = trusted_signer["public_key_fingerprint"]
