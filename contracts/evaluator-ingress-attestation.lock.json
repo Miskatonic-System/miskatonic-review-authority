@@ -1,0 +1,13 @@
+{
+  "schema_version": "miskatonic.evaluator-ingress-attestation-lock.v1",
+  "ingress_repository": "Miskatonic-System/miskatonic-review-authority",
+  "ingress_source_sha": "bea82aea9b640a9f64b71a3f72a2119a2e02d691",
+  "ingress_schema_path": "schemas/evaluator-evidence-ingress-v1.schema.json",
+  "ingress_schema_version": "evaluator-evidence-ingress-v1",
+  "ingress_schema_sha256": "4b37afe37ba0c18882c35a7bb3eccbf9fb0960246a91e025f91e8df1fcd9663c",
+  "evaluator_repository": "Miskatonic-System/miskatonic-agent-evaluator",
+  "evaluator_sha": "1f93eff471aa67486738742f70eaa396b9d70f8e",
+  "control_plane_repository": "Miskatonic-System/miskatonic-control-plane",
+  "control_plane_sha": "7bbb2ff093ea6201d4c20d43a094b372821c0239",
+  "modification_policy": "REFERENCE_ONLY"
+}

@@ -7,11 +7,13 @@ import sys
 from pathlib import Path
 
 from .attestation import public_key_fingerprint, verify_attestation
+from .attestation_v2 import verify_review_attestation_v2
 from .check_publisher import publish_check
 from .evaluator_ingress import ingest_evaluator_evidence
 from .github_app import create_installation_token
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
+from .review_v2 import run_review_v2
 from .util import AuthorityError, read_json
 from .workflow_audit import require_pinned_workflows
 
@@ -109,6 +111,65 @@ def _verify_attestation(args: argparse.Namespace) -> int:
     return 0
 
 
+def _review_v2(args: argparse.Namespace) -> int:
+    signed = run_review_v2(
+        repository=args.repository,
+        pr_number=args.pr_number,
+        head_branch=args.head_branch,
+        repo_path=args.repo_path,
+        base_sha=args.base_sha,
+        head_sha=args.head_sha,
+        prior_evidence_path=args.prior_evidence,
+        producer_bindings_path=args.producer_bindings,
+        reviewer_policy_path=args.reviewer_policy,
+        private_key_path=args.private_key,
+        key_id=args.key_id,
+        diff_path=args.diff,
+        output_path=args.output,
+        api_key=os.environ.get(args.api_key_env, ""),
+        model=os.environ.get(args.model_env, ""),
+        authority_principal=args.authority_principal,
+        workflow_run_id=args.workflow_run_id,
+        review_authority_root=args.review_authority_root or ".",
+        evaluator_root=args.evaluator_root,
+        control_plane_root=args.control_plane_root,
+        evaluator_python=args.evaluator_python,
+        evaluator_ingress_path=args.evaluator_ingress,
+        evaluation_request_path=args.evaluation_request,
+        evaluation_result_path=args.evaluation_result,
+        custody_receipt_path=args.custody_receipt,
+        dispatch_state_path=args.dispatch_state,
+        attestation_mode=getattr(args, "attestation_mode", "PRODUCTION_REVIEW"),
+    )
+    print(json.dumps({
+        "schema_version": signed["schema_version"],
+        "verdict": signed["verdict"],
+        "release_authorized": signed["release_authorized"],
+        "attestation_mode": signed["attestation_mode"],
+        "evaluator_ingress_id": signed["evaluator_evidence"]["ingress_id"],
+    }, sort_keys=True))
+    return 0
+
+
+def _verify_attestation_v2(args: argparse.Namespace) -> int:
+    attestation = read_json(args.attestation)
+    evaluator_ingress = read_json(args.evaluator_ingress)
+    verify_review_attestation_v2(
+        attestation,
+        args.public_key,
+        evaluator_ingress,
+        expected_key_id=args.key_id,
+    )
+    print(json.dumps({
+        "signature": "valid",
+        "verdict": attestation.get("verdict"),
+        "release_authorized": attestation.get("release_authorized"),
+        "attestation_mode": attestation.get("attestation_mode"),
+        "evaluator_ingress_id": attestation.get("evaluator_evidence", {}).get("ingress_id"),
+    }, sort_keys=True))
+    return 0
+
+
 def _key_fingerprint(args: argparse.Namespace) -> int:
     print(public_key_fingerprint(args.public_key))
     return 0
@@ -201,6 +262,43 @@ def main(argv: list[str] | None = None) -> None:
     verify.add_argument("--public-key", required=True)
     verify.add_argument("--key-id", required=True)
     verify.set_defaults(func=_verify_attestation)
+
+    review_v2_p = subparsers.add_parser("review-v2")
+    review_v2_p.add_argument("--repository", required=True)
+    review_v2_p.add_argument("--pr-number", type=int, required=True)
+    review_v2_p.add_argument("--head-branch", required=True)
+    review_v2_p.add_argument("--repo-path", required=True)
+    review_v2_p.add_argument("--base-sha", required=True)
+    review_v2_p.add_argument("--head-sha", required=True)
+    review_v2_p.add_argument("--prior-evidence", required=True)
+    review_v2_p.add_argument("--producer-bindings", required=True)
+    review_v2_p.add_argument("--reviewer-policy", required=True)
+    review_v2_p.add_argument("--private-key", required=True)
+    review_v2_p.add_argument("--key-id", required=True)
+    review_v2_p.add_argument("--diff", required=True)
+    review_v2_p.add_argument("--output", required=True)
+    review_v2_p.add_argument("--api-key-env", default="MSK_CLOUD_REVIEW_API_KEY")
+    review_v2_p.add_argument("--model-env", default="MSK_CLOUD_REVIEW_MODEL")
+    review_v2_p.add_argument("--authority-principal", required=True)
+    review_v2_p.add_argument("--workflow-run-id", required=True)
+    review_v2_p.add_argument("--review-authority-root", default=".")
+    review_v2_p.add_argument("--evaluator-root", required=True)
+    review_v2_p.add_argument("--control-plane-root", required=True)
+    review_v2_p.add_argument("--evaluator-python", required=True)
+    review_v2_p.add_argument("--evaluator-ingress", required=True)
+    review_v2_p.add_argument("--evaluation-request", required=True)
+    review_v2_p.add_argument("--evaluation-result", required=True)
+    review_v2_p.add_argument("--custody-receipt", required=True)
+    review_v2_p.add_argument("--dispatch-state", required=True)
+    review_v2_p.add_argument("--attestation-mode", default="PRODUCTION_REVIEW")
+    review_v2_p.set_defaults(func=_review_v2)
+
+    verify_v2_p = subparsers.add_parser("verify-attestation-v2")
+    verify_v2_p.add_argument("--attestation", required=True)
+    verify_v2_p.add_argument("--evaluator-ingress", required=True)
+    verify_v2_p.add_argument("--public-key", required=True)
+    verify_v2_p.add_argument("--key-id")
+    verify_v2_p.set_defaults(func=_verify_attestation_v2)
 
     fingerprint = subparsers.add_parser("key-fingerprint")
     fingerprint.add_argument("--public-key", required=True)
