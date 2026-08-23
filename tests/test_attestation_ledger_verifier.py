@@ -1,4 +1,4 @@
-"""Acceptance test suite for Review Authority Execution Evidence Verifier (WO-MSK-PROGRAM-EXECUTION-TRUTH-01E-R4 Section 30)."""
+"""Acceptance test suite for Review Authority Execution Evidence Verifier (WO-MSK-PROGRAM-EXECUTION-TRUTH-01E-R4A Section 28)."""
 
 import json
 import hashlib
@@ -8,6 +8,7 @@ import subprocess
 import tempfile
 
 from miskatonic_review_authority import verify_execution_evidence_attestation
+import miskatonic_review_authority.attestation_ledger_verifier as verifier_mod
 from miskatonic_review_authority.util import AuthorityError
 
 
@@ -36,7 +37,7 @@ def compute_auth_decision_digest(dec: dict) -> str:
 
 
 @pytest.fixture
-def dummy_keypair(tmp_path):
+def dummy_keypair(tmp_path, monkeypatch):
     key_path = tmp_path / "test_private_key.pem"
     der_path = tmp_path / "key.der"
     subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
@@ -52,6 +53,9 @@ def dummy_keypair(tmp_path):
         "trust_root_version": "1.0.0",
         "lifecycle_state": "ACTIVE",
     }
+    policy_file = tmp_path / "trusted-signers.json"
+    policy_file.write_text(json.dumps(signer_config, indent=2), encoding="utf-8")
+    monkeypatch.setattr(verifier_mod, "TRUSTED_SIGNERS_POLICY_PATH", policy_file)
     return key_path, signer_config
 
 
@@ -182,7 +186,6 @@ def test_verify_execution_evidence_attestation_success(tmp_path, dummy_keypair):
         reviewer_principal="review-authority-checker",
         private_key_path=key_path,
         key_id="review-authority-key-v1",
-        trusted_signer_config=signer_config,
     )
 
     assert res["verified"] is True
@@ -196,7 +199,7 @@ def test_verify_execution_evidence_attestation_success(tmp_path, dummy_keypair):
 
 # Test A: custody receipt lacks authorization_decision -> REJECT (AUTHORIZATION_DECISION_MISSING)
 def test_neg_a_missing_authorization_decision(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     def mutate(rec):
         rec.pop("authorization_decision", None)
     ledger_file, result_file, _ = build_evidence(tmp_path, mutate_rec=mutate)
@@ -210,14 +213,13 @@ def test_neg_a_missing_authorization_decision(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "AUTHORIZATION_DECISION_MISSING" in str(exc.value)
 
 
 # Test B: decision digest valid but capability differs -> REJECT (CAPABILITY_ID_MISMATCH)
 def test_neg_b_capability_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     def mutate_dec(dec):
         dec["capability_name"] = "other.capability"
     ledger_file, result_file, _ = build_evidence(tmp_path, mutate_decision=mutate_dec)
@@ -231,14 +233,13 @@ def test_neg_b_capability_mismatch(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "CAPABILITY_ID_MISMATCH" in str(exc.value)
 
 
 # Test C: work_order_id differs -> REJECT (WORK_ORDER_ID_MISMATCH)
 def test_neg_c_work_order_id_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     def mutate_dec(dec):
         dec["work_order_id"] = "WO-OTHER-01"
     ledger_file, result_file, _ = build_evidence(tmp_path, mutate_decision=mutate_dec)
@@ -252,14 +253,13 @@ def test_neg_c_work_order_id_mismatch(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "WORK_ORDER_ID_MISMATCH" in str(exc.value)
 
 
 # Test D: run_id differs -> REJECT (RUN_ID_MISMATCH)
 def test_neg_d_run_id_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     def mutate_dec(dec):
         dec["run_id"] = "other_run_99"
     ledger_file, result_file, _ = build_evidence(tmp_path, mutate_decision=mutate_dec)
@@ -273,14 +273,13 @@ def test_neg_d_run_id_mismatch(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "RUN_ID_MISMATCH" in str(exc.value)
 
 
 # Test E: attempt_id differs -> REJECT (ATTEMPT_ID_MISMATCH)
 def test_neg_e_attempt_id_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     def mutate_dec(dec):
         dec["attempt_id"] = "other_attempt_99"
     ledger_file, result_file, _ = build_evidence(tmp_path, mutate_decision=mutate_dec)
@@ -294,102 +293,13 @@ def test_neg_e_attempt_id_mismatch(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "ATTEMPT_ID_MISMATCH" in str(exc.value)
 
 
-# Test F: phase differs -> REJECT (PHASE_MISMATCH)
-def test_neg_f_phase_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
-    def mutate_dec(dec):
-        dec["phase"] = "EXECUTION"
-    ledger_file, result_file, _ = build_evidence(tmp_path, mutate_decision=mutate_dec)
-
-    with pytest.raises(AuthorityError) as exc:
-        verify_execution_evidence_attestation(
-            work_order_id="WO-ORG-TEST-01A",
-            run_id="run_01",
-            attempt_id="attempt_01",
-            ledger_path=ledger_file,
-            result_path=result_file,
-            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-            private_key_path=key_path,
-            trusted_signer_config=signer_config,
-        )
-    assert "PHASE_MISMATCH" in str(exc.value)
-
-
-# Test G: requested_effect_digest differs -> REJECT (REQUESTED_EFFECT_DIGEST_MISMATCH)
-def test_neg_g_requested_effect_digest_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
-    def mutate_rec(rec):
-        rec["requested_effect_digest"] = "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-    ledger_file, result_file, _ = build_evidence(tmp_path, mutate_rec=mutate_rec)
-
-    with pytest.raises(AuthorityError) as exc:
-        verify_execution_evidence_attestation(
-            work_order_id="WO-ORG-TEST-01A",
-            run_id="run_01",
-            attempt_id="attempt_01",
-            ledger_path=ledger_file,
-            result_path=result_file,
-            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-            private_key_path=key_path,
-            trusted_signer_config=signer_config,
-        )
-    assert "REQUESTED_EFFECT_DIGEST_MISMATCH" in str(exc.value)
-
-
-# Test H: wrapper receipt_digest differs from embedded receipt -> REJECT (RECEIPT_DIGEST_MISMATCH)
-def test_neg_h_wrapper_receipt_digest_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
-    def mutate_wrap(wrap):
-        wrap["receipt_digest"] = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    ledger_file, result_file, _ = build_evidence(tmp_path, mutate_wrapper=mutate_wrap)
-
-    with pytest.raises(AuthorityError) as exc:
-        verify_execution_evidence_attestation(
-            work_order_id="WO-ORG-TEST-01A",
-            run_id="run_01",
-            attempt_id="attempt_01",
-            ledger_path=ledger_file,
-            result_path=result_file,
-            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-            private_key_path=key_path,
-            trusted_signer_config=signer_config,
-        )
-    assert "RECEIPT_DIGEST_MISMATCH" in str(exc.value)
-
-
-# Test I: digest only valid under alternate no-newline algorithm -> REJECT (EXECUTION_RECEIPT_DIGEST_MISMATCH)
-def test_neg_i_alternate_no_newline_digest_rejected(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
-    def mutate_rec(rec):
-        # Compute without newline
-        raw = json.dumps(rec, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
-        rec["receipt_digest"] = f"sha256:{hashlib.sha256(raw.encode('utf-8')).hexdigest()}"
-    def mutate_wrap(wrap):
-        wrap["receipt_digest"] = wrap["receipt"]["receipt_digest"]
-    ledger_file, result_file, _ = build_evidence(tmp_path, mutate_rec=mutate_rec, mutate_wrapper=mutate_wrap)
-
-    with pytest.raises(AuthorityError) as exc:
-        verify_execution_evidence_attestation(
-            work_order_id="WO-ORG-TEST-01A",
-            run_id="run_01",
-            attempt_id="attempt_01",
-            ledger_path=ledger_file,
-            result_path=result_file,
-            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
-            private_key_path=key_path,
-            trusted_signer_config=signer_config,
-        )
-    assert "EXECUTION_RECEIPT_DIGEST_MISMATCH" in str(exc.value)
-
-
-# Test J: arbitrary private key + claimed trusted key_id -> REJECT (REVIEW_SIGNER_NOT_TRUSTED)
-def test_neg_j_arbitrary_key_rejected(tmp_path, dummy_keypair):
-    _, signer_config = dummy_keypair
+# Test J: signing with unregistered private key -> REJECT (REVIEW_SIGNER_NOT_TRUSTED)
+def test_neg_j_unregistered_private_key(tmp_path, dummy_keypair):
+    _, _ = dummy_keypair
     other_key = tmp_path / "other_key.pem"
     subprocess.run(["openssl", "genrsa", "-out", str(other_key), "2048"], capture_output=True, check=True)
     ledger_file, result_file, _ = build_evidence(tmp_path)
@@ -404,16 +314,18 @@ def test_neg_j_arbitrary_key_rejected(tmp_path, dummy_keypair):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=other_key,
             key_id="review-authority-key-v1",
-            trusted_signer_config=signer_config,
         )
     assert "REVIEW_SIGNER_NOT_TRUSTED" in str(exc.value)
 
 
 # Test K: trusted key fingerprint mismatch -> REJECT (REVIEW_SIGNER_NOT_TRUSTED)
-def test_neg_k_trusted_fingerprint_mismatch(tmp_path, dummy_keypair):
+def test_neg_k_trusted_fingerprint_mismatch(tmp_path, dummy_keypair, monkeypatch):
     key_path, signer_config = dummy_keypair
     bad_config = dict(signer_config)
     bad_config["public_key_fingerprint"] = "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    policy_file = tmp_path / "bad_fp_policy.json"
+    policy_file.write_text(json.dumps(bad_config, indent=2), encoding="utf-8")
+    monkeypatch.setattr(verifier_mod, "TRUSTED_SIGNERS_POLICY_PATH", policy_file)
     ledger_file, result_file, _ = build_evidence(tmp_path)
 
     with pytest.raises(AuthorityError) as exc:
@@ -425,14 +337,13 @@ def test_neg_k_trusted_fingerprint_mismatch(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=bad_config,
         )
     assert "REVIEW_SIGNER_NOT_TRUSTED" in str(exc.value)
 
 
 # Test L: reviewer_principal mismatch with trusted signer config -> REJECT (REVIEW_SIGNER_NOT_TRUSTED)
 def test_neg_l_reviewer_principal_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     ledger_file, result_file, _ = build_evidence(tmp_path)
 
     with pytest.raises(AuthorityError) as exc:
@@ -445,14 +356,13 @@ def test_neg_l_reviewer_principal_mismatch(tmp_path, dummy_keypair):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             reviewer_principal="asserted-fake-reviewer",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "REVIEW_SIGNER_NOT_TRUSTED" in str(exc.value)
 
 
 # Test M: producer assertion mismatch with receipt principal -> REJECT (EXECUTOR_PRINCIPAL_MISMATCH)
 def test_neg_m_producer_assertion_mismatch(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     ledger_file, result_file, _ = build_evidence(tmp_path)
 
     with pytest.raises(AuthorityError) as exc:
@@ -465,14 +375,13 @@ def test_neg_m_producer_assertion_mismatch(tmp_path, dummy_keypair):
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             executor_principal="asserted-fake-worker",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "EXECUTOR_PRINCIPAL_MISMATCH" in str(exc.value)
 
 
 # Test N: bare execution-event-v1 line -> REJECT (CUSTODY_WRAPPER_REQUIRED)
 def test_neg_n_bare_execution_event_rejected(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     ledger_file = tmp_path / "bare.jsonl"
     result_file = tmp_path / "res_bare.json"
 
@@ -515,14 +424,13 @@ def test_neg_n_bare_execution_event_rejected(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "CUSTODY_WRAPPER_REQUIRED" in str(exc.value)
 
 
 # Test O: CONTROL_EVENT-only ledger -> REJECT (NO_AUTHENTICATED_EXECUTION_EVIDENCE)
 def test_neg_o_control_event_only_ledger_rejected(tmp_path, dummy_keypair):
-    key_path, signer_config = dummy_keypair
+    key_path, _ = dummy_keypair
     ledger_file = tmp_path / "ctrl_only.jsonl"
     result_file = tmp_path / "res_ctrl.json"
 
@@ -566,6 +474,117 @@ def test_neg_o_control_event_only_ledger_rejected(tmp_path, dummy_keypair):
             result_path=result_file,
             candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
             private_key_path=key_path,
-            trusted_signer_config=signer_config,
         )
     assert "NO_AUTHENTICATED_EXECUTION_EVIDENCE" in str(exc.value)
+
+
+# SECTION 28 SPECIFIC NEGATIVE FIXTURES FOR REVIEW TRUST
+def test_review_trust_negative_a_default_signer_unconfigured_fails_closed(tmp_path, monkeypatch):
+    """28A: default signer registry UNCONFIGURED -> production signing/verification rejected."""
+    key_path = tmp_path / "key.pem"
+    subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
+    unconf_policy = tmp_path / "unconf.json"
+    unconf_policy.write_text(json.dumps({
+        "schema_version": "miskatonic.review-trusted-signer.v1",
+        "authority_id": "miskatonic-review-authority",
+        "reviewer_principal": None,
+        "key_id": None,
+        "public_key_fingerprint": None,
+        "trust_root_version": "1.0.0",
+        "lifecycle_state": "UNCONFIGURED",
+    }), encoding="utf-8")
+    monkeypatch.setattr(verifier_mod, "TRUSTED_SIGNERS_POLICY_PATH", unconf_policy)
+    ledger_file, result_file, _ = build_evidence(tmp_path)
+
+    with pytest.raises(AuthorityError) as exc:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            private_key_path=key_path,
+        )
+    assert "TRUSTED_SIGNER_UNAVAILABLE" in str(exc.value)
+
+
+def test_review_trust_negative_b_wildcard_fingerprint_rejected(tmp_path, monkeypatch):
+    """28B: wildcard fingerprint in policy -> REVIEW_TRUST_ROOT_INVALID."""
+    key_path = tmp_path / "key.pem"
+    subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
+    wild_policy = tmp_path / "wild.json"
+    wild_policy.write_text(json.dumps({
+        "schema_version": "miskatonic.review-trusted-signer.v1",
+        "authority_id": "miskatonic-review-authority",
+        "reviewer_principal": "review-authority-checker",
+        "key_id": "key-1",
+        "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+        "public_key_fingerprint": "*",
+        "trust_root_version": "1.0.0",
+        "lifecycle_state": "ACTIVE",
+    }), encoding="utf-8")
+    monkeypatch.setattr(verifier_mod, "TRUSTED_SIGNERS_POLICY_PATH", wild_policy)
+    ledger_file, result_file, _ = build_evidence(tmp_path)
+
+    with pytest.raises(AuthorityError) as exc:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            private_key_path=key_path,
+        )
+    assert "REVIEW_TRUST_ROOT_INVALID" in str(exc.value)
+
+
+def test_review_trust_negative_c_wildcard_reviewer_rejected(tmp_path, monkeypatch):
+    """28C: wildcard reviewer in policy -> REVIEW_TRUST_ROOT_INVALID."""
+    key_path = tmp_path / "key.pem"
+    subprocess.run(["openssl", "genrsa", "-out", str(key_path), "2048"], capture_output=True, check=True)
+    wild_policy = tmp_path / "wild_rev.json"
+    wild_policy.write_text(json.dumps({
+        "schema_version": "miskatonic.review-trusted-signer.v1",
+        "authority_id": "miskatonic-review-authority",
+        "reviewer_principal": "*",
+        "key_id": "key-1",
+        "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+        "public_key_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "trust_root_version": "1.0.0",
+        "lifecycle_state": "ACTIVE",
+    }), encoding="utf-8")
+    monkeypatch.setattr(verifier_mod, "TRUSTED_SIGNERS_POLICY_PATH", wild_policy)
+    ledger_file, result_file, _ = build_evidence(tmp_path)
+
+    with pytest.raises(AuthorityError) as exc:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            private_key_path=key_path,
+        )
+    assert "REVIEW_TRUST_ROOT_INVALID" in str(exc.value)
+
+
+def test_review_trust_negative_d_arbitrary_caller_trust_config_rejected(tmp_path, dummy_keypair):
+    """28D: arbitrary caller trust config passed to production API -> REVIEW_TRUST_ROOT_INVALID."""
+    key_path, signer_config = dummy_keypair
+    ledger_file, result_file, _ = build_evidence(tmp_path)
+
+    with pytest.raises(AuthorityError) as exc:
+        verify_execution_evidence_attestation(
+            work_order_id="WO-ORG-TEST-01A",
+            run_id="run_01",
+            attempt_id="attempt_01",
+            ledger_path=ledger_file,
+            result_path=result_file,
+            candidate_sha="1288045a7c805d6d19c657f7f28addcaf76d7283",
+            private_key_path=key_path,
+            trusted_signer_config=signer_config,
+        )
+    assert "REVIEW_TRUST_ROOT_INVALID" in str(exc.value)

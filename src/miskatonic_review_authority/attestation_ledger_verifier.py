@@ -13,6 +13,9 @@ from .attestation import sign_attestation
 from .util import AuthorityError, read_json
 
 
+TRUSTED_SIGNERS_POLICY_PATH = Path(__file__).resolve().parent.parent.parent / "policy" / "trusted-signers.json"
+
+
 def verify_execution_evidence_attestation(
     *,
     work_order_id: str,
@@ -28,7 +31,7 @@ def verify_execution_evidence_attestation(
     trusted_signer_config: str | Path | dict[str, Any] | None = None,
     authorization_decision: str | Path | dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Independently verifies execution evidence ledger & derived result contract (WO-01E-R4).
+    """Independently verifies execution evidence ledger & derived result contract (WO-01E-R4A).
 
     Fails closed if:
     - ledger or result file absent
@@ -40,8 +43,15 @@ def verify_execution_evidence_attestation(
     - executor_principal == reviewer_principal (self-attestation prohibition)
     - authorization decision missing or unverified
     - custody wrapper identity or receipt digest mismatch
-    - trusted signer verification failure
+    - trusted signer verification failure (wildcards, caller-injected trust, or unconfigured)
     """
+    # Rule 0: Reject caller-defined trust-root injection (Sections 3, 24, 28)
+    if trusted_signer_config is not None:
+        raise AuthorityError(
+            "REVIEW_TRUST_ROOT_INVALID",
+            "Caller-defined trusted_signer_config parameter is forbidden in production API. Use Review Authority-owned policy.",
+        )
+
     # Rule 1: Producer/Reviewer Separation (Section 30)
     if executor_principal and reviewer_principal and executor_principal.strip().lower() == reviewer_principal.strip().lower():
         raise AuthorityError(
@@ -140,60 +150,69 @@ def verify_execution_evidence_attestation(
             )
         derived_key_fingerprint = f"sha256:{hashlib.sha256(der_path.read_bytes()).hexdigest()}"
 
-    # Resolve trusted signer configuration (Section 6, 7, 8)
-    if trusted_signer_config is None:
-        default_signer_path = Path(__file__).resolve().parent.parent.parent / "policy" / "trusted-signers.json"
-        if default_signer_path.is_file():
-            trusted_signer = read_json(str(default_signer_path))
-        else:
-            raise AuthorityError(
-                "TRUSTED_SIGNER_UNAVAILABLE",
-                f"Default trusted signer configuration not found at {default_signer_path}",
-            )
-    elif isinstance(trusted_signer_config, (str, Path)):
-        trusted_signer = read_json(str(trusted_signer_config))
-    elif isinstance(trusted_signer_config, dict):
-        trusted_signer = dict(trusted_signer_config)
-    else:
-        raise AuthorityError("REVIEW_SIGNER_NOT_TRUSTED", "Invalid trusted_signer_config type.")
+    # Resolve trusted signer configuration strictly from authority-owned policy path (Sections 2, 3, 4, 5)
+    if not TRUSTED_SIGNERS_POLICY_PATH.is_file():
+        raise AuthorityError(
+            "TRUSTED_SIGNER_UNAVAILABLE",
+            f"Trusted signer configuration missing at {TRUSTED_SIGNERS_POLICY_PATH}",
+        )
+
+    trusted_signer = read_json(str(TRUSTED_SIGNERS_POLICY_PATH))
 
     if trusted_signer.get("schema_version") != "miskatonic.review-trusted-signer.v1":
         raise AuthorityError("REVIEW_SIGNER_NOT_TRUSTED", "Trusted signer config invalid schema.")
 
-    if trusted_signer.get("lifecycle_state") not in ("ACTIVE", "TRUSTED"):
-        raise AuthorityError("REVIEW_SIGNER_NOT_TRUSTED", "Trusted signer is not in ACTIVE/TRUSTED state.")
+    # Check for forbidden wildcard values (Section 2, 24)
+    wildcards = [
+        k for k in ("authority_id", "reviewer_principal", "key_id", "public_key_fingerprint")
+        if trusted_signer.get(k) == "*"
+    ]
+    if wildcards:
+        raise AuthorityError("REVIEW_TRUST_ROOT_INVALID", f"Wildcard values forbidden in trusted signer policy: {wildcards}")
+
+    # Check lifecycle state (Section 4, 5)
+    lifecycle_state = trusted_signer.get("lifecycle_state")
+    if lifecycle_state not in ("ACTIVE", "TRUSTED"):
+        raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", f"Trusted signer lifecycle state '{lifecycle_state}' is not ACTIVE/TRUSTED.")
+
+    # Check concrete required non-null fields (Section 5)
+    required_concrete = ["authority_id", "reviewer_principal", "key_id", "algorithm", "public_key_fingerprint", "trust_root_version"]
+    missing_concrete = [f for f in required_concrete if not trusted_signer.get(f)]
+    if missing_concrete:
+        raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", f"Trusted signer config missing concrete fields: {missing_concrete}")
 
     # Match derived fingerprint against trusted signer
-    configured_fingerprint = trusted_signer.get("public_key_fingerprint")
-    if configured_fingerprint and configured_fingerprint != "*" and configured_fingerprint != derived_key_fingerprint:
+    configured_fingerprint = trusted_signer["public_key_fingerprint"]
+    if derived_key_fingerprint != configured_fingerprint:
         raise AuthorityError(
             "REVIEW_SIGNER_NOT_TRUSTED",
             f"Derived key fingerprint '{derived_key_fingerprint}' != configured '{configured_fingerprint}'",
         )
 
     # Verify key_id
-    configured_key_id = trusted_signer.get("key_id")
-    if key_id is not None and configured_key_id and configured_key_id != "*" and key_id != configured_key_id:
+    configured_key_id = trusted_signer["key_id"]
+    if key_id is not None and key_id != configured_key_id:
         raise AuthorityError(
             "REVIEW_SIGNER_NOT_TRUSTED",
             f"Provided key_id '{key_id}' != configured '{configured_key_id}'",
         )
-    signing_key_id = configured_key_id or key_id or "review-authority-key-v1"
+    signing_key_id = configured_key_id
 
     # Verify reviewer_principal
-    configured_reviewer = trusted_signer.get("reviewer_principal")
-    if not configured_reviewer or configured_reviewer == "*":
-        final_reviewer_principal = reviewer_principal or "review-authority-checker"
-    else:
-        if reviewer_principal is not None and reviewer_principal.strip():
-            if reviewer_principal.strip().lower() != configured_reviewer.strip().lower():
-                raise AuthorityError(
-                    "REVIEW_SIGNER_NOT_TRUSTED",
-                    f"Caller reviewer_principal '{reviewer_principal}' != configured '{configured_reviewer}'",
-                )
-        final_reviewer_principal = configured_reviewer
-    signing_algorithm = trusted_signer.get("algorithm", "RSASSA-PKCS1-v1_5-SHA256")
-    trust_root_version = trusted_signer.get("trust_root_version", "1.0.0")
+    configured_reviewer = trusted_signer["reviewer_principal"]
+    if reviewer_principal is not None and reviewer_principal.strip():
+        if reviewer_principal.strip().lower() != configured_reviewer.strip().lower():
+            raise AuthorityError(
+                "REVIEW_SIGNER_NOT_TRUSTED",
+                f"Caller reviewer_principal '{reviewer_principal}' != configured '{configured_reviewer}'",
+            )
+    final_reviewer_principal = configured_reviewer
+
+    signing_algorithm = trusted_signer["algorithm"]
+    if signing_algorithm != "RSASSA-PKCS1-v1_5-SHA256":
+        raise AuthorityError("REVIEW_SIGNER_NOT_TRUSTED", f"Unsupported signing algorithm '{signing_algorithm}'")
+
+    trust_root_version = trusted_signer["trust_root_version"]
 
     # 6. Parse ledger events
     lines = ledger_file.read_text(encoding="utf-8").splitlines()
