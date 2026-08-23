@@ -24,23 +24,26 @@ def tmp_evidence(tmp_path):
     ledger_file = tmp_path / "execution.jsonl"
     result_file = tmp_path / "result.json"
 
-    ledger_line = json.dumps({
+    rec_dict = {
         "schema_version": "miskatonic.execution-event.v1",
-        "sequence": 1,
-        "timestamp": "2026-08-22T00:00:00Z",
+        "work_order_id": "WO-ORG-TEST-01A",
         "wo_id": "WO-ORG-TEST-01A",
+        "run_id": "run_01",
         "attempt_id": "attempt_01",
+        "sequence": 1,
         "phase": "VALIDATION",
         "event_type": "COMMAND_EXECUTION",
+        "timestamp": "2026-08-22T00:00:00Z",
+        "cwd": "/tmp",
         "executor_principal": "agent-os-worker",
         "executor_provider": "agent-os",
         "authorization_decision_id": "dec-100",
+        "authorization_decision_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "requested_effect_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
         "capability_id": "val.exec",
         "repository_identity": "miskatonic-control-plane",
         "observed_head_sha": "1288045a7c805d6d19c657f7f28addcaf76d7283",
         "receipt_id": "rec-100",
-        "receipt_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
-        "cwd": "/tmp",
         "command_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         "command_summary": "pytest -q",
         "started_at": "2026-08-22T00:00:00Z",
@@ -50,7 +53,24 @@ def tmp_evidence(tmp_path):
         "stdout_sha256": None,
         "stderr_sha256": None,
         "status": "PASS",
-    }) + "\n"
+    }
+    rec_digest = f"sha256:{hashlib.sha256((json.dumps(rec_dict, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode('utf-8')).hexdigest()}"
+    rec_dict["receipt_digest"] = rec_digest
+
+    wrapper_event = {
+        "schema_version": "miskatonic.work-order-ledger-event.v1",
+        "ledger_sequence": 1,
+        "work_order_id": "WO-ORG-TEST-01A",
+        "wo_id": "WO-ORG-TEST-01A",
+        "run_id": "run_01",
+        "attempt_id": "attempt_01",
+        "event_kind": "EXECUTION_RECEIPT",
+        "timestamp": "2026-08-22T00:00:00Z",
+        "receipt": rec_dict,
+        "receipt_digest": rec_digest,
+    }
+
+    ledger_line = json.dumps(wrapper_event, sort_keys=True, separators=(",", ":")) + "\n"
     ledger_file.write_text(ledger_line, encoding="utf-8")
 
     ledger_digest = f"sha256:{hashlib.sha256(ledger_line.encode('utf-8')).hexdigest()}"

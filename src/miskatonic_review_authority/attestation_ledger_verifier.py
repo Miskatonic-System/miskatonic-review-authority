@@ -44,6 +44,14 @@ def verify_execution_evidence_attestation(
     if not private_key_path or not Path(private_key_path).is_file():
         raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", "Trusted signing key unavailable: private_key_path must be provided and exist.")
 
+    # Section 14: Verify trusted signing key & compute key fingerprint
+    with tempfile.TemporaryDirectory() as directory:
+        der_path = Path(directory, "key.der")
+        res = subprocess.run(["openssl", "pkey", "-in", str(private_key_path), "-pubout", "-outform", "DER", "-out", str(der_path)], capture_output=True)
+        if res.returncode != 0:
+            raise AuthorityError("TRUSTED_SIGNER_UNAVAILABLE", f"Private key at '{private_key_path}' is invalid RSA key.")
+        key_fingerprint = f"sha256:{hashlib.sha256(der_path.read_bytes()).hexdigest()}"
+
     ledger_file = Path(ledger_path)
     result_file = Path(result_path)
 
@@ -82,6 +90,7 @@ def verify_execution_evidence_attestation(
     seq_set: set[int] = set()
     expected_seq = 1
     has_execution_receipt = False
+    authenticated_producer: str | None = None
 
     for line_idx, line in enumerate(lines, 1):
         if not line.strip():
@@ -91,12 +100,41 @@ def verify_execution_evidence_attestation(
         except Exception as e:
             raise AuthorityError("EXECUTION_LEDGER_CORRUPT", f"Line {line_idx} is not valid JSON: {e}") from e
 
-        if raw_item.get("event_kind") == "EXECUTION_RECEIPT" and "receipt" in raw_item:
+        # Section 11: Recognise process execution ONLY through custody wrapper
+        if raw_item.get("schema_version") == "miskatonic.work-order-ledger-event.v1" and raw_item.get("event_kind") == "EXECUTION_RECEIPT" and "receipt" in raw_item:
             has_execution_receipt = True
             seq = raw_item.get("ledger_sequence") or line_idx
             rec = raw_item["receipt"]
             if not isinstance(rec, dict):
                 raise AuthorityError("EXECUTION_RECEIPT_CORRUPT", f"Line {line_idx} receipt is not a dict")
+
+            # Section 13: Extract authenticated producer identity from receipt
+            rec_producer = rec.get("executor_principal")
+            if not rec_producer:
+                raise AuthorityError("PRODUCER_IDENTITY_MISSING", f"Line {line_idx} receipt missing executor_principal")
+            if executor_principal and executor_principal.strip() and executor_principal.lower() != rec_producer.lower():
+                raise AuthorityError("EXECUTOR_PRINCIPAL_MISMATCH", f"Asserted executor '{executor_principal}' != authenticated '{rec_producer}'")
+            authenticated_producer = rec_producer
+
+            # Section 12: Verify authorization decision binding
+            auth_dec_id = rec.get("authorization_decision_id")
+            auth_dec_digest = rec.get("authorization_decision_digest")
+            req_effect_digest = rec.get("requested_effect_digest")
+            if not auth_dec_id or not auth_dec_digest or not req_effect_digest:
+                raise AuthorityError("AUTHORIZATION_CHAIN_UNAUTHENTICATED", f"Line {line_idx} execution receipt missing authorization decision bindings")
+
+            auth_dec = rec.get("authorization_decision") or raw_item.get("authorization_decision")
+            if auth_dec:
+                from miskatonic_governance.decisions import verify_authorization_decision_digest
+                dec_dict = auth_dec.model_dump(mode="json") if hasattr(auth_dec, "model_dump") else dict(auth_dec)
+                if not verify_authorization_decision_digest(dec_dict):
+                    raise AuthorityError("AUTHORIZATION_DECISION_DIGEST_INVALID", f"Line {line_idx} decision digest verification failed")
+                if not dec_dict.get("allowed", False):
+                    raise AuthorityError("AUTHORIZATION_DECISION_DENIED", f"Line {line_idx} decision allowed is False")
+                if dec_dict.get("decision_id") != auth_dec_id:
+                    raise AuthorityError("AUTHORIZATION_DECISION_ID_MISMATCH", f"Line {line_idx} decision ID mismatch")
+                if dec_dict.get("decision_digest") != auth_dec_digest:
+                    raise AuthorityError("AUTHORIZATION_DECISION_DIGEST_MISMATCH", f"Line {line_idx} decision digest mismatch")
 
             # Verify receipt identity agreement (Section 39)
             rec_wo = rec.get("work_order_id") or rec.get("wo_id")
@@ -120,11 +158,6 @@ def verify_execution_evidence_attestation(
                     raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISMATCH", f"Line {line_idx} receipt digest mismatch")
 
             event = rec
-            event["ledger_sequence"] = seq
-        elif raw_item.get("schema_version") == "miskatonic.execution-event.v1":
-            has_execution_receipt = True
-            event = raw_item
-            seq = event.get("ledger_sequence") or event.get("sequence") or line_idx
             event["ledger_sequence"] = seq
         else:
             event = raw_item
@@ -203,7 +236,7 @@ def verify_execution_evidence_attestation(
             f"Result pytest status '{res_pytest_status}' != independently derived status '{derived_pytest_status}'"
         )
 
-    # Compute signed attestation using Review Authority cryptographic signing
+    # Compute signed attestation using Review Authority cryptographic signing (Section 13, 14)
     attestation_payload = {
         "verified": True,
         "work_order_id": work_order_id,
@@ -212,8 +245,9 @@ def verify_execution_evidence_attestation(
         "ledger_sha256": ledger_digest,
         "result_sha256": f"sha256:{hashlib.sha256(result_file.read_bytes()).hexdigest()}",
         "terminal_verdict": result_data.get("terminal_verdict"),
-        "executor_principal": executor_principal,
+        "executor_principal": authenticated_producer or executor_principal,
         "reviewer_principal": reviewer_principal,
+        "key_fingerprint": key_fingerprint,
     }
 
     signed_att = sign_attestation(attestation_payload, str(private_key_path), key_id=key_id or "review-authority-key-v1")
