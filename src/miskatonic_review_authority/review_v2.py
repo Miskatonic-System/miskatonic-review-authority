@@ -1,6 +1,6 @@
 """Independent Review Authority V2 Runner.
 
-Implements WO-RA-EVALUATOR-ATTESTATION-BINDING-01A.
+Implements WO-RA-EVALUATOR-ATTESTATION-BINDING-01A and 01A-R1.
 Runs production cloud-review or controlled-integration reviews against candidates
 bound to independently verified EvaluatorEvidenceIngress v1 evidence.
 """
@@ -27,6 +27,14 @@ from .evaluator_ingress import (
 from .review_runner import _call_openai, _trusted_producer
 from .util import AuthorityError, read_json
 
+CONTROLLED_FIXTURE_ALLOWED_KEYS = {
+    "verdict",
+    "summary",
+    "findings",
+    "confidence",
+    "release_authorized",  # inert / compatibility only
+}
+
 
 def run_review_v2(
     *,
@@ -39,7 +47,8 @@ def run_review_v2(
     prior_evidence_path: str,
     producer_bindings_path: str,
     reviewer_policy_path: str,
-    private_key_path: str,
+    private_key_path: str | Path,
+    public_key_path: str | Path,
     key_id: str,
     diff_path: str,
     output_path: str,
@@ -61,7 +70,7 @@ def run_review_v2(
 ) -> Dict[str, Any]:
     """Runs a Review Authority V2 review binding independently verified evaluator evidence.
     
-    Production order (WO-RA-EVALUATOR-ATTESTATION-BINDING-01A Section 30):
+    Production order (WO-RA-EVALUATOR-ATTESTATION-BINDING-01A / 01A-R1):
     1. verify exact clean RA source;
     2. verify accepted evaluator ingress and underlying foreign evidence;
     3. verify candidate / base / head binding;
@@ -71,13 +80,17 @@ def run_review_v2(
     7. load reviewer policy;
     8. enforce reviewer/producer independence;
     9. load bounded diff;
-    10. invoke independent cloud review (or controlled fixture);
+    10. invoke independent cloud review (or controlled integration fixture);
     11. derive release gate mechanically;
     12. construct review-attestation-v2;
-    13. validate v2 schema and cross-field invariants;
+    13. validate unsigned v2 schema and cross-field invariants;
     14. sign using existing Review Authority signer;
-    15. verify signed artifact;
-    16. atomically materialize output.
+    15. verify signed v2 schema;
+    16. verify RSA signature with provided public_key_path;
+    17. verify expected key_id;
+    18. verify evaluator-ingress digest/binding;
+    19. verify release gate;
+    20. atomically materialize output only after full post-sign verification.
     """
     ra_root = Path(review_authority_root).resolve()
     eval_root = Path(evaluator_root).resolve()
@@ -89,6 +102,13 @@ def run_review_v2(
     cust_path = Path(custody_receipt_path).resolve()
     disp_path = Path(dispatch_state_path).resolve()
     out_path = Path(output_path).resolve()
+    priv_path = Path(private_key_path).resolve()
+    pub_path = Path(public_key_path).resolve()
+
+    if not pub_path.exists() or not pub_path.is_file():
+        raise AuthorityError("PUBLIC_KEY_NOT_FOUND", str(pub_path))
+    if not priv_path.exists() or not priv_path.is_file():
+        raise AuthorityError("PRIVATE_KEY_NOT_FOUND", str(priv_path))
 
     # 1. Verify exact clean Review Authority source
     ra_sha = verify_review_authority_source(ra_root)
@@ -129,8 +149,6 @@ def run_review_v2(
     reviewer_policy = read_json(reviewer_policy_path)
     if reviewer_policy.get("schema_version") != "reviewer-policy-v1":
         raise AuthorityError("REVIEWER_POLICY_SCHEMA_UNSUPPORTED")
-    if reviewer_policy.get("provider") != "openai-responses":
-        raise AuthorityError("REVIEW_PROVIDER_UNSUPPORTED")
     reviewer_principal = str(reviewer_policy.get("reviewer_principal", ""))
     if not reviewer_principal:
         raise AuthorityError("REVIEWER_PRINCIPAL_MISSING")
@@ -145,29 +163,39 @@ def run_review_v2(
 
     # 8. Cloud review or controlled integration execution
     if attestation_mode == "CONTROLLED_INTEGRATION":
+        review_provider = "controlled-integration"
+        review_model_requested = "none"
+        review_execution = {
+            "client_request_id": "controlled-integration",
+            "provider_request_id": "controlled-integration",
+            "response_id": "controlled-integration",
+            "returned_model": "none",
+        }
+
         if review_fixture is not None:
-            review = copy_fixture = dict(review_fixture)
-            provider_evidence = review_fixture.get("review_execution", {
-                "client_request_id": "controlled-integration-req",
-                "provider_request_id": "controlled-integration-provider",
-                "response_id": "controlled-integration-resp",
-                "returned_model": "none",
-            })
+            # Validate controlled fixture key set (Section P)
+            unknown_keys = set(review_fixture.keys()) - CONTROLLED_FIXTURE_ALLOWED_KEYS
+            if unknown_keys:
+                raise AuthorityError(
+                    "CONTROLLED_FIXTURE_INVALID_KEY",
+                    f"unknown keys in controlled fixture: {sorted(unknown_keys)}",
+                )
+            verdict = review_fixture.get("verdict", "REQUEST_CHANGES")
+            summary = review_fixture.get("summary", "Controlled integration fixture; no production review executed.")
+            findings = review_fixture.get("findings", [])
+            confidence = float(review_fixture.get("confidence", 1.0))
         else:
-            review = {
-                "verdict": "REQUEST_CHANGES",
-                "release_authorized": False,
-                "summary": "Controlled integration fixture; no production review executed.",
-                "findings": [],
-                "confidence": 1.0,
-            }
-            provider_evidence = {
-                "client_request_id": "controlled-integration-req",
-                "provider_request_id": "controlled-integration-provider",
-                "response_id": "controlled-integration-resp",
-                "returned_model": "none",
-            }
+            verdict = "REQUEST_CHANGES"
+            summary = "Controlled integration fixture; no production review executed."
+            findings = []
+            confidence = 1.0
+
     elif attestation_mode == "PRODUCTION_REVIEW":
+        if reviewer_policy.get("provider") != "openai-responses":
+            raise AuthorityError("REVIEW_PROVIDER_UNSUPPORTED")
+        review_provider = "openai-responses"
+        review_model_requested = model
+
         prompt = json.dumps(
             {
                 "task": "Review candidate for release authorization",
@@ -193,7 +221,11 @@ def run_review_v2(
             },
             ensure_ascii=False,
         )
-        review, provider_evidence = _call_openai(api_key=api_key, model=model, prompt=prompt)
+        review, review_execution = _call_openai(api_key=api_key, model=model, prompt=prompt)
+        verdict = review["verdict"]
+        summary = review["summary"]
+        findings = review["findings"]
+        confidence = float(review["confidence"])
     else:
         raise AuthorityError("ATTESTATION_MODE_INVALID", f"unsupported mode '{attestation_mode}'")
 
@@ -210,13 +242,13 @@ def run_review_v2(
         candidate_digest=digest,
         producer_binding=producer,
         reviewer_principal=reviewer_principal,
-        review_provider=reviewer_policy.get("provider", "openai-responses"),
-        review_model_requested=model,
-        review_execution=provider_evidence,
-        verdict=review["verdict"],
-        summary=review["summary"],
-        findings=review["findings"],
-        confidence=review["confidence"],
+        review_provider=review_provider,
+        review_model_requested=review_model_requested,
+        review_execution=review_execution,
+        verdict=verdict,
+        summary=summary,
+        findings=findings,
+        confidence=confidence,
         reviewer_policy_version=reviewer_policy["policy_version"],
         evaluator_evidence=eval_evidence,
     )
@@ -228,11 +260,24 @@ def run_review_v2(
     )
 
     # 11. Sign with standard RSA signer
-    signed = sign_attestation(attestation, private_key_path, key_id=key_id)
+    signed = sign_attestation(attestation, str(priv_path), key_id=key_id)
 
-    # 12. Re-verify signed artifact
-    # For verification, we pass the public key if available or we verify attestation structure
-    # 13. Atomically materialize output
+    # 12. Post-sign verification (Sections E, F, G)
+    # Must verify signed artifact before writing to disk
+    ingress_for_verify = eval_evidence.get("envelope", eval_evidence)
+    try:
+        verify_review_attestation_v2(
+            signed,
+            str(pub_path),
+            ingress_for_verify,
+            expected_key_id=key_id,
+        )
+    except Exception as err:
+        if isinstance(err, AuthorityError):
+            raise
+        raise AuthorityError("SIGNED_ATTESTATION_POSTVERIFY_FAILED", str(err)) from err
+
+    # 13. Atomically materialize output only after full post-sign verification
     write_ingress_json_atomically(out_path, signed)
 
     return signed

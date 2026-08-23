@@ -1,9 +1,12 @@
-"""Unit tests for Review Authority V2 runner, fail-before-authority tests, and CLI.
+"""Unit tests for Review Authority V2 runner, fail-before-authority tests, post-sign verification, and CLI.
 
-Implements WO-RA-EVALUATOR-ATTESTATION-BINDING-01A specifications:
-- Sections 30-34: Order of execution and independent cloud review
-- Section 51: Fail-before-external-authority tests (0 cloud calls, 0 signing calls)
-- Section 41: review-v2 and verify-attestation-v2 CLI integration
+Implements WO-RA-EVALUATOR-ATTESTATION-BINDING-01A and 01A-R1 specifications:
+- Sections 30-34, E-G: Order of execution (sign -> verify -> write)
+- Sections H-J: Post-sign verification negatives (wrong keypair, wrong key_id, tamper-before-write)
+- Sections K-R: Controlled integration provenance and fixture validation
+- Sections N, S: Production review provenance
+- Section 51, V: Fail-before-external-authority tests (0 cloud calls, 0 signing calls)
+- Section 41, D: CLI review-v2 and verify-attestation-v2 integration
 """
 
 from __future__ import annotations
@@ -15,7 +18,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 from miskatonic_review_authority.attestation import public_key_fingerprint
 from miskatonic_review_authority.cli import main as cli_main
@@ -31,19 +34,27 @@ if not EXPLICIT_PY.exists():
 
 
 class TestReviewV2Runner(unittest.TestCase):
-    """Sections 30-34, 45-51: run_review_v2 unit and regression tests."""
+    """Sections 30-34, 45-51, A-W: run_review_v2 unit and regression tests."""
 
     def setUp(self):
         self.tmp_dir = tempfile.TemporaryDirectory()
         self.work_dir = Path(self.tmp_dir.name)
 
-        # Ephemeral RSA keypair
+        # Ephemeral RSA keypair A
         self.priv_key_path = self.work_dir / "private.pem"
         self.pub_key_path = self.work_dir / "public.pem"
         subprocess.run(["openssl", "genrsa", "-out", str(self.priv_key_path), "2048"], check=True, capture_output=True)
         subprocess.run(["openssl", "rsa", "-in", str(self.priv_key_path), "-pubout", "-out", str(self.pub_key_path)], check=True, capture_output=True)
         self.fingerprint = public_key_fingerprint(str(self.pub_key_path))
         self.key_id = f"test-key:{self.fingerprint}"
+
+        # Ephemeral RSA keypair B (for wrong keypair tests)
+        self.priv_key_path_b = self.work_dir / "private_b.pem"
+        self.pub_key_path_b = self.work_dir / "public_b.pem"
+        subprocess.run(["openssl", "genrsa", "-out", str(self.priv_key_path_b), "2048"], check=True, capture_output=True)
+        subprocess.run(["openssl", "rsa", "-in", str(self.priv_key_path_b), "-pubout", "-out", str(self.pub_key_path_b)], check=True, capture_output=True)
+        self.fingerprint_b = public_key_fingerprint(str(self.pub_key_path_b))
+        self.key_id_b = f"test-key-b:{self.fingerprint_b}"
 
         # Pilot artifacts
         pilot_dir = Path("/tmp/miskatonic_pilot_custody/route-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/evaluation")
@@ -117,6 +128,7 @@ class TestReviewV2Runner(unittest.TestCase):
             "producer_bindings_path": str(self.producer_path),
             "reviewer_policy_path": str(self.policy_path),
             "private_key_path": str(self.priv_key_path),
+            "public_key_path": str(self.pub_key_path),
             "key_id": self.key_id,
             "diff_path": str(self.diff_path),
             "output_path": str(self.out_path),
@@ -140,6 +152,131 @@ class TestReviewV2Runner(unittest.TestCase):
              patch("miskatonic_review_authority.review_v2.candidate_digest", return_value=(self.cand_digest, {})):
             return run_review_v2(**kwargs)
 
+    # Section T: Order test (sign -> verify -> write)
+    def test_order_sign_then_verify_then_write(self):
+        call_order = []
+
+        with patch("miskatonic_review_authority.review_v2.sign_attestation", side_effect=lambda *a, **k: call_order.append("sign") or {"signature": {}, "attestation_mode": "CONTROLLED_INTEGRATION"}) as mock_sign, \
+             patch("miskatonic_review_authority.review_v2.verify_review_attestation_v2", side_effect=lambda *a, **k: call_order.append("verify")) as mock_verify, \
+             patch("miskatonic_review_authority.review_v2.write_ingress_json_atomically", side_effect=lambda *a, **k: call_order.append("write")) as mock_write:
+            self._call_run_review_v2(attestation_mode="CONTROLLED_INTEGRATION")
+            self.assertEqual(call_order, ["sign", "verify", "write"])
+
+    # Section U: Post-sign verification failure prevents output
+    def test_verify_failure_prevents_write(self):
+        with patch("miskatonic_review_authority.review_v2.verify_review_attestation_v2", side_effect=AuthorityError("POSTVERIFY_FAIL")) as mock_verify, \
+             patch("miskatonic_review_authority.review_v2.write_ingress_json_atomically") as mock_write:
+            with self.assertRaises(AuthorityError):
+                self._call_run_review_v2(attestation_mode="CONTROLLED_INTEGRATION")
+            self.assertEqual(mock_write.call_count, 0)
+            self.assertFalse(self.out_path.exists())
+
+    # Section H: Wrong keypair negative test
+    def test_wrong_keypair_negative_fails_closed_and_does_not_materialize(self):
+        # Sign with private key A, but verify with public key B
+        with self.assertRaises(AuthorityError) as ctx:
+            self._call_run_review_v2(
+                public_key_path=str(self.pub_key_path_b),
+                attestation_mode="CONTROLLED_INTEGRATION",
+            )
+        self.assertIn("ATTESTATION_SIGNATURE_INVALID", str(ctx.exception))
+        self.assertFalse(self.out_path.exists())
+
+    # Section I: Wrong key_id negative test
+    def test_wrong_key_id_negative_fails_closed_and_does_not_materialize(self):
+        from miskatonic_review_authority.attestation import sign_attestation as real_sign
+
+        def sign_with_mismatched_key_id(*args, **kwargs):
+            return real_sign(*args, **{**kwargs, "key_id": "other-key-id"})
+
+        with patch("miskatonic_review_authority.review_v2.sign_attestation", side_effect=sign_with_mismatched_key_id):
+            with self.assertRaises(AuthorityError) as ctx:
+                self._call_run_review_v2(attestation_mode="CONTROLLED_INTEGRATION")
+            self.assertIn("ATTESTATION_SIGNING_KEY_MISMATCH", str(ctx.exception))
+            self.assertFalse(self.out_path.exists())
+
+    # Section J: Tamper-before-write negative test
+    def test_tamper_before_write_negative_fails_closed_and_does_not_materialize(self):
+        from miskatonic_review_authority.attestation import sign_attestation as real_sign
+
+        def tampered_sign(*args, **kwargs):
+            signed = real_sign(*args, **kwargs)
+            signed["evaluator_evidence"]["ingress_sha256"] = "0" * 64
+            return signed
+
+        with patch("miskatonic_review_authority.review_v2.sign_attestation", side_effect=tampered_sign):
+            with self.assertRaises(AuthorityError):
+                self._call_run_review_v2(attestation_mode="CONTROLLED_INTEGRATION")
+            self.assertFalse(self.out_path.exists())
+
+    # Section K, L, M, R: Controlled integration provider and zero cloud calls
+    def test_controlled_integration_provider_provenance_and_zero_cloud_calls(self):
+        with patch("miskatonic_review_authority.review_v2._call_openai") as mock_openai:
+            signed = self._call_run_review_v2(
+                attestation_mode="CONTROLLED_INTEGRATION",
+            )
+            self.assertEqual(mock_openai.call_count, 0)
+            self.assertEqual(signed["attestation_mode"], "CONTROLLED_INTEGRATION")
+            self.assertEqual(signed["review_provider"], "controlled-integration")
+            self.assertEqual(signed["review_model_requested"], "none")
+            self.assertEqual(signed["review_execution"], {
+                "client_request_id": "controlled-integration",
+                "provider_request_id": "controlled-integration",
+                "response_id": "controlled-integration",
+                "returned_model": "none",
+            })
+            self.assertFalse(signed["release_authorized"])
+
+    # Section P: Controlled fixture unknown keys rejected
+    def test_controlled_fixture_unknown_keys_rejected(self):
+        with self.assertRaises(AuthorityError) as ctx:
+            self._call_run_review_v2(
+                attestation_mode="CONTROLLED_INTEGRATION",
+                review_fixture={
+                    "verdict": "APPROVE",
+                    "review_provider": "evil-override",
+                },
+            )
+        self.assertIn("CONTROLLED_FIXTURE_INVALID_KEY", str(ctx.exception))
+        self.assertFalse(self.out_path.exists())
+
+    # Section Q: Controlled release still machine-derived
+    def test_controlled_release_still_machine_derived(self):
+        signed = self._call_run_review_v2(
+            attestation_mode="CONTROLLED_INTEGRATION",
+            review_fixture={
+                "verdict": "APPROVE",
+                "summary": "Attempted approval in fixture",
+                "findings": [],
+                "confidence": 1.0,
+            },
+        )
+        self.assertEqual(signed["verdict"], "APPROVE")
+        self.assertFalse(signed["release_authorized"])
+        self.assertFalse(signed["release_gate"]["attestation_mode_allows_release"])
+
+    # Section N, S: Production provider unit test
+    def test_production_provider_provenance(self):
+        with patch("miskatonic_review_authority.review_v2._call_openai") as mock_openai:
+            mock_openai.return_value = (
+                {
+                    "verdict": "APPROVE",
+                    "release_authorized": True,
+                    "summary": "Review approved code changes.",
+                    "findings": [],
+                    "confidence": 0.98,
+                },
+                {"client_request_id": "prod-req-1", "provider_request_id": "prod-provider-1", "response_id": "resp-1", "returned_model": "gpt-4o-2024-08-06"},
+            )
+            signed = self._call_run_review_v2()
+            self.assertEqual(mock_openai.call_count, 1)
+            self.assertEqual(signed["attestation_mode"], "PRODUCTION_REVIEW")
+            self.assertEqual(signed["review_provider"], "openai-responses")
+            self.assertEqual(signed["review_model_requested"], "gpt-4o")
+            self.assertEqual(signed["review_execution"]["client_request_id"], "prod-req-1")
+            self.assertEqual(signed["verdict"], "APPROVE")
+            self.assertFalse(signed["release_authorized"])  # Evaluator recommendation is reject
+
     # Section 46: Review APPROVE + Evaluator REJECT -> verdict: APPROVE, release_authorized: false
     def test_production_review_approve_with_evaluator_reject_denies_release(self):
         with patch("miskatonic_review_authority.review_v2._call_openai") as mock_openai:
@@ -159,24 +296,7 @@ class TestReviewV2Runner(unittest.TestCase):
             self.assertFalse(signed["release_gate"]["evaluator_recommendation_allows_release"])
             self.assertTrue(signed["release_gate"]["review_verdict_allows_release"])
 
-    # Section 48: Controlled Integration mode -> release_authorized: false
-    def test_controlled_integration_mode_denies_release(self):
-        signed = self._call_run_review_v2(
-            attestation_mode="CONTROLLED_INTEGRATION",
-            review_fixture={
-                "verdict": "REQUEST_CHANGES",
-                "release_authorized": False,
-                "summary": "Controlled integration fixture.",
-                "findings": [],
-                "confidence": 1.0,
-            },
-        )
-        self.assertEqual(signed["attestation_mode"], "CONTROLLED_INTEGRATION")
-        self.assertEqual(signed["verdict"], "REQUEST_CHANGES")
-        self.assertFalse(signed["release_authorized"])
-        self.assertFalse(signed["release_gate"]["attestation_mode_allows_release"])
-
-    # Section 51: Fail Before External Authority Tests
+    # Section 51, V: Fail Before External Authority Tests
     def test_fail_before_cloud_review_on_invalid_ingress(self):
         bad_ingr = copy.deepcopy(read_json(self.ingr_path))
         bad_ingr["ingress_sha256"] = "0" * 64
@@ -208,7 +328,7 @@ class TestReviewV2Runner(unittest.TestCase):
             self.assertEqual(mock_sign.call_count, 0)
             self.assertIn("PRIOR_VERIFICATION_EVIDENCE_INVALID", str(ctx.exception))
 
-    # Section 41: CLI review-v2 and verify-attestation-v2 entrypoint test
+    # Section 41, D: CLI review-v2 and verify-attestation-v2 entrypoint test
     def test_cli_review_v2_and_verify_attestation_v2(self):
         # 1. Run review-v2 in CONTROLLED_INTEGRATION mode
         argv_review = [
@@ -223,6 +343,7 @@ class TestReviewV2Runner(unittest.TestCase):
             "--producer-bindings", str(self.producer_path),
             "--reviewer-policy", str(self.policy_path),
             "--private-key", str(self.priv_key_path),
+            "--public-key", str(self.pub_key_path),
             "--key-id", self.key_id,
             "--diff", str(self.diff_path),
             "--output", str(self.out_path),

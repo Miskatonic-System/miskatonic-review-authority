@@ -123,6 +123,7 @@ def _review_v2(args: argparse.Namespace) -> int:
         producer_bindings_path=args.producer_bindings,
         reviewer_policy_path=args.reviewer_policy,
         private_key_path=args.private_key,
+        public_key_path=args.public_key,
         key_id=args.key_id,
         diff_path=args.diff,
         output_path=args.output,
@@ -274,6 +275,7 @@ def main(argv: list[str] | None = None) -> None:
     review_v2_p.add_argument("--producer-bindings", required=True)
     review_v2_p.add_argument("--reviewer-policy", required=True)
     review_v2_p.add_argument("--private-key", required=True)
+    review_v2_p.add_argument("--public-key", required=True)
     review_v2_p.add_argument("--key-id", required=True)
     review_v2_p.add_argument("--diff", required=True)
     review_v2_p.add_argument("--output", required=True)
