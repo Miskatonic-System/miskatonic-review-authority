@@ -41,5 +41,8 @@ jobs:
       - name: Enforce immutable action references
         run: PYTHONPATH=src python3 -m miskatonic_review_authority audit-actions --root .
 
+      - name: Install test dependencies
+        run: python3 -m pip install --disable-pip-version-check ".[test]"
+
       - name: Run tests
-        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+        run: PYTHONPATH=src python3 -m pytest -v
