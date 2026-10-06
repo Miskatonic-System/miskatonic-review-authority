@@ -1,0 +1,27 @@
+{
+  "authority_principal": "synthetic:authority_principal",
+  "authority_workflow_run_id": "synthetic:authority_workflow_run_id",
+  "base_sha": "2222222222222222222222222222222222222222",
+  "candidate_digest": "2222222222222222222222222222222222222222222222222222222222222222",
+  "confidence": 0,
+  "findings": [],
+  "head_sha": "2222222222222222222222222222222222222222",
+  "issued_at": "2026-02-01T00:00:00Z",
+  "pr_number": 1,
+  "producer_binding": {},
+  "release_authorized": false,
+  "repository": "Miskatonic-System/synthetic-fixture",
+  "review_execution": {},
+  "review_model_requested": "synthetic:review_model_requested",
+  "review_provider": "synthetic:review_provider",
+  "reviewer_policy_version": "synthetic:reviewer_policy_version",
+  "reviewer_principal": "synthetic:reviewer_principal",
+  "schema_version": "review-attestation-v1",
+  "signature": {
+    "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+    "key_id": "synthetic-key-not-authenticated",
+    "value_base64": "AQ=="
+  },
+  "summary": "Fictional schema-valid fixture; not authenticated and no event occurred.",
+  "verdict": "APPROVE"
+}

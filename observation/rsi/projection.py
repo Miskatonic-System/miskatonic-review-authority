@@ -8,8 +8,10 @@ import math
 import re
 from datetime import UTC, datetime
 
+from . import native_schema
+
 UNKNOWN = "UNKNOWN"
-VERSION = "miskatonic.rsi-owner-observation-export.v0.1"
+VERSION = "miskatonic.rsi-owner-observation-export.v0.2"
 SECRET_KEYS = {
     "secret",
     "password",
@@ -94,6 +96,16 @@ def project(raw, config, implementation_digest, owner_release=UNKNOWN):
     version = native.get("schema_version")
     if version not in config["schemas"]:
         raise ObservationError("OWNER_SCHEMA_MISMATCH")
+    try:
+        native_schema.check_projection_config(config)
+        schema_binding = native_schema.validate_native(
+            native,
+            config["owner_repository"],
+            version,
+            config["schemas"][version]["native_schema_ref"],
+        )
+    except native_schema.NativeSchemaError as error:
+        raise ObservationError(str(error)) from None
     if owner_release != UNKNOWN and not re.fullmatch("[0-9a-f]{40}", owner_release):
         raise ObservationError("IMMUTABLE_OWNER_RELEASE_REQUIRED")
     if config["component"] == "review":
@@ -105,7 +117,7 @@ def project(raw, config, implementation_digest, owner_release=UNKNOWN):
             or not signature.get("value_base64")
         ):
             raise ObservationError("UNSIGNED_ARTIFACT_NOT_ATTESTATION_REFERENCE")
-    mapping = config["schemas"][version]
+    mapping = config["schemas"][version]["field_mappings"]
     fields = {key: pointer(native, path) for key, path in mapping.items()}
     for key in (
         "owner_native_event_id",
@@ -169,6 +181,9 @@ def project(raw, config, implementation_digest, owner_release=UNKNOWN):
             {
                 "raw_native_digest": digest(raw),
                 "native_schema_version": version,
+                "native_schema_identity": schema_binding["native_schema_ref"],
+                "native_schema_raw_sha256": schema_binding["raw_sha256"],
+                "native_source_raw_sha256": digest(raw),
                 "owner_repository": config["owner_repository"],
                 "owner_release_identity": owner_release,
                 "native_event_id": fields["owner_native_event_id"],
@@ -191,10 +206,17 @@ def project(raw, config, implementation_digest, owner_release=UNKNOWN):
             else "OWNER_SUPPLIED_METADATA_UNAUTHENTICATED",
             "transformation_version": transformation,
             "transformation_digest": implementation_digest,
-            "projection_identity": "miskatonic.rsi-owner-projection.v0.1",
+            "projection_identity": "miskatonic.rsi-owner-projection.v0.2",
             "export_digest_domain": "JSON_SORTED_UTF8_V1",
             "source_digest": digest(raw),
             "authentication": "NOT_PERFORMED_BY_EXPORTER",
+            "native_schema_version": version,
+            "native_schema_identity": schema_binding["native_schema_ref"],
+            "native_schema_raw_sha256": schema_binding["raw_sha256"],
+            "native_source_raw_sha256": digest(raw),
+            "native_schema_conformance": "VALID_INSTANCE_OF_PINNED_OWNER_SCHEMA",
+            "format_policy": "STRICT_RFC3339_DATETIME_SUBSET",
+            "schema_validator": "JSONSCHEMA_VALIDATOR_FOR_PINNED_DIALECT",
             "timestamp_native_value": fields["occurred_at"],
             "unknown_fields": sorted(k for k, v in fields.items() if v == UNKNOWN)
             + ["trust_epoch_ref_if_known"],

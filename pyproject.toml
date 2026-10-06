@@ -7,7 +7,7 @@ requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["pytest==8.4.2"]
+test = ["pytest==8.4.2", "jsonschema>=4.20,<5"]
 
 [project.scripts]
 msk-review-authority = "miskatonic_review_authority.cli:main"
