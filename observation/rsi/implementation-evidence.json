@@ -1,0 +1,19 @@
+{
+  "canonical_base": "83ff809b185497978b74fb98a40e8d07c245d607",
+  "deployment": "NOT_ACTIVATED",
+  "evidence_sha256": {
+    "export-tests.log": "1bbab1908bb1b94868817175f16919c98d914aff1f14da0b1bc3d4a284f787ab",
+    "format.log": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de",
+    "native-tests.log": "4e96153e007da9a97f91730f3817fd9b2d2d0cc57eef09fa4b417de5eddb4a9f",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "export_suite_result": "24 PASSED",
+  "independent_review": "PENDING_SEPARATE_CONTEXT",
+  "native_action_hook": "NONE",
+  "native_checks": "SEE_NATIVE_LOGS",
+  "owner_failure_injection_cases": 10,
+  "owner_repository": "Miskatonic-System/miskatonic-review-authority",
+  "qualification": "NOT_AWARDED",
+  "status": "IMPLEMENTATION_CANDIDATE_NOT_CANONICAL",
+  "work_order": "WO-RSI-STANDING-OBSERVATION-ADOPTION-00D"
+}

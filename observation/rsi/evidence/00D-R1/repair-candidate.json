@@ -1,0 +1,28 @@
+{
+  "authentication": "NOT_PERFORMED_BY_EXPORTER",
+  "authority": "NONE",
+  "export_schema": "miskatonic.rsi-owner-observation-export.v0.2",
+  "implementation_digest": "sha256:1dbde09fbd363aa4f0850955d78aa6fcc4548f375c241a9fbd44db514e91819f",
+  "independent_review": "PENDING_SEPARATE_CONTEXT",
+  "lane_activation": "PROHIBITED_BY_THIS_REPAIR",
+  "native_action_hook": "NONE_POST_COMPLETION_ONLY",
+  "native_schema_bindings": {
+    "review-attestation-v1": {
+      "native_schema_ref": {
+        "artifact_id": "sha256:d4ae8b008b14f8b52b9376691aae6a57ac0fbd575fdb52f7d89b6f9edb90c4ce",
+        "kind": "canonical_native_owner_schema",
+        "version": "1"
+      },
+      "native_schema_version": "review-attestation-v1",
+      "owner_repository": "Miskatonic-System/miskatonic-review-authority",
+      "raw_sha256": "sha256:133f5b8c255227f8bb59b93b0e59963dfdb791849c547cf02001d0553f5191a6",
+      "source_commit": "83ff809b185497978b74fb98a40e8d07c245d607",
+      "source_path": "schemas/review-attestation-v1.schema.json"
+    }
+  },
+  "owner_release_metadata": "OWNER_SUPPLIED_METADATA_UNAUTHENTICATED",
+  "owner_repository": "Miskatonic-System/miskatonic-review-authority",
+  "standing_epoch_participation": "NOT_ESTABLISHED",
+  "status": "CANDIDATE_NOT_CANONICAL",
+  "work_order": "WO-RSI-NATIVE-EVIDENCE-BINDING-00D-R1"
+}

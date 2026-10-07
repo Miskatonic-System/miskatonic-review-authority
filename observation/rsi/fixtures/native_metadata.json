@@ -1,0 +1,14 @@
+{
+  "head_sha": "2222222222222222222222222222222222222222",
+  "issued_at": "2026-10-06T00:00:00Z",
+  "repository": "Miskatonic-System/example",
+  "reviewer_policy_version": "synthetic-native-id",
+  "reviewer_principal": "synthetic-native-id",
+  "schema_version": "review-attestation-v1",
+  "signature": {
+    "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+    "key_id": "synthetic-public-key-id",
+    "value_base64": "AQ=="
+  },
+  "verdict": "SUCCESS"
+}

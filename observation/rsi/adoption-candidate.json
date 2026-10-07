@@ -1,0 +1,14 @@
+{
+  "OBSERVATION_EXPORT_AUTHORITY": "NONE",
+  "OBSERVATION_EXPORT_SUPPORTED": true,
+  "OWNER_AUTHORITY_CHANGED": false,
+  "OWNER_GATE_ADDED": false,
+  "OWNER_SEMANTICS_CHANGED": false,
+  "independent_review": "PENDING_SEPARATE_CONTEXT",
+  "native_action_hook": "NONE_POST_COMPLETION_ONLY",
+  "non_interference_tests": "tests/test_rsi_observation_export.py",
+  "owner_repository": "Miskatonic-System/miskatonic-review-authority",
+  "standing_epoch_participation": "NOT_ESTABLISHED",
+  "status": "CANDIDATE_NOT_CANONICAL",
+  "work_order": "WO-RSI-STANDING-OBSERVATION-ADOPTION-00D"
+}

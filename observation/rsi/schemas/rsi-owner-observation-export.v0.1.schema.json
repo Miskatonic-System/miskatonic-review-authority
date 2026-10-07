@@ -1,0 +1,406 @@
+{
+  "$id": "urn:miskatonic:rsi-owner-observation-export:v0.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "const": "NONE"
+    },
+    "candidate_repository": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "candidate_sha": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "const": "UNKNOWN"
+        }
+      ]
+    },
+    "export_id": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "export_provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "authentication": {
+          "const": "NOT_PERFORMED_BY_EXPORTER"
+        },
+        "class": {
+          "const": "DETERMINISTIC_DERIVATION"
+        },
+        "export_digest_domain": {
+          "const": "JSON_SORTED_UTF8_V1"
+        },
+        "projection_identity": {
+          "const": "miskatonic.rsi-owner-projection.v0.1"
+        },
+        "release_identity_input": {
+          "oneOf": [
+            {
+              "pattern": "^[0-9a-f]{40}$",
+              "type": "string"
+            },
+            {
+              "const": "UNKNOWN"
+            }
+          ]
+        },
+        "release_identity_provenance": {
+          "enum": [
+            "UNKNOWN",
+            "OWNER_SUPPLIED_METADATA_UNAUTHENTICATED"
+          ]
+        },
+        "source_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "source_fields": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "timestamp_native_value": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "transformation_digest": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "transformation_version": {
+          "enum": [
+            "DIRECT_NATIVE_POINTERS_V0_1",
+            "DIRECT_NATIVE_POINTERS_AND_UNIX_UTC_V0_1"
+          ]
+        },
+        "unknown_fields": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "class",
+        "source_fields",
+        "transformation_version",
+        "transformation_digest",
+        "projection_identity",
+        "export_digest_domain",
+        "source_digest",
+        "authentication",
+        "timestamp_native_value",
+        "unknown_fields",
+        "release_identity_input",
+        "release_identity_provenance"
+      ],
+      "type": "object"
+    },
+    "native_artifact_refs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "native_candidate_identity": {
+            "oneOf": [
+              {
+                "pattern": "^[0-9a-f]{40}$",
+                "type": "string"
+              },
+              {
+                "const": "UNKNOWN"
+              }
+            ]
+          },
+          "native_event_id": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            ]
+          },
+          "native_schema_version": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner_release_identity": {
+            "oneOf": [
+              {
+                "pattern": "^[0-9a-f]{40}$",
+                "type": "string"
+              },
+              {
+                "const": "UNKNOWN"
+              }
+            ]
+          },
+          "owner_repository": {
+            "enum": [
+              "Miskatonic-System/miskatonic-control-plane",
+              "Miskatonic-System/miskatonic-agent-os",
+              "Miskatonic-System/miskatonic-agent-evaluator",
+              "Miskatonic-System/miskatonic-review-authority",
+              "Miskatonic-System/miskatonic-runtime-governance"
+            ]
+          },
+          "raw_native_digest": {
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "raw_native_digest",
+          "native_schema_version",
+          "owner_repository",
+          "owner_release_identity",
+          "native_event_id",
+          "native_candidate_identity"
+        ],
+        "type": "object"
+      },
+      "maxItems": 1,
+      "minItems": 1,
+      "type": "array"
+    },
+    "occurred_at": {
+      "oneOf": [
+        {
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T",
+          "type": "string"
+        },
+        {
+          "const": "UNKNOWN"
+        }
+      ]
+    },
+    "owner_component": {
+      "enum": [
+        "publication",
+        "execution",
+        "evaluation",
+        "review",
+        "authorization"
+      ]
+    },
+    "owner_component_version": {
+      "oneOf": [
+        {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        {
+          "const": "UNKNOWN"
+        }
+      ]
+    },
+    "owner_metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_os_version": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "attestation_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "authority_domain": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "disposition": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "evaluator_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "evaluator_version": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "execution_envelope_identity": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "handoff_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "policy_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "policy_version": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "review_principal": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "task_identity": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "task_manifest_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "taskpack_identity": {
+          "oneOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "work_order_identity": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "owner_native_event_id": {
+      "oneOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "maximum": 9007199254740991,
+          "minimum": 0,
+          "type": "integer"
+        }
+      ]
+    },
+    "owner_native_event_type": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "owner_repository": {
+      "enum": [
+        "Miskatonic-System/miskatonic-control-plane",
+        "Miskatonic-System/miskatonic-agent-os",
+        "Miskatonic-System/miskatonic-agent-evaluator",
+        "Miskatonic-System/miskatonic-review-authority",
+        "Miskatonic-System/miskatonic-runtime-governance"
+      ]
+    },
+    "schema_version": {
+      "const": "miskatonic.rsi-owner-observation-export.v0.1"
+    },
+    "trust_epoch_ref_if_known": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "artifact_id": {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "kind": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "version": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "artifact_id",
+            "kind",
+            "version"
+          ],
+          "type": "object"
+        },
+        {
+          "const": "UNKNOWN"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "export_id",
+    "owner_repository",
+    "owner_component",
+    "owner_component_version",
+    "owner_native_event_type",
+    "owner_native_event_id",
+    "candidate_repository",
+    "candidate_sha",
+    "occurred_at",
+    "trust_epoch_ref_if_known",
+    "native_artifact_refs",
+    "owner_metadata",
+    "export_provenance",
+    "authority"
+  ],
+  "type": "object"
+}
