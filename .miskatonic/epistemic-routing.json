@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.2",
+  "target_id": "miskatonic-review-authority",
+  "target_kind": "platform_service",
+  "name": "Miskatonic Review Authority",
+  "profile_version": "0.2-seed.1",
+  "component_id": null,
+  "repository": {
+    "full_name": "kowen9024AI/miskatonic-review-authority",
+    "ref": "maintenance/repository-surface-normalization-2026-08"
+  },
+  "description": "External review anchor, independent cloud attestation, cryptographic release-review boundary, and prior-release verification.",
+  "domains": [
+    "independent code review",
+    "cryptographic attestation",
+    "release eligibility",
+    "trust anchor",
+    "provenance verification"
+  ],
+  "research_questions": [
+    "Does this result alter semantic code review techniques, signed attestation formats, multi-party release verification, or external trust anchors?"
+  ],
+  "technologies": [
+    "GitHub Actions",
+    "cryptographic signatures",
+    "cloud LLM review",
+    "attestation schemas"
+  ],
+  "canonical_terms": [
+    "signed attestation",
+    "review authority",
+    "release eligibility",
+    "trust anchor",
+    "fail-closed review"
+  ],
+  "canonical_artifact_ids": [],
+  "exclusions": [
+    "Autonomous pull-request merging tools without human maintainer release boundaries.",
+    "Deployment secret storage."
+  ],
+  "routing_weights": {
+    "semantic": 0.7,
+    "ontology": 1.1,
+    "citation_context": 0.5,
+    "novelty": 0.6,
+    "actionability": 1.0,
+    "evidence": 1.1,
+    "bridge": 0.8,
+    "duplication": 0.8,
+    "uncertainty": 1.0
+  },
+  "discovery": {
+    "source": "routing_profile",
+    "registry_ref": null,
+    "registry_sha256": null,
+    "manifest_sha256": null
+  }
+}
