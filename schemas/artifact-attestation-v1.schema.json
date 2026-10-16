@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Miskatonic Typed Artifact Attestation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "artifact-attestation-v1"},
+    "authority_principal": {"type": "string", "minLength": 1},
+    "authority_workflow_run_id": {"type": "string", "minLength": 1},
+    "artifact_type": {"type": "string", "minLength": 1},
+    "artifact_id": {"type": "string", "minLength": 1},
+    "artifact_schema_version": {"type": "string", "minLength": 1},
+    "artifact_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "scope": {"type": "object"},
+    "producer_binding": {"type": "object"},
+    "reviewer_principal": {"type": "string", "minLength": 1},
+    "review_provider": {"type": "string", "minLength": 1},
+    "review_model_requested": {"type": "string"},
+    "review_execution": {"type": "object"},
+    "verdict": {"enum": ["APPROVE", "REQUEST_CHANGES", "REJECT"]},
+    "release_authorized": {"type": "boolean"},
+    "summary": {"type": "string"},
+    "findings": {"type": "array"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "reviewer_policy_version": {"type": "string", "minLength": 1},
+    "issued_at": {"type": "string"},
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {"const": "RSASSA-PKCS1-v1_5-SHA256"},
+        "key_id": {"type": "string", "minLength": 1},
+        "value_base64": {"type": "string", "minLength": 1}
+      },
+      "required": ["algorithm", "key_id", "value_base64"]
+    }
+  },
+  "required": [
+    "schema_version",
+    "authority_principal",
+    "authority_workflow_run_id",
+    "artifact_type",
+    "artifact_id",
+    "artifact_schema_version",
+    "artifact_digest",
+    "scope",
+    "producer_binding",
+    "reviewer_principal",
+    "review_provider",
+    "review_execution",
+    "verdict",
+    "release_authorized",
+    "summary",
+    "findings",
+    "confidence",
+    "reviewer_policy_version",
+    "issued_at",
+    "signature"
+  ]
+}
