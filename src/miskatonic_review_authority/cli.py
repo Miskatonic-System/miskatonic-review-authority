@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .attestation import public_key_fingerprint, verify_attestation
 from .check_publisher import publish_check
+from .evaluator_ingress import ingest_evaluator_evidence
 from .github_app import create_installation_token
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
@@ -119,6 +120,28 @@ def _audit_actions(args: argparse.Namespace) -> int:
     return 0
 
 
+def _ingest_evaluator_evidence(args: argparse.Namespace) -> int:
+    result = ingest_evaluator_evidence(
+        review_authority_root=Path(args.review_authority_root or "."),
+        evaluator_root=Path(args.evaluator_root),
+        control_plane_root=Path(args.control_plane_root),
+        evaluator_python=Path(args.evaluator_python),
+        evaluation_request_path=Path(args.evaluation_request),
+        evaluation_result_path=Path(args.evaluation_result),
+        custody_receipt_path=Path(args.custody_receipt),
+        dispatch_state_path=Path(args.dispatch_state),
+        output_path=Path(args.output),
+    )
+    print(json.dumps({
+        "status": result["status"],
+        "ingress_id": result["ingress_id"],
+        "ingress_sha256": result["ingress_sha256"],
+        "recommendation": result["recommendation"],
+        "authority_effect": result["authority_effect"],
+    }, sort_keys=True))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Miskatonic external review authority")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -186,6 +209,18 @@ def main(argv: list[str] | None = None) -> None:
     audit = subparsers.add_parser("audit-actions")
     audit.add_argument("--root", default=".")
     audit.set_defaults(func=_audit_actions)
+
+    ingest = subparsers.add_parser("ingest-evaluator-evidence")
+    ingest.add_argument("--review-authority-root", default=".")
+    ingest.add_argument("--evaluator-root", required=True)
+    ingest.add_argument("--evaluator-python", required=True)
+    ingest.add_argument("--control-plane-root", required=True)
+    ingest.add_argument("--evaluation-request", required=True)
+    ingest.add_argument("--evaluation-result", required=True)
+    ingest.add_argument("--custody-receipt", required=True)
+    ingest.add_argument("--dispatch-state", required=True)
+    ingest.add_argument("--output", required=True)
+    ingest.set_defaults(func=_ingest_evaluator_evidence)
 
     args = parser.parse_args(argv)
     try:

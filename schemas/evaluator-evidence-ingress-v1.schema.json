@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://miskatonic.system/schemas/evaluator-evidence-ingress-v1.schema.json",
+  "title": "EvaluatorEvidenceIngress",
+  "description": "Review Authority ingress envelope for independently verified external evaluator judgment and Control Plane result custody.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "ingress_id",
+    "review_authority_repository",
+    "review_authority_sha",
+    "evaluator_repository",
+    "evaluator_sha",
+    "control_plane_repository",
+    "control_plane_sha",
+    "evaluation_request_id",
+    "evaluation_request_sha256",
+    "evaluation_request_raw_sha256",
+    "evaluation_id",
+    "evaluation_result_sha256",
+    "evaluation_result_raw_sha256",
+    "evaluation_result_schema",
+    "custody_receipt_sha256",
+    "custody_receipt_raw_sha256",
+    "dispatch_id",
+    "dispatch_state_raw_sha256",
+    "candidate_repository",
+    "baseline_sha",
+    "candidate_sha",
+    "task_pack_id",
+    "task_pack_sha256",
+    "recommendation",
+    "evaluator_process_exit_code",
+    "request_contract_validation",
+    "result_contract_validation",
+    "request_result_binding",
+    "control_plane_custody_validation",
+    "dispatch_state_validation",
+    "evaluator_identity_validation",
+    "authority_effect",
+    "ingested_at",
+    "ingress_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "evaluator-evidence-ingress-v1"
+    },
+    "ingress_id": {
+      "type": "string",
+      "pattern": "^evalingress-[0-9a-f]{64}$"
+    },
+    "review_authority_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_authority_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "evaluator_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "control_plane_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_plane_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "evaluation_request_id": {
+      "type": "string",
+      "pattern": "^evalreq-[0-9a-f]{64}$"
+    },
+    "evaluation_request_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluation_request_raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluation_result_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluation_result_raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluation_result_schema": {
+      "type": "string",
+      "const": "miskatonic.evaluation.v2"
+    },
+    "custody_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "custody_receipt_raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "dispatch_id": {
+      "type": "string",
+      "pattern": "^evaldispatch-[0-9a-f]{64}$"
+    },
+    "dispatch_state_raw_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "candidate_repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "candidate_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "task_pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_pack_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recommendation": {
+      "type": "string",
+      "enum": ["approve_candidate", "reject"]
+    },
+    "evaluator_process_exit_code": {
+      "type": "integer"
+    },
+    "request_contract_validation": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "result_contract_validation": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "request_result_binding": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "control_plane_custody_validation": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "dispatch_state_validation": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "evaluator_identity_validation": {
+      "type": "string",
+      "const": "PASS"
+    },
+    "authority_effect": {
+      "type": "string",
+      "const": "EVIDENCE_ONLY"
+    },
+    "ingested_at": {
+      "type": "string"
+    },
+    "ingress_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
