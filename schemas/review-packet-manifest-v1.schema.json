@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "base_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "candidate_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "classification_counts": {
+      "additionalProperties": false,
+      "properties": {
+        "FULL_CONTENT_REVIEWED": {"type": "integer"},
+        "FULL_DIFF_REVIEWED": {"type": "integer"},
+        "HASH_BOUND_GENERATED_ARTIFACT": {"type": "integer"},
+        "LFS_PAYLOAD_IDENTITY_BOUND": {"type": "integer"}
+      },
+      "required": [
+        "FULL_CONTENT_REVIEWED",
+        "FULL_DIFF_REVIEWED",
+        "HASH_BOUND_GENERATED_ARTIFACT",
+        "LFS_PAYLOAD_IDENTITY_BOUND"
+      ],
+      "type": "object"
+    },
+    "completeness_proof": {
+      "additionalProperties": false,
+      "properties": {
+        "all_paths_accounted_for": {"const": true},
+        "no_unclassified_paths": {"const": true},
+        "total_changed": {"type": "integer"},
+        "total_classified": {"type": "integer"}
+      },
+      "required": [
+        "all_paths_accounted_for",
+        "no_unclassified_paths",
+        "total_changed",
+        "total_classified"
+      ],
+      "type": "object"
+    },
+    "files": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "enum": [
+              "FULL_CONTENT_REVIEWED",
+              "FULL_DIFF_REVIEWED",
+              "HASH_BOUND_GENERATED_ARTIFACT",
+              "LFS_PAYLOAD_IDENTITY_BOUND"
+            ],
+            "type": "string"
+          },
+          "git_blob_sha": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "lfs_oid": {
+            "type": ["string", "null"]
+          },
+          "path": {"type": "string"},
+          "scientific_payload_digest": {
+            "type": ["string", "null"]
+          },
+          "size_bytes": {"type": "integer"},
+          "status": {"type": "string"}
+        },
+        "required": [
+          "path",
+          "status",
+          "git_blob_sha",
+          "size_bytes",
+          "classification"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "head_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "repository": {"type": "string"},
+    "schema_version": {"const": "review-packet-manifest-v1"},
+    "total_changed_files": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "repository",
+    "base_sha",
+    "head_sha",
+    "candidate_digest",
+    "total_changed_files",
+    "classification_counts",
+    "completeness_proof",
+    "files"
+  ],
+  "title": "ReviewPacketManifestV1",
+  "type": "object"
+}

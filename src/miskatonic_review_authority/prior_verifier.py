@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import re
 from pathlib import Path
 from types import ModuleType
 
 from .canonical_digest import candidate_digest, changed_records
+from .review_packet import build_review_packet
 from .root import verify_root_record
-from .util import AuthorityError, read_json, run, sha256_file, write_json
+from .scientific_verifier import run_scientific_prior_verification
+from .util import AuthorityError, read_json, sha256_file, write_json
 
 
 def _load_module(name: str, path: Path) -> ModuleType:
@@ -20,15 +21,23 @@ def _load_module(name: str, path: Path) -> ModuleType:
     return module
 
 
-def _verify_candidate_manifest(target_path: str, policy: dict[str, object]) -> dict[str, object]:
-    manifest_relative = str(policy.get("candidate_release_manifest", "provenance/release-manifest-v0.1.json"))
+def _verify_candidate_manifest(
+    target_path: str, policy: dict[str, object]
+) -> dict[str, object]:
+    manifest_relative = str(
+        policy.get(
+            "candidate_release_manifest", "provenance/release-manifest-v0.1.json"
+        )
+    )
     manifest_path = Path(target_path, manifest_relative)
     if not manifest_path.is_file():
         raise AuthorityError("CANDIDATE_RELEASE_MANIFEST_MISSING")
     manifest = read_json(manifest_path)
     if not isinstance(manifest, dict) or not manifest:
         raise AuthorityError("CANDIDATE_RELEASE_MANIFEST_INVALID")
-    excluded_fragments = tuple(policy.get("manifest_excluded_path_fragments", ["__pycache__", ".egg-info/"]))
+    excluded_fragments = tuple(
+        policy.get("manifest_excluded_path_fragments", ["__pycache__", ".egg-info/"])
+    )
     expected_paths: set[str] = set()
     for include_dir in policy.get("manifest_include_dirs", []):
         directory = Path(target_path, include_dir)
@@ -50,14 +59,20 @@ def _verify_candidate_manifest(target_path: str, policy: dict[str, object]) -> d
     missing_from_manifest = sorted(expected_paths - manifest_paths)
     unexpected_in_manifest = sorted(manifest_paths - expected_paths)
     if missing_from_manifest:
-        raise AuthorityError("CANDIDATE_MANIFEST_ENTRY_MISSING", ",".join(missing_from_manifest))
+        raise AuthorityError(
+            "CANDIDATE_MANIFEST_ENTRY_MISSING", ",".join(missing_from_manifest)
+        )
     if unexpected_in_manifest:
-        raise AuthorityError("CANDIDATE_MANIFEST_UNEXPECTED_ENTRY", ",".join(unexpected_in_manifest))
+        raise AuthorityError(
+            "CANDIDATE_MANIFEST_UNEXPECTED_ENTRY", ",".join(unexpected_in_manifest)
+        )
 
     verified = 0
     for relative_path, expected_hash in sorted(manifest.items()):
         if any(fragment in relative_path for fragment in excluded_fragments):
-            raise AuthorityError("CANDIDATE_MANIFEST_CONTAINS_VOLATILE_PATH", relative_path)
+            raise AuthorityError(
+                "CANDIDATE_MANIFEST_CONTAINS_VOLATILE_PATH", relative_path
+            )
         candidate = Path(target_path, relative_path)
         if not candidate.is_file() or sha256_file(candidate) != expected_hash:
             raise AuthorityError("CANDIDATE_RELEASE_FILE_HASH_MISMATCH", relative_path)
@@ -65,7 +80,9 @@ def _verify_candidate_manifest(target_path: str, policy: dict[str, object]) -> d
     required_manifest_entries = set(policy.get("required_manifest_entries", []))
     missing = sorted(required_manifest_entries - set(manifest))
     if missing:
-        raise AuthorityError("CANDIDATE_MANIFEST_REQUIRED_ENTRY_MISSING", ",".join(missing))
+        raise AuthorityError(
+            "CANDIDATE_MANIFEST_REQUIRED_ENTRY_MISSING", ",".join(missing)
+        )
     return {
         "candidate_manifest_path": manifest_relative,
         "candidate_manifest_sha256": sha256_file(manifest_path),
@@ -73,7 +90,9 @@ def _verify_candidate_manifest(target_path: str, policy: dict[str, object]) -> d
     }
 
 
-def _verify_unchanged_paths(target_path: str, base_sha: str, head_sha: str, patterns: list[str]) -> None:
+def _verify_unchanged_paths(
+    target_path: str, base_sha: str, head_sha: str, patterns: list[str]
+) -> None:
     records = changed_records(target_path, base_sha, head_sha)
     for record in records:
         for pattern in patterns:
@@ -87,19 +106,53 @@ def run_prior_verification(
     target_path: str,
     base_sha: str,
     head_sha: str,
-    prior_control_path: str,
-    root_record_path: str,
+    prior_control_path: str | None = None,
+    root_record_path: str | None = None,
     policy_path: str,
     evidence_out: str,
+    review_packet_out: str | None = None,
+    packet_manifest_out: str | None = None,
+    max_packet_characters: int = 500000,
 ) -> dict[str, object]:
-    root_evidence = verify_root_record(root_record_path, prior_control_path)
     policy = read_json(policy_path)
-    if policy.get("schema_version") != "prior-verification-policy-v1":
+    schema_version = policy.get("schema_version")
+
+    if schema_version == "scientific-target-policy-v1":
+        evidence = run_scientific_prior_verification(
+            repository=repository,
+            target_path=target_path,
+            base_sha=base_sha,
+            head_sha=head_sha,
+            policy=policy,
+            evidence_out=evidence_out,
+        )
+        if review_packet_out or packet_manifest_out:
+            build_review_packet(
+                repository=repository,
+                target_path=target_path,
+                base_sha=base_sha,
+                head_sha=head_sha,
+                policy=policy,
+                prior_evidence=evidence,
+                max_packet_characters=max_packet_characters,
+                packet_out=review_packet_out,
+                manifest_out=packet_manifest_out,
+            )
+        return evidence
+
+    if schema_version != "prior-verification-policy-v1":
         raise AuthorityError("PRIOR_POLICY_SCHEMA_UNSUPPORTED")
+
+    if not prior_control_path or not root_record_path:
+        raise AuthorityError("PRIOR_CONTROL_OR_ROOT_RECORD_MISSING")
+
+    root_evidence = verify_root_record(root_record_path, prior_control_path)
     if policy.get("repository", "").lower() != repository.lower():
         raise AuthorityError("PRIOR_POLICY_REPOSITORY_MISMATCH")
 
-    digest, digest_record = candidate_digest(repository, target_path, base_sha, head_sha)
+    digest, digest_record = candidate_digest(
+        repository, target_path, base_sha, head_sha
+    )
     records = changed_records(target_path, base_sha, head_sha)
     if not records:
         raise AuthorityError("EMPTY_CANDIDATE_PATCH")
@@ -123,10 +176,14 @@ def run_prior_verification(
         "forbidden_modify_patterns": policy.get("forbidden_modify_patterns", []),
     }
     baseline_policy = {
-        "forbidden_modify_patterns": policy.get("baseline_forbidden_modify_patterns", []),
+        "forbidden_modify_patterns": policy.get(
+            "baseline_forbidden_modify_patterns", []
+        ),
     }
     profile = {
-        "project_specific_control_files": policy.get("project_specific_control_files", []),
+        "project_specific_control_files": policy.get(
+            "project_specific_control_files", []
+        ),
         "sealed_namespaces": policy.get("sealed_namespaces", []),
     }
 
@@ -139,12 +196,23 @@ def run_prior_verification(
             baseline_policy,
             profile,
         )
-        path_results.append({"allowed": bool(allowed), "path": record.path, "reason": reason})
+        path_results.append(
+            {"allowed": bool(allowed), "path": record.path, "reason": reason}
+        )
         if not allowed:
-            raise AuthorityError("PRIOR_POLICY_PATH_REJECTED", f"{record.path}: {reason}")
+            raise AuthorityError(
+                "PRIOR_POLICY_PATH_REJECTED", f"{record.path}: {reason}"
+            )
 
-    prior_git_patch.check_modes_and_gitlinks(target_path, commit_ref=base_sha, cached=False)
-    _verify_unchanged_paths(target_path, base_sha, head_sha, list(policy.get("required_unchanged_patterns", [])))
+    prior_git_patch.check_modes_and_gitlinks(
+        target_path, commit_ref=base_sha, cached=False
+    )
+    _verify_unchanged_paths(
+        target_path,
+        base_sha,
+        head_sha,
+        list(policy.get("required_unchanged_patterns", [])),
+    )
     manifest_evidence = _verify_candidate_manifest(target_path, policy)
 
     evidence = {

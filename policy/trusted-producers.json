@@ -9,6 +9,16 @@
       "producer_model": "gpt-5.6-thinking",
       "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
       "repository": "Miskatonic-System/miskatonic-control-plane"
+    },
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/ruliology-cra-high-inversion-holdout-05y",
+      "notes": "Pilot binding for CRA 05Y PR #143.",
+      "pr_number": 143,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "Miskatonic-System/msk-ruliology"
     }
   ],
   "schema_version": "trusted-producer-bindings-v1"

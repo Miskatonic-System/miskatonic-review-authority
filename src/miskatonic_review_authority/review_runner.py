@@ -1,18 +1,16 @@
 from __future__ import annotations
 
 import json
-import os
 import urllib.error
 import urllib.request
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from .attestation import sign_attestation
 from .canonical_digest import candidate_digest
 from .util import AuthorityError, read_json, write_json
-
 
 _REVIEW_SCHEMA = {
     "type": "object",
@@ -29,7 +27,10 @@ _REVIEW_SCHEMA = {
                 "additionalProperties": False,
                 "required": ["severity", "title", "details", "path"],
                 "properties": {
-                    "severity": {"type": "string", "enum": ["P0", "P1", "P2", "P3", "INFO"]},
+                    "severity": {
+                        "type": "string",
+                        "enum": ["P0", "P1", "P2", "P3", "INFO"],
+                    },
                     "title": {"type": "string"},
                     "details": {"type": "string"},
                     "path": {"type": "string"},
@@ -46,7 +47,9 @@ def _extract_output_text(response: dict[str, Any]) -> str:
         if item.get("type") != "message":
             continue
         for content in item.get("content", []):
-            if content.get("type") == "output_text" and isinstance(content.get("text"), str):
+            if content.get("type") == "output_text" and isinstance(
+                content.get("text"), str
+            ):
                 return content["text"]
     raise AuthorityError("CLOUD_REVIEW_OUTPUT_MISSING")
 
@@ -61,11 +64,16 @@ def _validate_review(value: dict[str, Any]) -> None:
         raise AuthorityError("CLOUD_REVIEW_RELEASE_INCONSISTENT")
     if not isinstance(value["findings"], list):
         raise AuthorityError("CLOUD_REVIEW_FINDINGS_INVALID")
-    if not isinstance(value["confidence"], (int, float)) or not 0 <= value["confidence"] <= 1:
+    if (
+        not isinstance(value["confidence"], (int, float))
+        or not 0 <= value["confidence"] <= 1
+    ):
         raise AuthorityError("CLOUD_REVIEW_CONFIDENCE_INVALID")
 
 
-def _call_openai(*, api_key: str, model: str, prompt: str) -> tuple[dict[str, Any], dict[str, str]]:
+def _call_openai(
+    *, api_key: str, model: str, prompt: str
+) -> tuple[dict[str, Any], dict[str, str]]:
     if not api_key:
         raise AuthorityError("CLOUD_REVIEW_API_KEY_MISSING")
     if not model:
@@ -106,9 +114,13 @@ def _call_openai(*, api_key: str, model: str, prompt: str) -> tuple[dict[str, An
             server_request_id = response.headers.get("x-request-id", "")
     except urllib.error.HTTPError as error:
         detail = error.read().decode("utf-8", errors="replace")[-4000:]
-        raise AuthorityError("CLOUD_REVIEW_REQUEST_FAILED", f"HTTP {error.code}: {detail}") from error
+        raise AuthorityError(
+            "CLOUD_REVIEW_REQUEST_FAILED", f"HTTP {error.code}: {detail}"
+        ) from error
     if response_json.get("status") not in {None, "completed"}:
-        raise AuthorityError("CLOUD_REVIEW_NOT_COMPLETED", str(response_json.get("status")))
+        raise AuthorityError(
+            "CLOUD_REVIEW_NOT_COMPLETED", str(response_json.get("status"))
+        )
     review = json.loads(_extract_output_text(response_json))
     _validate_review(review)
     return review, {
@@ -119,7 +131,9 @@ def _call_openai(*, api_key: str, model: str, prompt: str) -> tuple[dict[str, An
     }
 
 
-def _trusted_producer(bindings_path: str, repository: str, pr_number: int, head_branch: str) -> dict[str, Any]:
+def _trusted_producer(
+    bindings_path: str, repository: str, pr_number: int, head_branch: str
+) -> dict[str, Any]:
     bindings = read_json(bindings_path)
     for binding in bindings.get("bindings", []):
         if (
@@ -144,7 +158,8 @@ def run_review(
     reviewer_policy_path: str,
     private_key_path: str,
     key_id: str,
-    diff_path: str,
+    diff_path: str | None = None,
+    review_packet_path: str | None = None,
     output_path: str,
     api_key: str,
     model: str,
@@ -152,12 +167,18 @@ def run_review(
     workflow_run_id: str,
 ) -> dict[str, Any]:
     prior = read_json(prior_evidence_path)
-    if prior.get("verdict") != "PASS" or prior.get("head_sha") != head_sha or prior.get("base_sha") != base_sha:
+    if (
+        prior.get("verdict") != "PASS"
+        or prior.get("head_sha") != head_sha
+        or prior.get("base_sha") != base_sha
+    ):
         raise AuthorityError("PRIOR_VERIFICATION_EVIDENCE_INVALID")
     digest, _ = candidate_digest(repository, repo_path, base_sha, head_sha)
     if prior.get("candidate_digest") != digest:
         raise AuthorityError("PRIOR_VERIFICATION_DIGEST_STALE")
-    producer = _trusted_producer(producer_bindings_path, repository, pr_number, head_branch)
+    producer = _trusted_producer(
+        producer_bindings_path, repository, pr_number, head_branch
+    )
     reviewer_policy = read_json(reviewer_policy_path)
     if reviewer_policy.get("schema_version") != "reviewer-policy-v1":
         raise AuthorityError("REVIEWER_POLICY_SCHEMA_UNSUPPORTED")
@@ -168,47 +189,77 @@ def run_review(
         raise AuthorityError("REVIEWER_PRINCIPAL_MISSING")
     if reviewer_principal == producer.get("producer_principal"):
         raise AuthorityError("REVIEWER_PRODUCER_PRINCIPAL_COLLISION")
-    diff_text = Path(diff_path).read_text(encoding="utf-8", errors="replace")
+
     max_chars = int(reviewer_policy.get("max_diff_characters", 500000))
-    if len(diff_text) > max_chars:
-        raise AuthorityError("REVIEW_DIFF_BUDGET_EXCEEDED")
-    prompt = json.dumps(
-        {
-            "task": "Review candidate for release authorization",
-            "repository": repository,
-            "pr_number": pr_number,
-            "base_sha": base_sha,
-            "head_sha": head_sha,
-            "candidate_digest": digest,
-            "producer": producer,
-            "prior_verification": prior,
-            "unified_diff": diff_text,
-        },
-        ensure_ascii=False,
+
+    if review_packet_path:
+        packet = read_json(review_packet_path)
+        if packet.get("head_sha") != head_sha or packet.get("base_sha") != base_sha:
+            raise AuthorityError("REVIEW_PACKET_HEAD_MISMATCH")
+        if packet.get("candidate_digest") != digest:
+            raise AuthorityError("REVIEW_PACKET_DIGEST_MISMATCH")
+        prompt = json.dumps(
+            {
+                "task": "Review candidate for release authorization",
+                "repository": repository,
+                "pr_number": pr_number,
+                "base_sha": base_sha,
+                "head_sha": head_sha,
+                "candidate_digest": digest,
+                "producer": producer,
+                "prior_verification": prior,
+                "review_packet": packet,
+            },
+            ensure_ascii=False,
+        )
+        if len(prompt) > max_chars:
+            raise AuthorityError("SCIENTIFIC_REVIEW_PACKET_BUDGET_EXCEEDED")
+    elif diff_path:
+        diff_text = Path(diff_path).read_text(encoding="utf-8", errors="replace")
+        if len(diff_text) > max_chars:
+            raise AuthorityError("REVIEW_DIFF_BUDGET_EXCEEDED")
+        prompt = json.dumps(
+            {
+                "task": "Review candidate for release authorization",
+                "repository": repository,
+                "pr_number": pr_number,
+                "base_sha": base_sha,
+                "head_sha": head_sha,
+                "candidate_digest": digest,
+                "producer": producer,
+                "prior_verification": prior,
+                "unified_diff": diff_text,
+            },
+            ensure_ascii=False,
+        )
+    else:
+        raise AuthorityError("REVIEW_DIFF_OR_PACKET_REQUIRED")
+
+    review, provider_evidence = _call_openai(
+        api_key=api_key, model=model, prompt=prompt
     )
-    review, provider_evidence = _call_openai(api_key=api_key, model=model, prompt=prompt)
-    issued_at = datetime.now(timezone.utc).isoformat()
+    issued_at = datetime.now(UTC).isoformat()
     attestation: dict[str, Any] = {
-        "schema_version": "review-attestation-v1",
         "authority_principal": authority_principal,
         "authority_workflow_run_id": workflow_run_id,
-        "repository": repository.lower(),
-        "pr_number": pr_number,
         "base_sha": base_sha,
-        "head_sha": head_sha,
         "candidate_digest": digest,
-        "producer_binding": producer,
-        "reviewer_principal": reviewer_principal,
-        "review_provider": "openai-responses",
-        "review_model_requested": model,
-        "review_execution": provider_evidence,
-        "verdict": review["verdict"],
-        "release_authorized": review["release_authorized"],
-        "summary": review["summary"],
-        "findings": review["findings"],
         "confidence": review["confidence"],
-        "reviewer_policy_version": reviewer_policy["policy_version"],
+        "findings": review["findings"],
+        "head_sha": head_sha,
         "issued_at": issued_at,
+        "pr_number": pr_number,
+        "producer_binding": producer,
+        "release_authorized": review["release_authorized"],
+        "repository": repository.lower(),
+        "review_execution": provider_evidence,
+        "review_model_requested": model,
+        "review_provider": "openai-responses",
+        "reviewer_policy_version": reviewer_policy["policy_version"],
+        "reviewer_principal": reviewer_principal,
+        "schema_version": "review-attestation-v1",
+        "summary": review["summary"],
+        "verdict": review["verdict"],
     }
     signed = sign_attestation(attestation, private_key_path, key_id=key_id)
     write_json(output_path, signed)
