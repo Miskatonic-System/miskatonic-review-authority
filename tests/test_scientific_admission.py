@@ -976,3 +976,55 @@ def test_scientific_target_prior_verification_flow(
         assert manifest["total_changed_files"] > 0
         assert manifest["completeness_proof"]["all_paths_accounted_for"] is True
         assert manifest["completeness_proof"]["no_unclassified_paths"] is True
+
+
+def test_envelope_receipt_lfs_pointer_matching(tmp_path: Path) -> None:
+    """Envelope receipts that point to LFS pointers must be verified via their payload OID."""
+    repo_path, base_commit, head_commit, policy = _build_synthetic_scientific_repo(
+        tmp_path
+    )
+    results_dir = Path(repo_path) / "experiments/cra-high-inversion-holdout-05y/results"
+    env_path = results_dir / "certification_envelope_r1_v0_1.json"
+    env = read_json(env_path)
+
+    # Write a simulated LFS pointer file for independent_member_reconstruction_r1_v0_1.json
+    dummy_oid = "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+    lfs_file = results_dir / "independent_member_reconstruction_r1_v0_1.json"
+    lfs_file.write_text(
+        f"version https://git-lfs.github.com/spec/v1\noid sha256:{dummy_oid}\nsize 1234\n"
+    )
+
+    # Set the expected receipt hash to the dummy_oid
+    env["verification_receipt_sha256"]["independent_member_reconstruction_r1_v0_1.json"] = dummy_oid
+    env["certification_envelope_id"] = _self_excluding_sha256(env, "certification_envelope_id")
+    write_json(env_path, env)
+
+    # Update inputs and policy with new env_id
+    inputs_path = results_dir / "review_authority_inputs_v0_2.json"
+    inputs = read_json(inputs_path)
+    inputs["certification_snapshot_id"] = env["certification_envelope_id"]
+    inputs["inputs_digest"] = _self_excluding_sha256(inputs, "inputs_digest")
+    write_json(inputs_path, inputs)
+
+    updated_policy = dict(policy)
+    updated_policy["pinned_evidence_digests"] = dict(policy["pinned_evidence_digests"])
+    updated_policy["pinned_evidence_digests"]["certification_snapshot_id"] = env["certification_envelope_id"]
+    updated_policy["pinned_evidence_digests"]["review_authority_input_digest"] = inputs["inputs_digest"]
+
+    # Should pass when OID matches
+    verify_scientific_evidence(repo_path, updated_policy, base_commit, head_commit)
+
+    # Should fail when OID mismatches
+    env["verification_receipt_sha256"]["independent_member_reconstruction_r1_v0_1.json"] = "wrong" + "0" * 59
+    env["certification_envelope_id"] = _self_excluding_sha256(env, "certification_envelope_id")
+    write_json(env_path, env)
+    inputs["certification_snapshot_id"] = env["certification_envelope_id"]
+    inputs["inputs_digest"] = _self_excluding_sha256(inputs, "inputs_digest")
+    write_json(inputs_path, inputs)
+    updated_policy["pinned_evidence_digests"]["certification_snapshot_id"] = env["certification_envelope_id"]
+    updated_policy["pinned_evidence_digests"]["review_authority_input_digest"] = inputs["inputs_digest"]
+
+    with pytest.raises(AuthorityError) as exc_info:
+        verify_scientific_evidence(repo_path, updated_policy, base_commit, head_commit)
+    assert exc_info.value.code == "VERIFICATION_RECEIPT_MISMATCH"
+
