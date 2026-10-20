@@ -287,13 +287,19 @@ def verify_scientific_evidence(
     # Verify receipts in envelope
     for receipt_fn, exp_h in envelope.get("verification_receipt_sha256", {}).items():
         receipt_path = base_results / receipt_fn
-        if receipt_path.is_file():
+        if not receipt_path.is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", receipt_fn)
+        content = receipt_path.read_text(encoding="utf-8", errors="replace")
+        lfs_match = LFS_POINTER_REGEX.match(content)
+        if lfs_match:
+            actual_receipt_h = lfs_match.group(1)
+        else:
             actual_receipt_h = sha256_file(receipt_path)
-            if actual_receipt_h != exp_h:
-                raise AuthorityError(
-                    "VERIFICATION_RECEIPT_MISMATCH",
-                    f"{receipt_fn}: expected {exp_h}, got {actual_receipt_h}",
-                )
+        if actual_receipt_h != exp_h:
+            raise AuthorityError(
+                "VERIFICATION_RECEIPT_MISMATCH",
+                f"{receipt_fn}: expected {exp_h}, got {actual_receipt_h}",
+            )
 
     # 6. scientific_measurement_manifest_r1_v0_1.json
     manifest_file = base_results / "scientific_measurement_manifest_r1_v0_1.json"
