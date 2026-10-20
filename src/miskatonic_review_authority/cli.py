@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .attestation import public_key_fingerprint, verify_attestation
 from .check_publisher import publish_check
+from .github_api import verify_pr_head
 from .github_app import create_installation_token
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
@@ -38,7 +39,15 @@ def _create_app_token(args: argparse.Namespace) -> int:
         handle.write(f"token={token}\n")
         handle.write(f"installation_id={result['installation_id']}\n")
         handle.write(f"expires_at={result['expires_at']}\n")
-    print(json.dumps({"installation_id": result["installation_id"], "expires_at": result["expires_at"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "expires_at": result["expires_at"],
+                "installation_id": result["installation_id"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 
@@ -52,8 +61,19 @@ def _prior_verify(args: argparse.Namespace) -> int:
         root_record_path=args.root_record,
         policy_path=args.policy,
         evidence_out=args.evidence_out,
+        review_packet_out=args.review_packet_out,
+        packet_manifest_out=args.packet_manifest_out,
+        max_packet_characters=args.max_packet_characters,
     )
-    print(json.dumps({"verdict": evidence["verdict"], "candidate_digest": evidence["candidate_digest"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "candidate_digest": evidence["candidate_digest"],
+                "verdict": evidence["verdict"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 
@@ -73,7 +93,15 @@ def _publish_check(args: argparse.Namespace) -> int:
         summary=summary,
         details_url=args.details_url,
     )
-    print(json.dumps({"check_run_id": result.get("id"), "app": result.get("app", {}).get("slug")}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "app": result.get("app", {}).get("slug"),
+                "check_run_id": result.get("id"),
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 
@@ -91,20 +119,34 @@ def _review(args: argparse.Namespace) -> int:
         private_key_path=args.private_key,
         key_id=args.key_id,
         diff_path=args.diff,
+        review_packet_path=args.review_packet,
         output_path=args.output,
         api_key=os.environ.get(args.api_key_env, ""),
         model=os.environ.get(args.model_env, ""),
         authority_principal=args.authority_principal,
         workflow_run_id=args.workflow_run_id,
     )
-    print(json.dumps({"verdict": signed["verdict"], "release_authorized": signed["release_authorized"]}, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "release_authorized": signed["release_authorized"],
+                "verdict": signed["verdict"],
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 
 def _verify_attestation(args: argparse.Namespace) -> int:
     attestation = read_json(args.attestation)
     verify_attestation(attestation, args.public_key, expected_key_id=args.key_id)
-    print(json.dumps({"signature": "valid", "verdict": attestation.get("verdict")}, sort_keys=True))
+    print(
+        json.dumps(
+            {"signature": "valid", "verdict": attestation.get("verdict")},
+            sort_keys=True,
+        )
+    )
     return 0
 
 
@@ -116,6 +158,27 @@ def _key_fingerprint(args: argparse.Namespace) -> int:
 def _audit_actions(args: argparse.Namespace) -> int:
     require_pinned_workflows(args.root)
     print("All external actions and reusable workflows are pinned to full commit SHAs.")
+    return 0
+
+
+def _verify_pr_head_cmd(args: argparse.Namespace) -> int:
+    token = os.environ.get(args.token_env, "")
+    actual_head = verify_pr_head(
+        token=token,
+        repository=args.repository,
+        pr_number=args.pr_number,
+        expected_head_sha=args.expected_head_sha,
+    )
+    print(
+        json.dumps(
+            {
+                "head_sha": actual_head,
+                "pr_number": args.pr_number,
+                "status": "verified",
+            },
+            sort_keys=True,
+        )
+    )
     return 0
 
 
@@ -135,10 +198,13 @@ def main(argv: list[str] | None = None) -> None:
     prior.add_argument("--target-path", required=True)
     prior.add_argument("--base-sha", required=True)
     prior.add_argument("--head-sha", required=True)
-    prior.add_argument("--prior-control-path", required=True)
-    prior.add_argument("--root-record", required=True)
+    prior.add_argument("--prior-control-path", default=None)
+    prior.add_argument("--root-record", default=None)
     prior.add_argument("--policy", required=True)
     prior.add_argument("--evidence-out", required=True)
+    prior.add_argument("--review-packet-out", default=None)
+    prior.add_argument("--packet-manifest-out", default=None)
+    prior.add_argument("--max-packet-characters", type=int, default=500000)
     prior.set_defaults(func=_prior_verify)
 
     check = subparsers.add_parser("publish-check")
@@ -165,7 +231,8 @@ def main(argv: list[str] | None = None) -> None:
     review.add_argument("--reviewer-policy", required=True)
     review.add_argument("--private-key", required=True)
     review.add_argument("--key-id", required=True)
-    review.add_argument("--diff", required=True)
+    review.add_argument("--diff", default=None)
+    review.add_argument("--review-packet", default=None)
     review.add_argument("--output", required=True)
     review.add_argument("--api-key-env", default="MSK_CLOUD_REVIEW_API_KEY")
     review.add_argument("--model-env", default="MSK_CLOUD_REVIEW_MODEL")
@@ -187,11 +254,21 @@ def main(argv: list[str] | None = None) -> None:
     audit.add_argument("--root", default=".")
     audit.set_defaults(func=_audit_actions)
 
+    stale_head = subparsers.add_parser("verify-pr-head")
+    stale_head.add_argument("--token-env", default="GH_APP_TOKEN")
+    stale_head.add_argument("--repository", required=True)
+    stale_head.add_argument("--pr-number", type=int, required=True)
+    stale_head.add_argument("--expected-head-sha", required=True)
+    stale_head.set_defaults(func=_verify_pr_head_cmd)
+
     args = parser.parse_args(argv)
     try:
         result = args.func(args)
     except AuthorityError as error:
-        print(json.dumps({"error": error.code, "detail": error.detail}, sort_keys=True), file=sys.stderr)
+        print(
+            json.dumps({"detail": error.detail, "error": error.code}, sort_keys=True),
+            file=sys.stderr,
+        )
         raise SystemExit(1) from error
     raise SystemExit(result)
 
