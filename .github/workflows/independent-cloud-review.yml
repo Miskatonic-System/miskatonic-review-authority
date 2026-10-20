@@ -29,6 +29,7 @@ permissions:
 
 env:
   PYTHONPATH: src
+  GIT_LFS_SKIP_SMUDGE: "1"
 
 jobs:
   review:
@@ -63,6 +64,7 @@ jobs:
         env:
           BASE_SHA: ${{ inputs.base_sha }}
           GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          GIT_LFS_SKIP_SMUDGE: "1"
           HEAD_SHA: ${{ inputs.head_sha }}
           TARGET_REPOSITORY: ${{ inputs.target_repository }}
         run: |
@@ -70,11 +72,12 @@ jobs:
           git init target
           git -C target remote add origin "https://github.com/$TARGET_REPOSITORY.git"
           git -C target -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$HEAD_SHA" "$BASE_SHA"
-          git -C target checkout --detach "$HEAD_SHA"
+          GIT_LFS_SKIP_SMUDGE=1 git -C target checkout --detach "$HEAD_SHA"
 
       - name: Checkout legacy prior-control if required by policy
         env:
           GH_APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          GIT_LFS_SKIP_SMUDGE: "1"
           TARGET_POLICY: ${{ inputs.target_policy }}
         run: |
           schema=$(python3 -c 'import json; print(json.load(open("'"$TARGET_POLICY"'")).get("schema_version", ""))')
@@ -83,7 +86,7 @@ jobs:
             git init prior-control
             git -C prior-control remote add origin https://github.com/Miskatonic-System/miskatonic-control-plane.git
             git -C prior-control -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin 98161a4a9f66420fd293f37cd88473a427585093
-            git -C prior-control checkout --detach FETCH_HEAD
+            GIT_LFS_SKIP_SMUDGE=1 git -C prior-control checkout --detach FETCH_HEAD
           fi
 
       - name: Verify PR head before review (Stale-head protection)
