@@ -29,7 +29,7 @@ on:
       check_name:
         description: Primary check run name
         required: false
-        default: miskatonic/independent-review
+        default: miskatonic/independent-local-review
 
 permissions:
   contents: read
@@ -124,13 +124,12 @@ jobs:
             --expected-base-sha "$BASE_SHA" \
             --target-repo-path target \
             --target-policy "$TARGET_POLICY" \
-            --trusted-reviewers-policy policy/trusted-reviewers-v2.json \
+            --trusted-reviewers-policy policy/trusted-reviewers-v2.1.json \
             --trusted-signers-policy policy/trusted-signers.json \
             --trusted-producers-policy policy/trusted-producers.json \
             --github-app-private-key "$RUNNER_TEMP/review-app-private.pem" \
             --output-attestation evidence/review-attestation.json \
             --publish-check \
-            --also-publish-cloud-review \
             --check-name "$CHECK_NAME" \
             --token-env GH_APP_TOKEN \
             --details-url "$DETAILS_URL"

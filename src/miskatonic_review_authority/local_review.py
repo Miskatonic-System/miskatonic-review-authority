@@ -11,8 +11,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import jsonschema
+
 from .attestation import public_key_fingerprint
-from .canonical_digest import candidate_digest
+from .canonical_digest import candidate_digest, changed_records
+from .scientific_verifier import run_scientific_prior_verification, verify_path_scope
 from .review_backends import (
     PROMPT_TEMPLATE_SHA256,
     PROMPT_VERSION,
@@ -176,10 +179,15 @@ def verify_execution_isolation(
         current_user = str(current_uid)
 
     prohibited = prohibited_users or ["kowen9024"]
-    if enforce_strict_os_user and current_user in prohibited:
+    if current_user in prohibited:
         raise AuthorityError(
             "REVIEWER_SERVICE_IDENTITY_PROHIBITED",
             f"Reviewer process running as candidate-authoring user '{current_user}'",
+        )
+    if enforce_strict_os_user and expected_service_user and current_user != expected_service_user:
+        raise AuthorityError(
+            "REVIEWER_SERVICE_IDENTITY_PROHIBITED",
+            f"Reviewer process user '{current_user}' != expected '{expected_service_user}'",
         )
 
     # Check candidate checkout directory is read-only
@@ -238,6 +246,7 @@ def run_local_independent_review(
     private_key_path: str,
     key_id: str,
     output_path: str,
+    target_policy_path: str | None = None,
     enforce_strict_isolation: bool = True,
 ) -> tuple[dict[str, Any], str]:
     """Runs isolated local review using LocalLlamaCppBackend and emits a signed receipt."""
@@ -252,6 +261,23 @@ def run_local_independent_review(
         or prior.get("base_sha") != base_sha
     ):
         raise AuthorityError("PRIOR_VERIFICATION_EVIDENCE_INVALID")
+
+    target_policy_sha = None
+    target_policy_name = "scientific-target-policy-v1"
+    if target_policy_path:
+        tpol = read_json(target_policy_path)
+        if tpol.get("repository", "").lower() != repository.lower():
+            raise AuthorityError("TARGET_POLICY_REPOSITORY_MISMATCH")
+        if tpol.get("expected_pr_number") != pr_number:
+            raise AuthorityError("TARGET_POLICY_PR_MISMATCH")
+        if tpol.get("expected_head_sha") != head_sha:
+            raise AuthorityError("TARGET_POLICY_HEAD_SHA_MISMATCH")
+        if tpol.get("expected_base_sha") != base_sha:
+            raise AuthorityError("TARGET_POLICY_BASE_SHA_MISMATCH")
+        if tpol.get("expected_head_branch") and tpol.get("expected_head_branch") != head_branch:
+            raise AuthorityError("TARGET_POLICY_BRANCH_MISMATCH")
+        target_policy_sha = sha256_bytes(canonical_json_bytes(tpol))
+        target_policy_name = Path(target_policy_path).name
 
     digest, _ = candidate_digest(repository, repo_path, base_sha, head_sha)
     if prior.get("candidate_digest") != digest:
@@ -333,8 +359,8 @@ def run_local_independent_review(
             "prior_verification_digest": prior_digest,
             "prior_verification_verdict": prior.get("verdict"),
             "scientific_evidence_verifications": prior.get("scientific_evidence_verifications", {}),
-            "target_policy_path": prior.get("target_policy_schema") or "scientific-target-policy-v1",
-            "target_policy_sha256": sha256_bytes(canonical_json_bytes(reviewer_policy)),
+            "target_policy_path": target_policy_name,
+            "target_policy_sha256": target_policy_sha or sha256_bytes(canonical_json_bytes(reviewer_policy)),
         },
         "findings": verdict_resp.get("findings", []),
         "head_branch": head_branch,
@@ -371,6 +397,14 @@ def run_local_independent_review(
         public_key_fingerprint_val=pub_fp,
     )
 
+    schema_path = Path(__file__).resolve().parent.parent.parent / "schemas/local-review-receipt-v2.schema.json"
+    if schema_path.is_file():
+        receipt_schema = read_json(str(schema_path))
+        try:
+            jsonschema.validate(instance=signed_receipt, schema=receipt_schema)
+        except jsonschema.ValidationError as e:
+            raise AuthorityError("LOCAL_REVIEW_SCHEMA_INVALID", f"Receipt failed schema validation: {e.message}") from e
+
     out_json = Path(output_path)
     out_json.parent.mkdir(parents=True, exist_ok=True)
     write_json(str(out_json), signed_receipt)
@@ -402,6 +436,28 @@ def verify_and_admit_local_review_receipt(
     receipt = read_json(str(receipt_path))
     if receipt.get("schema_version") != "local-review-receipt-v2":
         raise AuthorityError("LOCAL_REVIEW_RECEIPT_SCHEMA_UNSUPPORTED")
+
+    # Strict Schema Validation of Receipt
+    receipt_schema_path = Path(__file__).resolve().parent.parent.parent / "schemas/local-review-receipt-v2.schema.json"
+    if receipt_schema_path.is_file():
+        receipt_schema = read_json(str(receipt_schema_path))
+        try:
+            jsonschema.validate(instance=receipt, schema=receipt_schema)
+        except jsonschema.ValidationError as e:
+            raise AuthorityError("LOCAL_REVIEW_SCHEMA_INVALID", f"Receipt failed schema validation: {e.message}") from e
+
+    if "confidence" in receipt:
+        conf = receipt["confidence"]
+        if not isinstance(conf, (int, float)) or isinstance(conf, bool) or conf < 0.0 or conf > 1.0:
+            raise AuthorityError("LOCAL_REVIEW_SCHEMA_INVALID", f"Confidence value {conf} out of bounds [0.0, 1.0]")
+
+    # Strict Service User Assurance
+    service_id = receipt.get("reviewer_service_identity", {})
+    if service_id.get("os_user") != "msk-local-reviewer" or service_id.get("os_uid") != 994:
+        raise AuthorityError(
+            "UNAUTHORIZED_AUTHORING_USER_REVIEW",
+            f"Receipt issued by unauthorized user '{service_id.get('os_user')}' (uid {service_id.get('os_uid')})",
+        )
 
     # 1. Exact-head and candidate freshness
     if receipt.get("repository", "").lower() != repository.lower():
@@ -502,18 +558,48 @@ def verify_and_admit_local_review_receipt(
     if coverage.get("full_diff_bytes_reviewed") != coverage.get("full_diff_bytes_total"):
         raise AuthorityError("TRUNCATED_EVIDENCE", "Not all full diff bytes were reviewed")
 
-    for s in coverage.get("slices", []):
+    slices = coverage.get("slices", [])
+    if not slices:
+        raise AuthorityError("DIFF_COVERAGE_INCOMPLETE", "No slices in coverage manifest")
+
+    slice_bytes_sum = sum(s.get("diff_bytes", 0) for s in slices)
+    if slice_bytes_sum != coverage.get("full_diff_bytes_total"):
+        raise AuthorityError(
+            "REVIEW_COVERAGE_BYTE_COUNT_MISMATCH",
+            f"Sum of slice bytes ({slice_bytes_sum}) != full_diff_bytes_total ({coverage.get('full_diff_bytes_total')})",
+        )
+
+    prev_end = 0
+    for s in slices:
         if s.get("finish_reason") != "stop":
             raise AuthorityError("LOCAL_REVIEW_CONTEXT_TRUNCATED")
         if s.get("slice_status") not in ("PASS", "CONCERN", "FAIL"):
             raise AuthorityError("LOCAL_REVIEW_SCHEMA_INVALID")
+        if "slice_start_byte" in s and "slice_end_byte" in s:
+            if s["slice_start_byte"] != prev_end:
+                raise AuthorityError(
+                    "DIFF_COVERAGE_GAP_OR_OVERLAP",
+                    f"Slice start byte {s['slice_start_byte']} != expected {prev_end}",
+                )
+            if s["slice_end_byte"] != s["slice_start_byte"] + s.get("diff_bytes", 0):
+                raise AuthorityError(
+                    "DIFF_COVERAGE_BYTE_COUNT_MISMATCH",
+                    f"Slice end byte {s['slice_end_byte']} inconsistent with diff_bytes",
+                )
+            prev_end = s["slice_end_byte"]
 
-    # 6. Prior Verification Outcomes Validation
-    det_outcomes = receipt.get("deterministic_verification_outcomes", {})
-    if det_outcomes.get("prior_verification_verdict") != "PASS":
-        raise AuthorityError("INCORRECT_PRIOR_VERIFICATION")
+    actual_diff_bytes = run(["git", "-C", target_repo_path, "diff", f"{expected_base_sha}..{expected_head_sha}"]).stdout
+    actual_diff_sha = sha256_bytes(actual_diff_bytes)
+    if coverage.get("full_diff_aggregate_sha256") != actual_diff_sha:
+        raise AuthorityError(
+            "INVALID_DIFF_AGGREGATE_DIGEST",
+            f"Declared diff sha256 {coverage.get('full_diff_aggregate_sha256')} != actual {actual_diff_sha}",
+        )
 
-    # 7. Verdict & Release Authorization
+    # 5b. Initial Verdict & Release Authorization & Self-Reported Outcomes
+    if receipt.get("deterministic_verification_outcomes", {}).get("prior_verification_verdict") != "PASS":
+        raise AuthorityError("INCORRECT_PRIOR_VERIFICATION", "Receipt prior verification verdict is not PASS")
+
     verdict = receipt.get("verdict")
     release_authorized = receipt.get("release_authorized")
 
@@ -525,9 +611,70 @@ def verify_and_admit_local_review_receipt(
     if receipt.get("abstention", {}).get("abstained") and verdict == "APPROVE":
         raise AuthorityError("LOCAL_REVIEW_ABSTENTION_BLOCKS_APPROVAL")
 
-    has_fail_slice = any(s.get("slice_status") == "FAIL" for s in coverage.get("slices", []))
+    if verdict != "APPROVE":
+        raise AuthorityError("LOCAL_REVIEW_VERDICT_NOT_APPROVED", f"Receipt verdict is '{verdict}', not APPROVE")
+
+    # 6. Target Policy Verification & Prior Verification Reproduction
+    if not target_policy_path or not Path(target_policy_path).is_file():
+        raise AuthorityError("TARGET_POLICY_FILE_MISSING", str(target_policy_path))
+    target_policy = read_json(str(target_policy_path))
+    if target_policy.get("schema_version") != "scientific-target-policy-v1":
+        raise AuthorityError("TARGET_POLICY_SCHEMA_UNSUPPORTED")
+    if target_policy.get("repository", "").lower() != repository.lower():
+        raise AuthorityError("TARGET_POLICY_REPOSITORY_MISMATCH")
+    if target_policy.get("expected_pr_number") != expected_pr_number:
+        raise AuthorityError("TARGET_POLICY_PR_MISMATCH")
+    if target_policy.get("expected_head_sha") != expected_head_sha:
+        raise AuthorityError("TARGET_POLICY_HEAD_SHA_MISMATCH")
+    if target_policy.get("expected_base_sha") != expected_base_sha:
+        raise AuthorityError("TARGET_POLICY_BASE_SHA_MISMATCH")
+    if target_policy.get("expected_head_branch") and target_policy.get("expected_head_branch") != receipt.get("head_branch"):
+        raise AuthorityError("TARGET_POLICY_BRANCH_MISMATCH")
+
+    expected_target_policy_sha = sha256_bytes(canonical_json_bytes(target_policy))
+    actual_target_policy_sha = receipt.get("deterministic_verification_outcomes", {}).get("target_policy_sha256")
+    if actual_target_policy_sha != expected_target_policy_sha:
+        raise AuthorityError(
+            "FORGED_TARGET_POLICY_DIGEST",
+            f"Receipt target policy sha256 {actual_target_policy_sha} != expected {expected_target_policy_sha}",
+        )
+
+    # Verify path scope against candidate changes
+    records = changed_records(target_repo_path, expected_base_sha, expected_head_sha)
+    verify_path_scope(records, target_policy)
+
+    # Verify required scientific evidence files exist
+    ev_base = Path(target_repo_path) / target_policy.get("evidence_base_path", "")
+    for req_file in target_policy.get("required_evidence_files", []):
+        if not (ev_base / req_file).is_file():
+            raise AuthorityError("REQUIRED_EVIDENCE_FILE_MISSING", f"Required evidence file missing: {req_file}")
+
+    # Reproduce deterministic prior verification
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_ev = Path(tmp_dir, "reproduced-evidence.json")
+        reproduced_ev = run_scientific_prior_verification(
+            repository=repository,
+            target_path=target_repo_path,
+            base_sha=expected_base_sha,
+            head_sha=expected_head_sha,
+            policy=target_policy,
+            evidence_out=str(tmp_ev),
+        )
+    if reproduced_ev.get("verdict") != "PASS":
+        raise AuthorityError("INCORRECT_PRIOR_VERIFICATION", "Reproduced prior verification verdict != PASS")
+    reproduced_digest = sha256_bytes(canonical_json_bytes(reproduced_ev))
+    claimed_prior_digest = receipt.get("deterministic_verification_outcomes", {}).get("prior_verification_digest")
+    if claimed_prior_digest != reproduced_digest:
+        raise AuthorityError(
+            "INCORRECT_PRIOR_VERIFICATION",
+            f"Claimed prior digest {claimed_prior_digest} != reproduced {reproduced_digest}",
+        )
+
+    # 7. Slice & Synthesis Consistency
+    has_fail_slice = any(s.get("slice_status") == "FAIL" for s in slices)
+    has_abstained_slice = any(s.get("abstained") for s in slices)
     has_p0_p1 = any(f.get("severity") in ("P0", "P1") for f in receipt.get("findings", []))
-    if (has_fail_slice or has_p0_p1) and verdict == "APPROVE":
+    if (has_fail_slice or has_abstained_slice or has_p0_p1) and verdict == "APPROVE":
         raise AuthorityError("LOCAL_REVIEW_FINDINGS_CONTRADICT_APPROVAL")
 
     if verdict != "APPROVE":
