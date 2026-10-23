@@ -49,6 +49,16 @@
       "producer_model": "gpt-5.6-thinking",
       "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
       "repository": "Miskatonic-System/msk-ruliology"
+    },
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/ruliology-causalis-b2-resource-causality-00a",
+      "notes": "Target binding for CAUSALIS B2 PR #155.",
+      "pr_number": 155,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "Miskatonic-System/msk-ruliology"
     }
   ],
   "schema_version": "trusted-producer-bindings-v1"

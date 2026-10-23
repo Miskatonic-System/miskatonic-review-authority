@@ -136,6 +136,8 @@ def verify_scientific_evidence(
     profile = policy.get("verification_profile", "cra_05y")
     if profile == "causalis_b1_01a":
         return _verify_causalis_b1_evidence(target_path, policy, base_sha, head_sha)
+    if profile == "causalis_b2":
+        return _verify_causalis_b2_evidence(target_path, policy, base_sha, head_sha)
     if profile == "atlas_01a":
         return _verify_atlas_01a_evidence(target_path, policy, base_sha, head_sha)
     if profile == "cdl_00a":
@@ -818,6 +820,128 @@ def _verify_cdl_00a_evidence(
         "independent_reconstruction": "EXACT_RECONSTRUCTION_VERIFIED",
         "qualification_matrix_r1_g12": receipt.get("qualification_matrix", {}).get("R1-G12"),
     }
+    return verified_summary, payload_hashes
+
+
+def _verify_causalis_b2_evidence(
+    target_path: str,
+    policy: dict[str, Any],
+    base_sha: str,
+    head_sha: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Deterministically verifies CAUSALIS B2 Resource Causality PR #155 evidence artifacts."""
+    base_results = Path(
+        target_path,
+        policy.get(
+            "evidence_base_path", "artifacts/causalis-b2-resource-causality-00a"
+        ),
+    )
+    if not base_results.is_dir():
+        raise AuthorityError("SCIENTIFIC_EVIDENCE_DIRECTORY_MISSING", str(base_results))
+
+    required_files = policy.get(
+        "required_evidence_files",
+        [
+            "b2_scientific_definition.json",
+            "b2_resource_lineage_semantics.md",
+            "b2_commutation_theorem.md",
+            "b2_direct_dependency_relations.json",
+            "b2_causal_poset_results.json",
+            "b2_overlap_conflict_witnesses.json",
+            "b2_independent_reconstruction.json",
+            "b2_wolfram_causal_surface_assessment.json",
+            "b2_scientific_claim_authority.json",
+            "b1_scientific_preservation.json",
+        ],
+    )
+    for rf in required_files:
+        fp = base_results / rf
+        if not fp.is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", rf)
+
+    # 1. Scientific Definition & Base Alignment
+    def_file = base_results / "b2_scientific_definition.json"
+    definition = read_json(def_file)
+    if definition.get("canonical_predecessor") != base_sha:
+        raise AuthorityError(
+            "CANDIDATE_BASE_SHA_MISMATCH",
+            f"definition base {definition.get('canonical_predecessor')} != {base_sha}",
+        )
+    if (
+        definition.get("retained_b1_authorities", {})
+        .get("qualified_population", {})
+        .get("total_evaluations")
+        != 56
+    ):
+        raise AuthorityError("B1_QUALIFIED_POPULATION_MISMATCH")
+
+    nonclaims = definition.get("permanent_nonclaims", [])
+    if "EVENT ANCESTRY != CAUSAL DEPENDENCY" not in nonclaims:
+        raise AuthorityError("PERMANENT_NONCLAIMS_MISSING_EVENT_ANCESTRY_GUARD")
+    if "STATE RECONVERGENCE != CAUSAL INVARIANCE" not in nonclaims:
+        raise AuthorityError("PERMANENT_NONCLAIMS_MISSING_STATE_RECONVERGENCE_GUARD")
+
+    # 2. Scientific Claim Authority
+    claim_file = base_results / "b2_scientific_claim_authority.json"
+    claim_auth = read_json(claim_file)
+    if (
+        claim_auth.get("disposition")
+        != "CAUSALIS_B2_RESOURCE_CAUSALITY_QUALIFIED"
+        or claim_auth.get("total_fixtures_evaluated") != 56
+    ):
+        raise AuthorityError("CAUSALIS_B2_CLAIM_AUTHORITY_INVALID")
+
+    measurements = claim_auth.get("aggregate_measurements", {})
+    if (
+        measurements.get("total_events_measured") != 9392
+        or measurements.get("total_direct_edges_measured") != 10160
+        or measurements.get("total_incomparable_pairs_measured") != 2486
+        or measurements.get("total_conflict_witnesses") != 1443
+    ):
+        raise AuthorityError("CAUSALIS_B2_AGGREGATE_MEASUREMENTS_INVALID")
+
+    # 3. Independent Reconstruction
+    recon_file = base_results / "b2_independent_reconstruction.json"
+    recon = read_json(recon_file)
+    agg_recon = recon.get("aggregate_verification", {})
+    if (
+        recon.get("imports_b2_module") is not False
+        or agg_recon.get("status") != "EXACT_INDEPENDENT_RECONSTRUCTION_VERIFIED"
+        or agg_recon.get("verified_fixtures_count") != 56
+        or agg_recon.get("total_histories_verified") != 1597
+        or agg_recon.get("all_acyclic") is not True
+        or agg_recon.get("all_edges_match") is not True
+        or agg_recon.get("all_incomparables_match") is not True
+    ):
+        raise AuthorityError("CAUSALIS_B2_INDEPENDENT_RECONSTRUCTION_FAILED")
+
+    # 4. B1 Preservation
+    b1_file = base_results / "b1_scientific_preservation.json"
+    b1_pres = read_json(b1_file)
+    if (
+        b1_pres.get("total_fixtures_verified") != 56
+        or b1_pres.get("b1_records_immutable") is not True
+    ):
+        raise AuthorityError("B1_SCIENTIFIC_PRESERVATION_FAILED")
+
+    # 5. Build payload hashes
+    payload_hashes: dict[str, str] = {
+        rf: sha256_file(base_results / rf) for rf in required_files
+    }
+
+    verified_summary = {
+        "b1_preservation_verified": b1_pres.get("total_fixtures_verified"),
+        "disposition": claim_auth.get("disposition"),
+        "independent_reconstruction_status": agg_recon.get("status"),
+        "total_conflict_witnesses": measurements.get("total_conflict_witnesses"),
+        "total_direct_edges_measured": measurements.get("total_direct_edges_measured"),
+        "total_events_measured": measurements.get("total_events_measured"),
+        "total_fixtures_evaluated": claim_auth.get("total_fixtures_evaluated"),
+        "total_incomparable_pairs_measured": measurements.get(
+            "total_incomparable_pairs_measured"
+        ),
+    }
+
     return verified_summary, payload_hashes
 
 

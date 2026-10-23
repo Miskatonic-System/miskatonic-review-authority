@@ -1,0 +1,56 @@
+{
+  "allowed_modify_patterns": [
+    "^(\\.gitattributes|artifacts/causalis-b2-resource-causality-00a/.*|experiments/causalis-b2-resource-causality-00a/.*|reports/WO-RULIOLOGY-CAUSALIS-B2-.*|src/msk_ruliology/.*|tests/test_causalis_.*|wolfram/.*)$"
+  ],
+  "allowed_paths": [
+    "artifacts/causalis-b2-resource-causality-00a/**",
+    "experiments/causalis-b2-resource-causality-00a/**",
+    "reports/WO-RULIOLOGY-CAUSALIS-B2-*",
+    "src/msk_ruliology/**",
+    "tests/test_causalis_*",
+    "wolfram/**"
+  ],
+  "evidence_base_path": "artifacts/causalis-b2-resource-causality-00a",
+  "expected_base_sha": "e2a2c8c78e6103b74c2fe275ecbe55e5567a13c6",
+  "expected_head_branch": "agent/ruliology-causalis-b2-resource-causality-00a",
+  "expected_head_sha": "4e17cf07c8b89b3682a8e16b3c12fe90da68e213",
+  "expected_pr_number": 155,
+  "forbidden_modify_patterns": [
+    "(^|/)(credential|credentials|secret|secrets)(/|$)",
+    "\\.(pem|key)$",
+    "^\\.github/",
+    "^\\.gitmodules$"
+  ],
+  "forbidden_paths": [
+    ".github/**",
+    "credentials/**",
+    "secrets/**",
+    "**/*.pem",
+    "**/*.key",
+    ".gitmodules"
+  ],
+  "key_evidence_diff_files": [
+    "artifacts/causalis-b2-resource-causality-00a/b1_scientific_preservation.json",
+    "artifacts/causalis-b2-resource-causality-00a/b2_commutation_theorem.md",
+    "artifacts/causalis-b2-resource-causality-00a/b2_independent_reconstruction.json",
+    "artifacts/causalis-b2-resource-causality-00a/b2_resource_lineage_semantics.md",
+    "artifacts/causalis-b2-resource-causality-00a/b2_scientific_claim_authority.json",
+    "artifacts/causalis-b2-resource-causality-00a/b2_scientific_definition.json"
+  ],
+  "policy_version": "2.0.0",
+  "repository": "Miskatonic-System/msk-ruliology",
+  "required_evidence_files": [
+    "b2_scientific_definition.json",
+    "b2_resource_lineage_semantics.md",
+    "b2_commutation_theorem.md",
+    "b2_direct_dependency_relations.json",
+    "b2_causal_poset_results.json",
+    "b2_overlap_conflict_witnesses.json",
+    "b2_independent_reconstruction.json",
+    "b2_wolfram_causal_surface_assessment.json",
+    "b2_scientific_claim_authority.json",
+    "b1_scientific_preservation.json"
+  ],
+  "schema_version": "scientific-target-policy-v1",
+  "verification_profile": "causalis_b2"
+}
