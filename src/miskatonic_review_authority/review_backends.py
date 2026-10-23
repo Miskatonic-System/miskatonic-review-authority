@@ -328,11 +328,11 @@ class LocalLlamaCppBackend:
         full_diff_files = [
             f for f in changed_manifest if f.get("classification") == "FULL_DIFF_REVIEWED"
         ]
-        max_slice_chars = reviewer_policy.get("max_slice_characters", 24000)
+        max_slice_chars = min(int(reviewer_policy.get("max_slice_characters", 12000)), 12000)
 
         # Slice diff string by individual files to guarantee bounded context
         slices: list[dict[str, Any]] = []
-        source_diff = review_packet.get("source_diff", "")
+        source_diff = review_packet.get("source_diff") or review_packet.get("diff", "")
         # Split diff into chunks per file header
         diff_by_file: dict[str, str] = {}
         for entry in full_diff_files:
@@ -347,21 +347,42 @@ class LocalLlamaCppBackend:
             else:
                 diff_by_file[path] = ""
 
-        # Group files into slices <= max_slice_chars
+        # Break any file diffs exceeding max_slice_chars into atomic parts
+        atomic_chunks: list[tuple[list[str], str]] = []
+        for f in full_diff_files:
+            p = f["path"]
+            p_diff = diff_by_file.get(p, "")
+            if not p_diff:
+                continue
+            if len(p_diff) <= max_slice_chars:
+                atomic_chunks.append(([p], p_diff))
+            else:
+                lines = p_diff.splitlines(keepends=True)
+                cur_chunk = ""
+                cur_part = 1
+                for line in lines:
+                    if len(cur_chunk) + len(line) > max_slice_chars and cur_chunk:
+                        atomic_chunks.append(([f"{p} [part {cur_part}]"], cur_chunk))
+                        cur_chunk = line
+                        cur_part += 1
+                    else:
+                        cur_chunk += line
+                if cur_chunk:
+                    atomic_chunks.append(([f"{p} [part {cur_part}]"], cur_chunk))
+
+        # Group atomic chunks into slices <= max_slice_chars
         current_slice_paths: list[str] = []
         current_slice_diff = ""
         slice_groups: list[tuple[list[str], str]] = []
 
-        for f in full_diff_files:
-            p = f["path"]
-            p_diff = diff_by_file.get(p, "")
-            if len(current_slice_diff) + len(p_diff) > max_slice_chars and current_slice_paths:
+        for paths, chunk in atomic_chunks:
+            if len(current_slice_diff) + len(chunk) > max_slice_chars and current_slice_paths:
                 slice_groups.append((list(current_slice_paths), current_slice_diff))
-                current_slice_paths = [p]
-                current_slice_diff = p_diff
+                current_slice_paths = list(paths)
+                current_slice_diff = chunk
             else:
-                current_slice_paths.append(p)
-                current_slice_diff += p_diff
+                current_slice_paths.extend(paths)
+                current_slice_diff += chunk
 
         if current_slice_paths:
             slice_groups.append((list(current_slice_paths), current_slice_diff))
