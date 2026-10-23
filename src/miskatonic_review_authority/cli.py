@@ -18,6 +18,11 @@ from .workflow_audit import require_pinned_workflows
 
 
 def _local_review(args: argparse.Namespace) -> int:
+    if args.allow_current_user:
+        raise AuthorityError(
+            "SERVICE_IDENTITY_BYPASS_PROHIBITED",
+            "--allow-current-user is not permitted for production review",
+        )
     signed_receipt, sig_path = run_local_independent_review(
         repository=args.repository,
         pr_number=args.pr_number,
@@ -32,7 +37,8 @@ def _local_review(args: argparse.Namespace) -> int:
         private_key_path=args.private_key,
         key_id=args.key_id,
         output_path=args.output,
-        enforce_strict_isolation=not args.allow_current_user,
+        target_policy_path=args.target_policy,
+        enforce_strict_isolation=True,
     )
     print(
         json.dumps(
@@ -50,6 +56,27 @@ def _local_review(args: argparse.Namespace) -> int:
 
 
 def _admit_local_review(args: argparse.Namespace) -> int:
+    if args.publish_check:
+        token = os.environ.get(args.token_env, "")
+        if not token:
+            raise AuthorityError("GH_APP_TOKEN_MISSING", "publish_check requires GH_APP_TOKEN")
+        check_name = args.check_name or "miskatonic/independent-local-review"
+        if check_name == "miskatonic/independent-cloud-review" or "cloud" in check_name.lower():
+            raise AuthorityError(
+                "LOCAL_REVIEW_IMPERSONATING_CLOUD_REVIEW",
+                "Local review cannot publish cloud review check",
+            )
+        if check_name not in ("miskatonic/independent-local-review", "miskatonic/independent-review"):
+            raise AuthorityError(
+                "ARBITRARY_CHECK_NAME_PROHIBITED",
+                f"Check name '{check_name}' is not an authorized local review check name",
+            )
+        if args.also_publish_cloud_review:
+            raise AuthorityError(
+                "LOCAL_REVIEW_IMPERSONATING_CLOUD_REVIEW",
+                "also_publish_cloud_review is prohibited for local reviews",
+            )
+
     sig_path = args.detached_sig
     if not sig_path:
         cand_sig = Path(args.receipt).with_suffix(".sig")
@@ -73,10 +100,7 @@ def _admit_local_review(args: argparse.Namespace) -> int:
     )
 
     if args.publish_check:
-        token = os.environ.get(args.token_env, "")
-        if not token:
-            raise AuthorityError("GH_APP_TOKEN_MISSING", "publish_check requires GH_APP_TOKEN")
-        check_name = args.check_name or "miskatonic/independent-review"
+        check_name = args.check_name or "miskatonic/independent-local-review"
         receipt_data = read_json(args.receipt)
         summary = json.dumps(receipt_data, sort_keys=True, indent=2)[:65000]
         publish_check(
@@ -85,21 +109,10 @@ def _admit_local_review(args: argparse.Namespace) -> int:
             head_sha=args.expected_head_sha,
             name=check_name,
             conclusion="success",
-            title=f"Local Review V2: {admission['status']}",
+            title=f"Local Review: {admission['status']}",
             summary=summary,
             details_url=args.details_url,
         )
-        if args.also_publish_cloud_review:
-            publish_check(
-                token=token,
-                repository=args.repository,
-                head_sha=args.expected_head_sha,
-                name="miskatonic/independent-cloud-review",
-                conclusion="success",
-                title=f"Local Review V2: {admission['status']}",
-                summary=summary,
-                details_url=args.details_url,
-            )
 
     print(json.dumps(admission, sort_keys=True))
     return 0
@@ -383,6 +396,7 @@ def main(argv: list[str] | None = None) -> None:
     local_rev.add_argument("--head-sha", required=True)
     local_rev.add_argument("--prior-evidence", required=True)
     local_rev.add_argument("--review-packet", required=True)
+    local_rev.add_argument("--target-policy", required=True)
     local_rev.add_argument("--producer-bindings", default="policy/trusted-producers.json")
     local_rev.add_argument("--reviewer-policy", default="policy/trusted-reviewers-v2.json")
     local_rev.add_argument("--private-key", required=True)
@@ -407,7 +421,7 @@ def main(argv: list[str] | None = None) -> None:
     admit_rev.add_argument("--output-attestation", default=None)
     admit_rev.add_argument("--publish-check", action="store_true", default=False)
     admit_rev.add_argument("--also-publish-cloud-review", action="store_true", default=False)
-    admit_rev.add_argument("--check-name", default="miskatonic/independent-review")
+    admit_rev.add_argument("--check-name", default="miskatonic/independent-local-review")
     admit_rev.add_argument("--token-env", default="GH_APP_TOKEN")
     admit_rev.add_argument("--details-url", default=None)
     admit_rev.set_defaults(func=_admit_local_review)

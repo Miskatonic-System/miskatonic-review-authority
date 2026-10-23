@@ -11,6 +11,8 @@ import uuid
 from pathlib import Path
 from typing import Any, Protocol
 
+import jsonschema
+
 from .canonical_digest import ChangeRecord, changed_records
 from .util import AuthorityError, canonical_json_bytes, sha256_bytes, sha256_file
 
@@ -193,14 +195,23 @@ class LocalLlamaCppBackend:
             )
 
         binary_path = Path(model_policy.get("runtime_binary_path", ""))
-        if binary_path.is_file():
-            expected_bin_sha = model_policy.get("runtime_binary_sha256")
-            actual_bin_sha = sha256_file(binary_path)
-            if expected_bin_sha and actual_bin_sha != expected_bin_sha:
-                raise AuthorityError(
-                    "RUNTIME_BINARY_DIGEST_MISMATCH",
-                    f"Runtime binary sha256 {actual_bin_sha} != expected {expected_bin_sha}",
-                )
+        if not binary_path.is_file():
+            raise AuthorityError(
+                "RUNTIME_BINARY_NOT_FOUND",
+                f"Runtime binary not found at {binary_path}",
+            )
+        expected_bin_sha = model_policy.get("runtime_binary_sha256")
+        if not expected_bin_sha:
+            raise AuthorityError(
+                "RUNTIME_BINARY_DIGEST_MISSING",
+                "runtime_binary_sha256 not configured in reviewer policy",
+            )
+        actual_bin_sha = sha256_file(binary_path)
+        if actual_bin_sha != expected_bin_sha:
+            raise AuthorityError(
+                "RUNTIME_BINARY_DIGEST_MISMATCH",
+                f"Runtime binary sha256 {actual_bin_sha} != expected {expected_bin_sha}",
+            )
 
         # Check live endpoint
         try:
@@ -286,6 +297,29 @@ class LocalLlamaCppBackend:
         except Exception as e:
             raise AuthorityError("LOCAL_REVIEW_SCHEMA_INVALID", f"Content is not JSON: {e}") from e
 
+        try:
+            jsonschema.validate(instance=parsed, schema=schema)
+        except jsonschema.ValidationError as e:
+            raise AuthorityError(
+                "LOCAL_REVIEW_SCHEMA_INVALID",
+                f"Model response failed schema validation: {e.message}",
+            ) from e
+
+        if "confidence" in parsed:
+            conf = parsed["confidence"]
+            if not isinstance(conf, (int, float)) or isinstance(conf, bool) or conf < 0.0 or conf > 1.0:
+                raise AuthorityError(
+                    "LOCAL_REVIEW_SCHEMA_INVALID",
+                    f"Confidence value {conf} out of bounds [0.0, 1.0]",
+                )
+
+        if "release_authorized" in parsed and "verdict" in parsed:
+            if bool(parsed["release_authorized"]) != (parsed["verdict"] == "APPROVE"):
+                raise AuthorityError(
+                    "CLOUD_REVIEW_RELEASE_INCONSISTENT",
+                    f"release_authorized ({parsed['release_authorized']}) inconsistent with verdict ({parsed['verdict']})",
+                )
+
         usage = resp_json.get("usage", {})
         call_metrics = {
             "prompt_tokens": usage.get("prompt_tokens", 0),
@@ -331,29 +365,32 @@ class LocalLlamaCppBackend:
         max_slice_chars = min(int(reviewer_policy.get("max_slice_characters", 12000)), 12000)
 
         # Slice diff string by individual files to guarantee bounded context
-        slices: list[dict[str, Any]] = []
         source_diff = review_packet.get("source_diff") or review_packet.get("diff", "")
         # Split diff into chunks per file header
         diff_by_file: dict[str, str] = {}
         for entry in full_diff_files:
             path = entry["path"]
             marker = f"diff --git a/{path} b/{path}"
-            # find section
             idx = source_diff.find(marker)
-            if idx != -1:
-                next_idx = source_diff.find("diff --git a/", idx + len(marker))
-                chunk = source_diff[idx:] if next_idx == -1 else source_diff[idx:next_idx]
-                diff_by_file[path] = chunk
-            else:
-                diff_by_file[path] = ""
+            if idx == -1:
+                raise AuthorityError(
+                    "DIFF_COVERAGE_INCOMPLETE",
+                    f"File '{path}' classified as FULL_DIFF_REVIEWED has no diff marker",
+                )
+            next_idx = source_diff.find("diff --git/", idx + len(marker))
+            chunk = source_diff[idx:] if next_idx == -1 else source_diff[idx:next_idx]
+            if not chunk.strip():
+                raise AuthorityError(
+                    "DIFF_COVERAGE_INCOMPLETE",
+                    f"File '{path}' classified as FULL_DIFF_REVIEWED has empty diff section",
+                )
+            diff_by_file[path] = chunk
 
         # Break any file diffs exceeding max_slice_chars into atomic parts
         atomic_chunks: list[tuple[list[str], str]] = []
         for f in full_diff_files:
             p = f["path"]
             p_diff = diff_by_file.get(p, "")
-            if not p_diff:
-                continue
             if len(p_diff) <= max_slice_chars:
                 atomic_chunks.append(([p], p_diff))
             else:
@@ -391,13 +428,34 @@ class LocalLlamaCppBackend:
             # Even if 0 full diff files, create single empty slice
             slice_groups.append(([], ""))
 
+        # Verify exact diff reconstruction
+        reconstructed_diff = "".join(slice_text for _, slice_text in slice_groups)
+        if reconstructed_diff != source_diff:
+            raise AuthorityError(
+                "DIFF_RECONSTRUCTION_MISMATCH",
+                "Concatenated slice text does not equal original diff bytes",
+            )
+        reconstructed_sha = sha256_bytes(reconstructed_diff.encode("utf-8"))
+        canonical_diff_sha = sha256_bytes(source_diff.encode("utf-8"))
+        if reconstructed_sha != canonical_diff_sha:
+            raise AuthorityError(
+                "INVALID_DIFF_AGGREGATE_DIGEST",
+                f"Reconstructed diff sha256 {reconstructed_sha} != canonical {canonical_diff_sha}",
+            )
+
         # Execute review on each slice
         slice_records: list[dict[str, Any]] = []
         all_slice_findings: list[dict[str, Any]] = []
         max_tokens_seen = 0
+        current_byte_offset = 0
 
         for slice_idx, (paths, slice_diff_text) in enumerate(slice_groups, 1):
             slice_id = f"slice_{slice_idx:04d}"
+            diff_bytes = len(slice_diff_text.encode("utf-8"))
+            slice_start_byte = current_byte_offset
+            slice_end_byte = current_byte_offset + diff_bytes
+            current_byte_offset = slice_end_byte
+
             slice_prompt = json.dumps(
                 {
                     "task": "Review candidate slice code changes",
@@ -427,23 +485,17 @@ class LocalLlamaCppBackend:
                 schema=_SLICE_REVIEW_SCHEMA,
             )
 
-            # Validate slice outcome
-            if slice_resp.get("abstained"):
-                # If model abstained in any slice, recorded for synthesis
-                pass
-            if slice_resp.get("slice_status") == "FAIL":
-                pass
-
             for finding in slice_resp.get("findings", []):
                 all_slice_findings.append(finding)
 
             max_tokens_seen = max(max_tokens_seen, metrics.get("total_tokens", 0))
 
-            diff_bytes = len(slice_diff_text.encode("utf-8"))
             slice_records.append(
                 {
                     "slice_id": slice_id,
                     "paths": paths,
+                    "slice_start_byte": slice_start_byte,
+                    "slice_end_byte": slice_end_byte,
                     "diff_bytes": diff_bytes,
                     "diff_sha256": sha256_bytes(slice_diff_text.encode("utf-8")),
                     "prompt_sha256": metrics["prompt_sha256"],
@@ -499,6 +551,7 @@ class LocalLlamaCppBackend:
                 "instructions": (
                     "Synthesize the final review verdict. If prior verification passed and slice reviews identified no "
                     "critical bugs (P0/P1), produce APPROVE with release_authorized=true and abstention.abstained=false. "
+                    "IMPORTANT: confidence must be a float between 0.0 and 1.0 (e.g., 1.0 for high confidence; do NOT output 100). "
                     "If critical issues exist, produce REQUEST_CHANGES or REJECT."
                 ),
             },
@@ -536,19 +589,53 @@ class LocalLlamaCppBackend:
 
         # Fail slice check
         any_slice_fail = any(s["slice_status"] == "FAIL" for s in slice_records)
-        has_p0_p1 = any(f.get("severity") in ("P0", "P1") for f in synthesis_resp.get("findings", []))
-        if (any_slice_fail or has_p0_p1) and verdict == "APPROVE":
+        slice_p0_p1 = [f for f in all_slice_findings if f.get("severity") in ("P0", "P1")]
+        synth_p0_p1 = [f for f in synthesis_resp.get("findings", []) if f.get("severity") in ("P0", "P1")]
+        if (any_slice_fail or slice_p0_p1 or synth_p0_p1) and verdict == "APPROVE":
             raise AuthorityError(
                 "LOCAL_REVIEW_FINDINGS_CONTRADICT_APPROVAL",
                 "Model cannot approve candidate with FAIL slice status or P0/P1 findings",
             )
 
+        # High-severity finding conservation: synthesis may not omit slice P0/P1
+        synth_findings = synthesis_resp.get("findings", [])
+        for f in slice_p0_p1:
+            matched = any(
+                sf.get("path") == f.get("path") and sf.get("severity") == f.get("severity")
+                for sf in synth_findings
+            )
+            if not matched:
+                raise AuthorityError(
+                    "HIGH_SEVERITY_FINDING_SUPPRESSED",
+                    f"Synthesis suppressed slice P0/P1 finding: {f.get('title')} on path {f.get('path')}",
+                )
+
         total_diff_bytes = len(source_diff.encode("utf-8"))
+        reviewed_bytes_sum = sum(s["diff_bytes"] for s in slice_records)
+        if reviewed_bytes_sum != total_diff_bytes:
+            raise AuthorityError(
+                "REVIEW_COVERAGE_BYTE_COUNT_MISMATCH",
+                f"Sum of reviewed slice bytes ({reviewed_bytes_sum}) != total diff bytes ({total_diff_bytes})",
+            )
+
+        all_slice_base_paths = set()
+        for s in slice_records:
+            for p in s["paths"]:
+                base_p = p.split(" [part ")[0]
+                all_slice_base_paths.add(base_p)
+        expected_full_paths = {f["path"] for f in full_diff_files}
+        if not expected_full_paths.issubset(all_slice_base_paths):
+            missing = expected_full_paths - all_slice_base_paths
+            raise AuthorityError(
+                "REVIEW_COVERAGE_INCOMPLETE",
+                f"Files missing from review slices: {sorted(missing)}",
+            )
+
         review_coverage_manifest = {
             "all_changed_files_accounted_for": True,
             "classification_counts": review_packet.get("classification_counts", {}),
-            "full_diff_aggregate_sha256": sha256_bytes(source_diff.encode("utf-8")),
-            "full_diff_bytes_reviewed": total_diff_bytes,
+            "full_diff_aggregate_sha256": canonical_diff_sha,
+            "full_diff_bytes_reviewed": reviewed_bytes_sum,
             "full_diff_bytes_total": total_diff_bytes,
             "full_diff_files_reviewed": len(full_diff_files),
             "full_diff_files_total": len(full_diff_files),

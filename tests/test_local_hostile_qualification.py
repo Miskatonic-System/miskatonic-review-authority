@@ -108,6 +108,7 @@ def test_setup(tmp_path: Path):
             "model_weights_sha256": model_sha,
             "runtime_binary_path": str(bin_file),
             "runtime_binary_sha256": bin_sha,
+            "loopback_only_verified": True,
         },
         "prompt_and_schema": {
             "prompt_template_sha256": PROMPT_TEMPLATE_SHA256,

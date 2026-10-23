@@ -1,0 +1,16 @@
+{
+  "active_reviewer_policy": "policy/trusted-reviewers-v2.1.json",
+  "authority_repository": "Miskatonic-System/miskatonic-review-authority",
+  "designation": "LOCAL_REVIEW_V2_AUTHORITY_RATIFICATION",
+  "legacy_reviewer_policy": "policy/trusted-reviewers-v2.json",
+  "narrower_local_process_guarantee_documented": true,
+  "notes": "One-time trusted-starter ratification establishing Local Review Authority V2.1 with strict schema validation, target-policy reverification, diff-coverage reconstruction, and unambiguous check identity (WO-MSK-REVIEW-AUTHORITY-LOCAL-V2-ADMISSION-REPAIR-00A).",
+  "policy_version": "2.1.0",
+  "ratification_id": "ratification-local-review-v2-1-genesis",
+  "ratification_role": "one-time constitutional authority recovery",
+  "ratified_at": "2026-10-23T12:00:00Z",
+  "ratified_by": "trusted-starter:kowen9024AI",
+  "schema_version": "local-review-ratification-v2",
+  "trusted_reviewer_registry": "policy/trusted-reviewers-v2.1.json",
+  "trusted_signer_registry": "policy/trusted-signers.json"
+}
