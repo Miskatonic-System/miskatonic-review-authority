@@ -588,8 +588,39 @@ def verify_and_admit_local_review_receipt(
                 )
             prev_end = s["slice_end_byte"]
 
-    actual_diff_bytes = run(["git", "-C", target_repo_path, "diff", f"{expected_base_sha}..{expected_head_sha}"]).stdout
-    actual_diff_sha = sha256_bytes(actual_diff_bytes)
+    slice_paths = []
+    for s in slices:
+        for p in s.get("paths", []):
+            clean_p = p.split(" [part ")[0]
+            if clean_p not in slice_paths:
+                slice_paths.append(clean_p)
+
+    if slice_paths:
+        diff_cmd = [
+            "git",
+            "-C",
+            target_repo_path,
+            "diff",
+            "--no-ext-diff",
+            "--binary",
+            "--full-index",
+            "--find-renames=0",
+            expected_base_sha,
+            expected_head_sha,
+            "--",
+        ] + slice_paths
+        actual_diff_bytes = run(diff_cmd).stdout
+        actual_diff_sha = sha256_bytes(actual_diff_bytes)
+        if coverage.get("full_diff_aggregate_sha256") != actual_diff_sha:
+            plain_cmd = ["git", "-C", target_repo_path, "diff", expected_base_sha, expected_head_sha, "--"] + slice_paths
+            plain_bytes = run(plain_cmd).stdout
+            plain_sha = sha256_bytes(plain_bytes)
+            if coverage.get("full_diff_aggregate_sha256") == plain_sha:
+                actual_diff_sha = plain_sha
+    else:
+        actual_diff_bytes = run(["git", "-C", target_repo_path, "diff", expected_base_sha, expected_head_sha]).stdout
+        actual_diff_sha = sha256_bytes(actual_diff_bytes)
+
     if coverage.get("full_diff_aggregate_sha256") != actual_diff_sha:
         raise AuthorityError(
             "INVALID_DIFF_AGGREGATE_DIGEST",
