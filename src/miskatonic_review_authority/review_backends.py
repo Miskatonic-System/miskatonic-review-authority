@@ -409,6 +409,11 @@ class LocalLlamaCppBackend:
                     "candidate_digest": candidate_digest,
                     "paths_in_slice": paths,
                     "slice_diff": slice_diff_text,
+                    "instructions": (
+                        "Evaluate changes in this slice for correctness, integrity, and non-claims preservation. "
+                        "Do not abstain simply because this slice is part of a larger codebase; use uncertainty_level "
+                        "for bounded context. Set abstained=true only if diff is corrupted or completely unreviewable."
+                    ),
                 },
                 ensure_ascii=False,
             )
@@ -482,6 +487,11 @@ class LocalLlamaCppBackend:
                 "full_diff_files_count": len(full_diff_files),
                 "slice_reviews": slice_summaries_for_prompt,
                 "accumulated_findings": all_slice_findings,
+                "instructions": (
+                    "Synthesize the final review verdict. If prior verification passed and slice reviews identified no "
+                    "critical bugs (P0/P1), produce APPROVE with release_authorized=true and abstention.abstained=false. "
+                    "If critical issues exist, produce REQUEST_CHANGES or REJECT."
+                ),
             },
             ensure_ascii=False,
         )
