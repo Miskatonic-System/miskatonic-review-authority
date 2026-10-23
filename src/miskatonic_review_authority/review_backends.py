@@ -469,6 +469,12 @@ class LocalLlamaCppBackend:
                     "slice_diff": slice_diff_text,
                     "instructions": (
                         "Evaluate changes in this slice for correctness, integrity, and non-claims preservation. "
+                        "FINDINGS GUIDELINES: Findings represent defects, issues, or risks. Do NOT classify passing tests or successful verifications as P0 or P1. "
+                        "- P0: Catastrophic defect, security breach, unauthorized credential access, or corrupted custody. "
+                        "- P1: Critical defect or scientific inconsistency requiring changes before approval. "
+                        "- P2 / P3: Non-critical issue or minor defect. "
+                        "- INFO: Neutral observation or confirmation of compliance. "
+                        "If the code in this slice is correct, verified, and has no defects, findings should be empty or use INFO. "
                         "Do not abstain simply because this slice is part of a larger codebase; use uncertainty_level "
                         "for bounded context. Set abstained=true only if diff is corrupted or completely unreviewable."
                     ),
