@@ -377,7 +377,7 @@ class LocalLlamaCppBackend:
                     "DIFF_COVERAGE_INCOMPLETE",
                     f"File '{path}' classified as FULL_DIFF_REVIEWED has no diff marker",
                 )
-            next_idx = source_diff.find("diff --git/", idx + len(marker))
+            next_idx = source_diff.find("diff --git ", idx + len(marker))
             chunk = source_diff[idx:] if next_idx == -1 else source_diff[idx:next_idx]
             if not chunk.strip():
                 raise AuthorityError(
