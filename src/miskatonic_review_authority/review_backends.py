@@ -226,7 +226,7 @@ class LocalLlamaCppBackend:
         messages: list[dict[str, str]],
         schema_name: str,
         schema: dict[str, Any],
-        timeout: int = 180,
+        timeout: int = 600,
     ) -> tuple[dict[str, Any], dict[str, Any]]:
         payload = {
             "messages": messages,
@@ -472,6 +472,15 @@ class LocalLlamaCppBackend:
             }
             for s in slice_records
         ]
+        # Deduplicate accumulated findings for prompt
+        unique_findings: list[dict[str, Any]] = []
+        seen_findings: set[tuple[str, str, str]] = set()
+        for f in all_slice_findings:
+            key = (str(f.get("path")), str(f.get("title")), str(f.get("severity")))
+            if key not in seen_findings:
+                seen_findings.add(key)
+                unique_findings.append(f)
+
         synthesis_prompt = json.dumps(
             {
                 "task": "Synthesize final independent review verdict",
@@ -486,7 +495,7 @@ class LocalLlamaCppBackend:
                 "total_changed_files": len(changed_manifest),
                 "full_diff_files_count": len(full_diff_files),
                 "slice_reviews": slice_summaries_for_prompt,
-                "accumulated_findings": all_slice_findings,
+                "accumulated_findings": unique_findings[:40],
                 "instructions": (
                     "Synthesize the final review verdict. If prior verification passed and slice reviews identified no "
                     "critical bugs (P0/P1), produce APPROVE with release_authorized=true and abstention.abstained=false. "
@@ -503,6 +512,7 @@ class LocalLlamaCppBackend:
             messages=synth_messages,
             schema_name="miskatonic_final_verdict_v2",
             schema=_FINAL_VERDICT_SCHEMA,
+            timeout=600,
         )
 
         verdict = synthesis_resp.get("verdict")
