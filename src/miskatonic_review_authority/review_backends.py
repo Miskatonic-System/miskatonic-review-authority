@@ -455,6 +455,18 @@ class LocalLlamaCppBackend:
             )
 
         # Final synthesis pass
+        slice_summaries_for_prompt = [
+            {
+                "slice_id": s["slice_id"],
+                "paths": s["paths"],
+                "slice_status": s["slice_status"],
+                "uncertainty_level": s["uncertainty_level"],
+                "abstained": s["abstained"],
+                "findings_count": s["findings_count"],
+                "summary": s["summary"],
+            }
+            for s in slice_records
+        ]
         synthesis_prompt = json.dumps(
             {
                 "task": "Synthesize final independent review verdict",
@@ -468,7 +480,7 @@ class LocalLlamaCppBackend:
                 ),
                 "total_changed_files": len(changed_manifest),
                 "full_diff_files_count": len(full_diff_files),
-                "slice_reviews": slice_records,
+                "slice_reviews": slice_summaries_for_prompt,
                 "accumulated_findings": all_slice_findings,
             },
             ensure_ascii=False,
