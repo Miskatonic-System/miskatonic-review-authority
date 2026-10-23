@@ -19,6 +19,36 @@
       "producer_model": "gpt-5.6-thinking",
       "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
       "repository": "Miskatonic-System/msk-ruliology"
+    },
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/ruliology-causalis-event-instance-parity-01a",
+      "notes": "Target binding for CAUSALIS B1 PR #144.",
+      "pr_number": 144,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "Miskatonic-System/msk-ruliology"
+    },
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/ruliology-atlas-rule-disjoint-prediction-01a",
+      "notes": "Target binding for ATLAS PR #145.",
+      "pr_number": 145,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "Miskatonic-System/msk-ruliology"
+    },
+    {
+      "binding_authority": "trusted-starter:kowen9024AI",
+      "head_branch": "agent/ruliology-cdl-finite-group-foundation-00a",
+      "notes": "Target binding for CDL PR #146.",
+      "pr_number": 146,
+      "producer_class": "cloud_model",
+      "producer_model": "gpt-5.6-thinking",
+      "producer_principal": "cloud-authoring-service:openai-chatgpt-connected-github",
+      "repository": "Miskatonic-System/msk-ruliology"
     }
   ],
   "schema_version": "trusted-producer-bindings-v1"

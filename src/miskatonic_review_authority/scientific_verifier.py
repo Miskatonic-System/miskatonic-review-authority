@@ -133,6 +133,14 @@ def verify_scientific_evidence(
     base_sha: str,
     head_sha: str,
 ) -> tuple[dict[str, Any], dict[str, str]]:
+    profile = policy.get("verification_profile", "cra_05y")
+    if profile == "causalis_b1_01a":
+        return _verify_causalis_b1_evidence(target_path, policy, base_sha, head_sha)
+    if profile == "atlas_01a":
+        return _verify_atlas_01a_evidence(target_path, policy, base_sha, head_sha)
+    if profile == "cdl_00a":
+        return _verify_cdl_00a_evidence(target_path, policy, base_sha, head_sha)
+
     base_results = Path(
         target_path,
         policy.get(
@@ -418,7 +426,400 @@ def verify_scientific_evidence(
         "scientific_registry_id": expected_reg_id,
     }
 
+    # Section 4: If extended CRA 05Y artifacts are present or explicitly requested, verify all 8 items
+    x3_file = base_results / "x3_generalization_and_collision_cells_v0_1.json"
+    if policy.get("require_extended_cra_05y_checks") or x3_file.is_file():
+        sec4_results = _verify_cra_05y_section4_checks(
+            base_results=base_results,
+            target_path=target_path,
+            base_sha=base_sha,
+            head_sha=head_sha,
+            manifest=manifest,
+            registry=registry,
+            envelope=envelope,
+            inputs=inputs,
+            ledger_file=ledger_file,
+            result=result,
+        )
+        verified_summary["cra_05y_section4_verifications"] = sec4_results
+
     return verified_summary, payload_hashes
+
+
+def _verify_cra_05y_section4_checks(
+    *,
+    base_results: Path,
+    target_path: str,
+    base_sha: str,
+    head_sha: str,
+    manifest: dict[str, Any],
+    registry: dict[str, Any],
+    envelope: dict[str, Any],
+    inputs: dict[str, Any],
+    ledger_file: Path,
+    result: dict[str, Any],
+) -> dict[str, Any]:
+    """Deterministically verifies the 8 explicit scientific items for CRA 05Y (Work Order Section 4)."""
+    # 1. Exact frozen scientific population
+    sources_file = base_results / "high_inversion_holdout_sources_v0_1.json"
+    if not sources_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "high_inversion_holdout_sources_v0_1.json")
+    sources_data = read_json(sources_file)
+    if len(sources_data.get("sources", [])) != 312:
+        raise AuthorityError("FROZEN_SOURCE_COUNT_MISMATCH", f"sources length {len(sources_data.get('sources', []))} != 312")
+    if sources_data.get("source_manifest_id") != "52961ab0d8e98c1fa91773de5103a268c84067f332557e74633815ff4cd50106":
+        raise AuthorityError("SOURCE_MANIFEST_ID_MISMATCH", str(sources_data.get("source_manifest_id")))
+
+    manifest_recon_file = base_results / "independent_manifest_reconstruction_v0_1.json"
+    if not manifest_recon_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "independent_manifest_reconstruction_v0_1.json")
+    manifest_recon = read_json(manifest_recon_file)
+    if (
+        manifest_recon.get("passed") is not True
+        or manifest_recon.get("source_manifest_id") != "52961ab0d8e98c1fa91773de5103a268c84067f332557e74633815ff4cd50106"
+        or manifest_recon.get("task_manifest_id") != "a783466f56cdeb7b3dff57b8eb6b17f718ba7106428177910970c67283b06bad"
+    ):
+        raise AuthorityError("MANIFEST_RECONSTRUCTION_FAILED")
+
+    # 2. Source and evidence identities
+    def_file = base_results / "high_inversion_holdout_definition_v0_1.json"
+    if not def_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "high_inversion_holdout_definition_v0_1.json")
+    definition = read_json(def_file)
+    if definition.get("definition_id") != "36a16f6456af41357e5bf598c5dcb2f94268d0ac463e95a758f36bedf1bfe78f":
+        raise AuthorityError("SCIENTIFIC_DEFINITION_MISMATCH", "definition id mismatch")
+
+    id_check_file = base_results / "identity_check_v0_1.json"
+    if not id_check_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "identity_check_v0_1.json")
+    id_check = read_json(id_check_file)
+    if (
+        id_check.get("passed") is not True
+        or id_check.get("scientific_implementation_parity") is not True
+        or id_check.get("verification_implementation_parity") is not True
+    ):
+        raise AuthorityError("IDENTITY_CHECK_FAILED")
+
+    # Verify implementation file maps
+    for rel_p, exp_hash in registry.get("primary_scientific_implementation", {}).get("file_map", {}).items():
+        fp = Path(target_path, rel_p)
+        if not fp.is_file() or sha256_file(fp) != exp_hash:
+            raise AuthorityError("SCIENTIFIC_IMPLEMENTATION_HASH_MISMATCH", rel_p)
+
+    for rel_p, exp_hash in registry.get("verification_implementation", {}).get("file_map", {}).items():
+        fp = Path(target_path, rel_p)
+        if not fp.is_file() or sha256_file(fp) != exp_hash:
+            raise AuthorityError("VERIFICATION_IMPLEMENTATION_HASH_MISMATCH", rel_p)
+
+    # 3. Chronological custody
+    ledger_lines = [line.strip() for line in ledger_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if len(ledger_lines) != 20:
+        raise AuthorityError("EXECUTION_LEDGER_SEQUENCE_INVALID", f"ledger line count {len(ledger_lines)} != 20")
+    prev_end = ""
+    member_idx = -1
+    science_idx = -1
+    for idx, raw_line in enumerate(ledger_lines, 1):
+        row = json.loads(raw_line)
+        exp_attempt = f"attempt_{idx:04d}"
+        if row.get("attempt_id") != exp_attempt:
+            raise AuthorityError("EXECUTION_LEDGER_SEQUENCE_INVALID", f"row {idx}: {row.get('attempt_id')} != {exp_attempt}")
+        st = row.get("start_timestamp", "")
+        et = row.get("end_timestamp", "")
+        if not st or not et or st > et:
+            raise AuthorityError("EXECUTION_LEDGER_CHRONOLOGY_INVALID", f"row {idx} timestamps: {st} > {et}")
+        if prev_end and st < prev_end:
+            raise AuthorityError("EXECUTION_LEDGER_CHRONOLOGY_INVALID", f"row {idx} overlapped previous attempt: {st} < {prev_end}")
+        prev_end = et
+        cmd = row.get("command", "")
+        if "member_05y.py" in cmd:
+            member_idx = idx
+        if "science_05y.py" in cmd:
+            science_idx = idx
+
+    if definition.get("member_authority_sealed_before_languages") is not True:
+        raise AuthorityError("MEMBER_AUTHORITY_SEAL_INVALID", "member authority was not sealed before languages")
+    if member_idx < 0 or science_idx < 0 or member_idx >= science_idx:
+        raise AuthorityError("CHRONOLOGICAL_CUSTODY_ORDER_VIOLATED", f"member_05y ({member_idx}) must precede science_05y ({science_idx})")
+
+    # 4. Canonical membership reconstruction
+    mem_parity = read_json(base_results / "independent_member_parity_r1_v0_1.json")
+    if (
+        mem_parity.get("passed") is not True
+        or mem_parity.get("task_count") != 67603
+        or mem_parity.get("member_count") != 50113
+        or mem_parity.get("primary_member_authority_id") != "69e91561d64d086e98f2bf2e84d73e59463312c83cdb5f91c35749ad1ef9476e"
+        or mem_parity.get("independent_member_authority_id") != "69e91561d64d086e98f2bf2e84d73e59463312c83cdb5f91c35749ad1ef9476e"
+    ):
+        raise AuthorityError("INDEPENDENT_MEMBER_RECONSTRUCTION_FAILED")
+
+    # 5. X3 falsification witnesses
+    x3_file = base_results / "x3_generalization_and_collision_cells_v0_1.json"
+    if not x3_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "x3_generalization_and_collision_cells_v0_1.json")
+    x3_data = read_json(x3_file)
+    if (
+        x3_data.get("classification") != "X3_HIGH_INVERSION_HOLDOUT_GENERALIZATION_REFUTED"
+        or x3_data.get("complete_collision_cell_coverage") is not True
+        or x3_data.get("x3_exact_heterogeneous_group_count") != 118
+        or x3_data.get("hypothesis_updated") is not False
+    ):
+        raise AuthorityError("X3_FALSIFICATION_WITNESS_INVALID")
+
+    # 6. G2 measured sufficiency
+    suff_file = base_results / "holdout_statistic_sufficiency_v0_1.json"
+    if not suff_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "holdout_statistic_sufficiency_v0_1.json")
+    suff_data = read_json(suff_file)
+    g2 = suff_data.get("G2", {})
+    if (
+        g2.get("classification") != "HOLDOUT_STATISTIC_LANGUAGE_SUFFICIENT"
+        or g2.get("heterogeneous_groups") != 0
+        or g2.get("contextual_groups") != 66872
+        or g2.get("homogeneous_groups") != 66872
+        or g2.get("maximum_languages_per_group") != 1
+        or g2.get("partition_identity") != "b2e355ccf5c5830039726ea81fce16b147fbabbab78044b243337446e5339c8e"
+    ):
+        raise AuthorityError("G2_SUFFICIENCY_VERIFICATION_FAILED")
+    g3 = suff_data.get("G3", {})
+    if (
+        g3.get("classification") != "HOLDOUT_STATISTIC_LANGUAGE_INSUFFICIENT"
+        or g3.get("heterogeneous_groups") != 118
+    ):
+        raise AuthorityError("G3_INSUFFICIENCY_WITNESS_MISMATCH")
+
+    # 7. Residual-language conservation
+    res_carrier_file = base_results / "holdout_residual_carrier_relation_v0_1.json"
+    if not res_carrier_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "holdout_residual_carrier_relation_v0_1.json")
+    res_carrier = read_json(res_carrier_file)
+    if (
+        res_carrier.get("classification") != "CANONICAL_45_STATE_RESIDUAL_CARRIER_CONTAINS_HOLDOUT_LANGUAGES"
+        or res_carrier.get("canonical_05V_mutated") is not False
+        or res_carrier.get("canonical_carrier_states") != 45
+        or res_carrier.get("canonical_root_reachable_states") != 43
+        or res_carrier.get("holdout_language_count") != 30
+        or res_carrier.get("new_observed_languages_count") != 0
+        or res_carrier.get("union_derivative_closure_state_count") != 45
+    ):
+        raise AuthorityError("RESIDUAL_LANGUAGE_CONSERVATION_FAILED")
+
+    # 8. Preservation of negative findings
+    if definition.get("no_adaptation") is not True:
+        raise AuthorityError("NEGATIVE_FINDINGS_NOT_PRESERVED", "no_adaptation is not True")
+    if registry.get("implementation_separation", {}).get("primary_scientific_measurements_changed") is not False:
+        raise AuthorityError("NEGATIVE_FINDINGS_NOT_PRESERVED", "primary measurements were modified")
+    nonclaims = definition.get("nonclaims", [])
+    if "DIAGNOSTIC_STATISTIC_SUCCESS != POST_HOC_CANONICAL_REPLACEMENT" not in nonclaims:
+        raise AuthorityError("NEGATIVE_FINDINGS_NOT_PRESERVED", "nonclaims missing diagnostic replacement guard")
+    if "HOLDOUT_REFUTATION != FAILURE_OF_CANONICAL_05X_RESULT" not in nonclaims:
+        raise AuthorityError("NEGATIVE_FINDINGS_NOT_PRESERVED", "nonclaims missing holdout refutation guard")
+
+    return {
+        "canonical_membership_reconstruction": "QUALIFIED_EXACT",
+        "chronological_custody": "QUALIFIED_STRICT_20_ATTEMPTS",
+        "exact_frozen_scientific_population": "QUALIFIED_312_SOURCES_67603_TASKS",
+        "g2_measured_sufficiency": "HOLDOUT_STATISTIC_LANGUAGE_SUFFICIENT_66872_GROUPS",
+        "preservation_of_negative_findings": "QUALIFIED_X3_REFUTED_NO_ADAPTATION",
+        "residual_language_conservation": "CANONICAL_45_STATE_CARRIER_CONSERVED",
+        "source_and_evidence_identities": "QUALIFIED_EXACT_DIGESTS",
+        "x3_falsification_witnesses": "118_EXACT_HETEROGENEOUS_WITNESSES",
+    }
+
+
+def _verify_causalis_b1_evidence(
+    target_path: str,
+    policy: dict[str, Any],
+    base_sha: str,
+    head_sha: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Deterministically verifies CAUSALIS B1 PR #144 evidence artifacts."""
+    base_results = Path(target_path, policy.get("evidence_base_path", "artifacts/causalis-event-instance-parity-01a"))
+    if not base_results.is_dir():
+        raise AuthorityError("SCIENTIFIC_EVIDENCE_DIRECTORY_MISSING", str(base_results))
+
+    r1_dir = base_results / "r1"
+    manifest_file = r1_dir / "manifest.json"
+    if not manifest_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "r1/manifest.json")
+    manifest = read_json(manifest_file)
+    for fname, finfo in manifest.get("files", {}).items():
+        fp = r1_dir / fname
+        if not fp.is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", f"r1/{fname}")
+        if sha256_file(fp) != finfo.get("sha256"):
+            raise AuthorityError("SCIENTIFIC_EVIDENCE_DIGEST_MISMATCH", f"r1/{fname}")
+
+    receipt_file = r1_dir / "verification_receipt.json"
+    receipt = read_json(receipt_file)
+    if (
+        receipt.get("parity_disposition") != "CAUSALIS_B1_EVENT_INSTANCE_PARITY_EXACT"
+        or receipt.get("scientific_disposition") != "CAUSALIS_B1_INDEPENDENT_RAW_RECONSTRUCTION_QUALIFIED"
+        or receipt.get("hostile_controls_passed") != "30/30"
+        or receipt.get("primary_independent_parity") != "EXACT (56/56)"
+    ):
+        raise AuthorityError("CAUSALIS_PARITY_RECEIPT_INVALID")
+
+    controls_file = r1_dir / "hostile_controls.json"
+    controls = read_json(controls_file)
+    if (
+        controls.get("disposition") != "HOSTILE_CONTROLS_ALL_PASS"
+        or controls.get("passed_count") != 30
+        or controls.get("total_count") != 30
+    ):
+        raise AuthorityError("HOSTILE_CONTROLS_FAILED")
+
+    recon_file = base_results / "cross_runtime_reconciliation.json"
+    recon = read_json(recon_file)
+    if (
+        recon.get("canonical_starting_main") != base_sha
+        or recon.get("scientific_disposition") != "CAUSALIS_B1_EVENT_INSTANCE_PARITY_EXACT"
+        or recon.get("gates", {}).get("G13_hostile_controls") != "20/20"
+    ):
+        raise AuthorityError("RECONCILIATION_VERIFICATION_FAILED")
+
+    payload_hashes: dict[str, str] = {
+        fname: finfo["sha256"] for fname, finfo in manifest.get("files", {}).items()
+    }
+    verified_summary = {
+        "arborescence_audits_passed": receipt.get("arborescence_audits_passed"),
+        "hostile_controls_passed": 30,
+        "parity_disposition": receipt.get("parity_disposition"),
+        "primary_independent_parity": receipt.get("primary_independent_parity"),
+        "scientific_disposition": receipt.get("scientific_disposition"),
+        "total_evaluations": receipt.get("total_evaluations"),
+    }
+    return verified_summary, payload_hashes
+
+
+def _verify_atlas_01a_evidence(
+    target_path: str,
+    policy: dict[str, Any],
+    base_sha: str,
+    head_sha: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Deterministically verifies ATLAS Rule-Disjoint Prediction PR #145 evidence artifacts."""
+    base_results = Path(target_path, policy.get("evidence_base_path", "artifacts/atlas-rule-disjoint-prediction-01a"))
+    if not base_results.is_dir():
+        raise AuthorityError("SCIENTIFIC_EVIDENCE_DIRECTORY_MISSING", str(base_results))
+
+    r1_dir = base_results / "r1"
+    manifest_file = r1_dir / "manifest.json"
+    if not manifest_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "r1/manifest.json")
+    manifest = read_json(manifest_file)
+    for art in manifest.get("artifacts", []):
+        fp = r1_dir / art.get("file", "")
+        if not fp.is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", f"r1/{art.get('file')}")
+        if sha256_file(fp) != art.get("sha256"):
+            raise AuthorityError("SCIENTIFIC_EVIDENCE_DIGEST_MISMATCH", f"r1/{art.get('file')}")
+
+    primary_file = r1_dir / "primary_result.json"
+    primary = read_json(primary_file)
+    if (
+        primary.get("disposition") != "R1_RULE_DISJOINT_ATLAS_PREDICTIVE_ASSOCIATION_NOT_SUPPORTED"
+        or primary.get("association_test", {}).get("supported") is not False
+        or primary.get("confusion_matrix", {}).get("total") != 86
+    ):
+        raise AuthorityError("ATLAS_PRIMARY_RESULT_INVALID")
+
+    recon_file = r1_dir / "independent_reconstruction.json"
+    recon = read_json(recon_file)
+    if (
+        recon.get("disposition") != "INDEPENDENT_RECONSTRUCTION_QUALIFIED"
+        or recon.get("primary_correspondence_exact") is not True
+        or recon.get("primary_evidence_divergence") != 0
+    ):
+        raise AuthorityError("ATLAS_RECONSTRUCTION_FAILED")
+
+    controls_file = r1_dir / "hostile_controls.json"
+    controls = read_json(controls_file)
+    if (
+        controls.get("disposition") != "ALL_HOSTILE_CONTROLS_PASS"
+        or controls.get("passed_controls") != 40
+        or controls.get("failed_controls") != 0
+    ):
+        raise AuthorityError("HOSTILE_CONTROLS_FAILED")
+
+    parity_file = r1_dir / "cross_runtime_parity.json"
+    parity = read_json(parity_file)
+    if parity.get("disposition") != "CROSS_RUNTIME_PARITY_EXACT" or parity.get("parity_exact") is not True:
+        raise AuthorityError("CROSS_RUNTIME_PARITY_FAILED")
+
+    payload_hashes: dict[str, str] = {
+        art["file"]: art["sha256"] for art in manifest.get("artifacts", [])
+    }
+    verified_summary = {
+        "confusion_matrix": primary.get("confusion_matrix"),
+        "cross_runtime_parity": "CROSS_RUNTIME_PARITY_EXACT",
+        "disposition": primary.get("disposition"),
+        "hostile_controls_passed": 40,
+        "independent_reconstruction": "INDEPENDENT_RECONSTRUCTION_QUALIFIED",
+        "p_value_rational": primary.get("association_test", {}).get("p_value_rational"),
+    }
+    return verified_summary, payload_hashes
+
+
+def _verify_cdl_00a_evidence(
+    target_path: str,
+    policy: dict[str, Any],
+    base_sha: str,
+    head_sha: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Deterministically verifies CDL Finite Group Foundation PR #146 evidence artifacts."""
+    base_results = Path(target_path, policy.get("evidence_base_path", "artifacts/cdl-finite-group-foundation-00a"))
+    if not base_results.is_dir():
+        raise AuthorityError("SCIENTIFIC_EVIDENCE_DIRECTORY_MISSING", str(base_results))
+
+    manifest_file = base_results / "manifest.json"
+    if not manifest_file.is_file():
+        raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", "manifest.json")
+    manifest = read_json(manifest_file)
+    for art_name, art_info in manifest.get("artifacts", {}).items():
+        fp = base_results / art_name
+        if not fp.is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", art_name)
+        if sha256_file(fp) != art_info.get("sha256"):
+            raise AuthorityError("SCIENTIFIC_EVIDENCE_DIGEST_MISMATCH", art_name)
+
+    receipt_file = base_results / "execution_receipt.json"
+    receipt = read_json(receipt_file)
+    if (
+        receipt.get("canonical_base") != base_sha
+        or "CDL_FINITE_GROUP_FOUNDATION_V0_1_R1_QUALIFIED" not in receipt.get("dispositions", [])
+        or receipt.get("qualification_matrix", {}).get("R1-G12") != "34/34"
+    ):
+        raise AuthorityError("CDL_EXECUTION_RECEIPT_INVALID")
+
+    recon_file = base_results / "independent_reconstruction.json"
+    recon = read_json(recon_file)
+    if (
+        recon.get("status") != "EXACT_RECONSTRUCTION_VERIFIED"
+        or recon.get("divergence_count") != 0
+        or recon.get("v4_normality", {}).get("normal_in_s4") is not True
+    ):
+        raise AuthorityError("CDL_RECONSTRUCTION_FAILED")
+
+    controls_file = base_results / "hostile_controls.json"
+    controls = read_json(controls_file)
+    if (
+        controls.get("status") != "ALL_HOSTILE_CONTROLS_PASSED"
+        or controls.get("count") != 34
+        or len(controls.get("controls", {})) != 34
+    ):
+        raise AuthorityError("HOSTILE_CONTROLS_FAILED")
+
+    payload_hashes: dict[str, str] = {
+        name: info["sha256"] for name, info in manifest.get("artifacts", {}).items()
+    }
+    verified_summary = {
+        "dispositions": receipt.get("dispositions"),
+        "hostile_controls_passed": 34,
+        "independent_reconstruction": "EXACT_RECONSTRUCTION_VERIFIED",
+        "qualification_matrix_r1_g12": receipt.get("qualification_matrix", {}).get("R1-G12"),
+    }
+    return verified_summary, payload_hashes
+
 
 
 def run_scientific_prior_verification(

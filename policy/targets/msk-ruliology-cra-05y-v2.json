@@ -1,0 +1,86 @@
+{
+  "allowed_modify_patterns": [
+    "^(\\.gitattributes|experiments/cra-high-inversion-holdout-05y/.*)$"
+  ],
+  "allowed_paths": [
+    ".gitattributes",
+    "experiments/cra-high-inversion-holdout-05y/**"
+  ],
+  "evidence_base_path": "experiments/cra-high-inversion-holdout-05y/results",
+  "expected_base_sha": "975a25190f3522f470215ae9bab52c677b1dae9b",
+  "expected_head_branch": "agent/ruliology-cra-high-inversion-holdout-05y",
+  "expected_head_sha": "faf77bee488d94806f53bc14aae4c1d41f09004f",
+  "expected_pr_number": 143,
+  "forbidden_modify_patterns": [
+    "(^|/)(credential|credentials|secret|secrets)(/|$)",
+    "\\.(pem|key)$",
+    "^\\.github/",
+    "^\\.gitmodules$",
+    "^experiments/cra-[^/]+-05[a-x]/"
+  ],
+  "forbidden_paths": [
+    ".github/**",
+    "credentials/**",
+    "secrets/**",
+    "**/*.pem",
+    "**/*.key",
+    ".gitmodules",
+    "experiments/cra-*-05[a-x]/**"
+  ],
+  "key_evidence_diff_files": [
+    "experiments/cra-high-inversion-holdout-05y/results/certification_envelope_r1_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/execution_result.json",
+    "experiments/cra-high-inversion-holdout-05y/results/high_inversion_holdout_definition_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/hostile_controls_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_member_parity_r1_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_science_parity_r1_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/regression_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/review_authority_inputs_v0_2.json",
+    "experiments/cra-high-inversion-holdout-05y/results/scientific_result_registry_r1_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/holdout_residual_carrier_relation_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/identity_check_v0_1.json",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_manifest_reconstruction_v0_1.json"
+  ],
+  "lfs_expected_payloads": {
+    "experiments/cra-high-inversion-holdout-05y/results/high_inversion_holdout_tasks_v0_1.json": "3bfca49a431c2e6352eca327a48584f01f5087318b279cba8dfe8c12dfe2d7f3",
+    "experiments/cra-high-inversion-holdout-05y/results/holdout_block_permutation_audit_v0_1.json": "0a50e9a32696786ebba26461b6117a87e48a25a3132d8d06df6b679cd800cd01",
+    "experiments/cra-high-inversion-holdout-05y/results/holdout_member_occurrence_languages_v0_1.json": "3d9176f04aef387f4ef93e9332b19955f946b762e8ecf735034d3199b018b7c1",
+    "experiments/cra-high-inversion-holdout-05y/results/holdout_replay_accounting_v0_1.json": "39558194d98b09d31adb312ba8fccdb83049cacf6947f389f0094ca11241e4b8",
+    "experiments/cra-high-inversion-holdout-05y/results/holdout_task_bound_member_authority_v0_1.json": "86730b8cf09796685b579b3a61958faec91b59a02796e14f661ccd311a510431",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_member_reconstruction_r1_v0_1.json": "86730b8cf09796685b579b3a61958faec91b59a02796e14f661ccd311a510431",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_member_reconstruction_v0_1.json": "86730b8cf09796685b579b3a61958faec91b59a02796e14f661ccd311a510431",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_occurrence_languages_r1_v0_1.json": "3d9176f04aef387f4ef93e9332b19955f946b762e8ecf735034d3199b018b7c1",
+    "experiments/cra-high-inversion-holdout-05y/results/independent_occurrence_languages_v0_1.json": "3d9176f04aef387f4ef93e9332b19955f946b762e8ecf735034d3199b018b7c1"
+  },
+  "pinned_evidence_digests": {
+    "certification_snapshot_id": "f1e670ae16335b056277ff7e912e608406260bebd1aeb60670e25f87820e9036",
+    "execution_ledger_digest": "865e1ed6664fb4b0ac2a5c5d63a30b46c81320e93b5353134c95cd124f884a7e",
+    "execution_result_digest": "19e0f5eaff77defa91f2f9ebc6c50b1d445919a2a4065a7fd502583ba96b633f",
+    "review_authority_input_digest": "c5717d2a3aea622f11e03c0e4752f38467d891ce40f9c0ae9a879f9641a27757",
+    "scientific_registry_id": "2e2cf80c8271c3d736aeb25d906a48b931ae75f8b567b4bd86ff54fc7e1eb063"
+  },
+  "policy_version": "2.0.0",
+  "repository": "Miskatonic-System/msk-ruliology",
+  "require_extended_cra_05y_checks": true,
+  "required_evidence_files": [
+    "review_authority_inputs_v0_2.json",
+    "scientific_result_registry_r1_v0_1.json",
+    "scientific_measurement_manifest_r1_v0_1.json",
+    "certification_envelope_r1_v0_1.json",
+    "execution_ledger.jsonl",
+    "execution_result.json",
+    "independent_member_parity_r1_v0_1.json",
+    "independent_science_parity_r1_v0_1.json",
+    "hostile_controls_v0_1.json",
+    "regression_v0_1.json",
+    "x3_generalization_and_collision_cells_v0_1.json",
+    "holdout_statistic_sufficiency_v0_1.json",
+    "holdout_residual_carrier_relation_v0_1.json",
+    "high_inversion_holdout_sources_v0_1.json",
+    "high_inversion_holdout_definition_v0_1.json",
+    "identity_check_v0_1.json",
+    "independent_manifest_reconstruction_v0_1.json"
+  ],
+  "schema_version": "scientific-target-policy-v1",
+  "verification_profile": "cra_05y"
+}

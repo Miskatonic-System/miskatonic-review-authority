@@ -329,7 +329,8 @@ def verify_execution_evidence_attestation(
                 if not provided_digest:
                     raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISSING", f"Line {line_idx} receipt missing receipt_digest")
 
-                computed_digest = f"sha256:{hashlib.sha256((json.dumps(cpy, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode('utf-8')).hexdigest()}"
+                raw_bytes = (json.dumps(cpy, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + "\n").encode("utf-8")
+                computed_digest = f"sha256:{hashlib.sha256(raw_bytes).hexdigest()}"
                 if provided_digest != computed_digest:
                     raise AuthorityError("EXECUTION_RECEIPT_DIGEST_MISMATCH", f"Line {line_idx} receipt digest mismatch")
 

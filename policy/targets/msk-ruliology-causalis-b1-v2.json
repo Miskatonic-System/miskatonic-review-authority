@@ -1,0 +1,56 @@
+{
+  "allowed_modify_patterns": [
+    "^(\\.gitattributes|artifacts/causalis-event-instance-parity-01a/.*|experiments/causalis-event-instance-parity-01a/.*|reports/WO-RULIOLOGY-CAUSALIS-.*|schemas/.*|src/msk_ruliology/.*|tests/test_causalis_.*|wolfram/.*)$"
+  ],
+  "allowed_paths": [
+    "artifacts/causalis-event-instance-parity-01a/**",
+    "experiments/causalis-event-instance-parity-01a/**",
+    "reports/WO-RULIOLOGY-CAUSALIS-*",
+    "schemas/**",
+    "src/msk_ruliology/**",
+    "tests/test_causalis_*",
+    "wolfram/**"
+  ],
+  "evidence_base_path": "artifacts/causalis-event-instance-parity-01a",
+  "expected_base_sha": "975a25190f3522f470215ae9bab52c677b1dae9b",
+  "expected_head_branch": "agent/ruliology-causalis-event-instance-parity-01a",
+  "expected_head_sha": "eef493ae8fa34d64a99875f23a530924d7fb6b56",
+  "expected_pr_number": 144,
+  "forbidden_modify_patterns": [
+    "(^|/)(credential|credentials|secret|secrets)(/|$)",
+    "\\.(pem|key)$",
+    "^\\.github/",
+    "^\\.gitmodules$"
+  ],
+  "forbidden_paths": [
+    ".github/**",
+    "credentials/**",
+    "secrets/**",
+    "**/*.pem",
+    "**/*.key",
+    ".gitmodules"
+  ],
+  "key_evidence_diff_files": [
+    "artifacts/causalis-event-instance-parity-01a/cross_runtime_reconciliation.json",
+    "artifacts/causalis-event-instance-parity-01a/definition.json",
+    "artifacts/causalis-event-instance-parity-01a/independent_recheck.json",
+    "artifacts/causalis-event-instance-parity-01a/r1/hostile_controls.json",
+    "artifacts/causalis-event-instance-parity-01a/r1/independent_raw_reconstruction.json",
+    "artifacts/causalis-event-instance-parity-01a/r1/manifest.json",
+    "artifacts/causalis-event-instance-parity-01a/r1/verification_receipt.json"
+  ],
+  "policy_version": "2.0.0",
+  "repository": "Miskatonic-System/msk-ruliology",
+  "required_evidence_files": [
+    "cross_runtime_reconciliation.json",
+    "definition.json",
+    "r1/manifest.json",
+    "r1/verification_receipt.json",
+    "r1/hostile_controls.json",
+    "r1/independent_primary_graph_parity.json",
+    "r1/independent_redex_parity.json",
+    "r1/primary_independent_comparison.json"
+  ],
+  "schema_version": "scientific-target-policy-v1",
+  "verification_profile": "causalis_b1_01a"
+}

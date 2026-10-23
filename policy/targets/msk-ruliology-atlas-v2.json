@@ -1,0 +1,62 @@
+{
+  "allowed_modify_patterns": [
+    "^(\\.gitattributes|artifacts/atlas-rule-disjoint-prediction-01a/.*|experiments/atlas-rule-disjoint-prediction-01a/.*|reports/WO-RULIOLOGY-ATLAS-.*|schemas/.*|src/msk_ruliology/.*|tests/test_rule_disjoint_.*|wolfram/.*)$"
+  ],
+  "allowed_paths": [
+    "artifacts/atlas-rule-disjoint-prediction-01a/**",
+    "experiments/atlas-rule-disjoint-prediction-01a/**",
+    "reports/WO-RULIOLOGY-ATLAS-*",
+    "schemas/**",
+    "src/msk_ruliology/**",
+    "tests/test_rule_disjoint_*",
+    "wolfram/**"
+  ],
+  "evidence_base_path": "artifacts/atlas-rule-disjoint-prediction-01a",
+  "expected_base_sha": "975a25190f3522f470215ae9bab52c677b1dae9b",
+  "expected_head_branch": "agent/ruliology-atlas-rule-disjoint-prediction-01a",
+  "expected_head_sha": "7803b531bdd35dcf4ead3ee8721c08a1a79fff4d",
+  "expected_pr_number": 145,
+  "forbidden_modify_patterns": [
+    "(^|/)(credential|credentials|secret|secrets)(/|$)",
+    "\\.(pem|key)$",
+    "^\\.github/",
+    "^\\.gitmodules$"
+  ],
+  "forbidden_paths": [
+    ".github/**",
+    "credentials/**",
+    "secrets/**",
+    "**/*.pem",
+    "**/*.key",
+    ".gitmodules"
+  ],
+  "key_evidence_diff_files": [
+    "artifacts/atlas-rule-disjoint-prediction-01a/definition.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/cross_runtime_parity.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/frozen_matching_reference.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/frozen_prediction_reference.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/historical_comparison_erratum.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/hostile_controls.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/implementation_manifest.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/independent_reconstruction.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/manifest.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/original_01a_custody_disposition.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/planning_power_receipt.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/pre_reveal_freeze.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/primary_result.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/primary_result_seal.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/repair_definition.json",
+    "artifacts/atlas-rule-disjoint-prediction-01a/r1/secondary_metrics.json"
+  ],
+  "policy_version": "2.0.0",
+  "repository": "Miskatonic-System/msk-ruliology",
+  "required_evidence_files": [
+    "r1/manifest.json",
+    "r1/primary_result.json",
+    "r1/independent_reconstruction.json",
+    "r1/cross_runtime_parity.json",
+    "r1/hostile_controls.json"
+  ],
+  "schema_version": "scientific-target-policy-v1",
+  "verification_profile": "atlas_01a"
+}

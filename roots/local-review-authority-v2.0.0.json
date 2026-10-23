@@ -1,0 +1,16 @@
+{
+  "active_reviewer_policy": "policy/trusted-reviewers-v2.json",
+  "authority_repository": "Miskatonic-System/miskatonic-review-authority",
+  "designation": "LOCAL_REVIEW_V2_AUTHORITY_RATIFICATION",
+  "legacy_reviewer_policy": "policy/trusted-reviewers.json",
+  "narrower_local_process_guarantee_documented": true,
+  "notes": "One-time trusted-starter ratification establishing Local Review V2 Authority with provider-neutral local inference and OS process isolation. This ratification establishes the institution and admission gates; it does not approve individual scientific pull requests.",
+  "policy_version": "2.0.0",
+  "ratification_id": "ratification-local-review-v2-genesis",
+  "ratification_role": "one-time constitutional authority recovery",
+  "ratified_at": "2026-10-23T10:00:00Z",
+  "ratified_by": "trusted-starter:kowen9024AI",
+  "schema_version": "local-review-ratification-v2",
+  "trusted_reviewer_registry": "policy/trusted-reviewers-v2.json",
+  "trusted_signer_registry": "policy/trusted-signers.json"
+}
