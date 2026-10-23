@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local Review Policy V2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_version",
+    "provider",
+    "reviewer_principal",
+    "authority_principal",
+    "lifecycle_state",
+    "require_prior_verification",
+    "require_signed_receipt",
+    "release_requires",
+    "allowed_verdicts",
+    "model_identity",
+    "prompt_and_schema",
+    "isolation_requirements"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "reviewer-policy-v2"
+    },
+    "policy_version": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "provider": {
+      "type": "string",
+      "enum": ["LOCAL_LLAMA_CPP", "openai-responses"]
+    },
+    "reviewer_principal": {
+      "type": "string"
+    },
+    "authority_principal": {
+      "type": "string"
+    },
+    "lifecycle_state": {
+      "type": "string",
+      "enum": ["ACTIVE", "INACTIVE", "DEPRECATED"]
+    },
+    "require_prior_verification": {
+      "type": "boolean"
+    },
+    "require_signed_receipt": {
+      "type": "boolean"
+    },
+    "release_requires": {
+      "type": "string",
+      "const": "APPROVE"
+    },
+    "allowed_verdicts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["APPROVE", "REQUEST_CHANGES", "REJECT"]
+      }
+    },
+    "max_slice_characters": {
+      "type": "integer"
+    },
+    "max_slice_tokens": {
+      "type": "integer"
+    },
+    "model_identity": {
+      "type": "object",
+      "required": [
+        "backend",
+        "model_name",
+        "model_path",
+        "model_weights_sha256",
+        "model_size_bytes",
+        "runtime_binary_path",
+        "runtime_binary_sha256",
+        "endpoint_url"
+      ],
+      "properties": {
+        "backend": {"type": "string"},
+        "model_name": {"type": "string"},
+        "model_path": {"type": "string"},
+        "model_weights_sha256": {"type": "string"},
+        "model_size_bytes": {"type": "integer"},
+        "runtime_binary_path": {"type": "string"},
+        "runtime_binary_sha256": {"type": "string"},
+        "endpoint_url": {"type": "string"}
+      }
+    },
+    "prompt_and_schema": {
+      "type": "object",
+      "required": [
+        "prompt_version",
+        "prompt_template_sha256",
+        "slice_schema_version",
+        "slice_schema_sha256",
+        "verdict_schema_version",
+        "verdict_schema_sha256"
+      ],
+      "properties": {
+        "prompt_version": {"type": "string"},
+        "prompt_template_sha256": {"type": "string"},
+        "slice_schema_version": {"type": "string"},
+        "slice_schema_sha256": {"type": "string"},
+        "verdict_schema_version": {"type": "string"},
+        "verdict_schema_sha256": {"type": "string"}
+      }
+    },
+    "isolation_requirements": {
+      "type": "object",
+      "required": [
+        "required_service_user",
+        "prohibited_service_users",
+        "prohibited_agent_workspace_substring",
+        "require_readonly_checkout",
+        "prohibit_candidate_code_execution",
+        "prohibit_github_app_key_on_host",
+        "prohibit_loopback_leakage"
+      ]
+    },
+    "signing": {
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

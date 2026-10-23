@@ -1,0 +1,61 @@
+{
+  "allowed_verdicts": [
+    "APPROVE",
+    "REQUEST_CHANGES",
+    "REJECT"
+  ],
+  "authority_principal": "github-app:miskatonic-review-authority",
+  "isolation_requirements": {
+    "prohibit_candidate_code_execution": true,
+    "prohibit_github_app_key_on_host": true,
+    "prohibit_loopback_leakage": true,
+    "prohibited_agent_workspace_substring": "/home/kowen9024",
+    "prohibited_service_users": [
+      "kowen9024"
+    ],
+    "require_readonly_checkout": true,
+    "required_service_user": "msk-local-reviewer"
+  },
+  "legacy_policies": {
+    "policy/trusted-reviewers.json": {
+      "lifecycle_state": "INACTIVE",
+      "policy_version": "1.0.0",
+      "provider": "openai-responses"
+    }
+  },
+  "lifecycle_state": "ACTIVE",
+  "max_slice_characters": 24000,
+  "max_slice_tokens": 12000,
+  "model_identity": {
+    "backend": "LOCAL_LLAMA_CPP",
+    "endpoint_url": "http://127.0.0.1:11434/v1",
+    "model_name": "Qwen3-14B-NVFP4.gguf",
+    "model_path": "/opt/miskatonic/local-reviewer/models/Qwen3-14B-NVFP4.gguf",
+    "model_size_bytes": 10551139872,
+    "model_weights_sha256": "8ed54a3ef17bef0524c4f3d8258cfffe9446cd68186d773d6045d9be762f94c9",
+    "runtime_binary_path": "/opt/miskatonic/local-reviewer/bin/llama-server",
+    "runtime_binary_sha256": "9bae04c64b3e1b2c4dd4b13e92544cd1ac12b0c941d19bd3c23283b54a3f5183"
+  },
+  "notes": "Provider-neutral independent review backed by local Qwen runtime (WO-MSK-REVIEW-AUTHORITY-LOCAL-INDEPENDENCE-00A). External cloud policy is inactive.",
+  "policy_version": "2.0.0",
+  "prompt_and_schema": {
+    "prompt_template_sha256": "427fbcb57a3c9b3a44b764a41db75aad442c182f64fdf13da4fe478073057eaf",
+    "prompt_version": "miskatonic-local-review-prompt-v2.0",
+    "slice_schema_sha256": "09e42f648dbff40bd8590492b0ab53506358f2da1135a8b87d63c7cd58cb6481",
+    "slice_schema_version": "miskatonic-local-review-slice-schema-v2.0",
+    "verdict_schema_sha256": "06bec421ea62c34e774cffc8de49d7f240e995c3b9ca095b31b993b52a12e0b9",
+    "verdict_schema_version": "miskatonic-local-review-verdict-schema-v2.0"
+  },
+  "provider": "LOCAL_LLAMA_CPP",
+  "release_requires": "APPROVE",
+  "require_prior_verification": true,
+  "require_signed_receipt": true,
+  "reviewer_principal": "local-review-service:msk-local-reviewer",
+  "schema_version": "reviewer-policy-v2",
+  "signing": {
+    "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+    "key_id": "msk-local-reviewer-key-v2",
+    "public_key_fingerprint": "sha256:afb4de33bdcd00cf50af27797e36a4a3e4457a31c281ba9d03db19ead429690b",
+    "public_key_path": "keys/msk-local-reviewer-v2.pub.pem"
+  }
+}

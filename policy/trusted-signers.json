@@ -1,11 +1,29 @@
 {
   "schema_version": "miskatonic.review-trusted-signer.v1",
   "authority_id": "miskatonic-review-authority",
-  "reviewer_principal": null,
-  "key_id": null,
+  "reviewer_principal": "local-review-service:msk-local-reviewer",
+  "key_id": "msk-local-reviewer-key-v2",
   "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
-  "public_key_path": null,
-  "public_key_fingerprint": null,
-  "trust_root_version": "1.0.0",
-  "lifecycle_state": "UNCONFIGURED"
+  "public_key_path": "keys/msk-local-reviewer-v2.pub.pem",
+  "public_key_fingerprint": "sha256:afb4de33bdcd00cf50af27797e36a4a3e4457a31c281ba9d03db19ead429690b",
+  "trust_root_version": "2.0.0",
+  "lifecycle_state": "ACTIVE",
+  "authority_signers": [
+    {
+      "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+      "authority_principal": "github-app:miskatonic-review-authority",
+      "key_id": "88d9da34089fa12d39206b89f0313a48bba880e1c57ae614bbc95416c11754bb",
+      "lifecycle_state": "ACTIVE",
+      "public_key_fingerprint": "sha256:88d9da34089fa12d39206b89f0313a48bba880e1c57ae614bbc95416c11754bb",
+      "public_key_path": "keys/miskatonic-review-authority-app.pub.pem"
+    },
+    {
+      "algorithm": "RSASSA-PKCS1-v1_5-SHA256",
+      "key_id": "msk-local-reviewer-key-v2",
+      "lifecycle_state": "ACTIVE",
+      "public_key_fingerprint": "sha256:afb4de33bdcd00cf50af27797e36a4a3e4457a31c281ba9d03db19ead429690b",
+      "public_key_path": "keys/msk-local-reviewer-v2.pub.pem",
+      "reviewer_principal": "local-review-service:msk-local-reviewer"
+    }
+  ]
 }

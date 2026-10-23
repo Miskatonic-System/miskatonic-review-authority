@@ -1,0 +1,61 @@
+{
+  "allowed_modify_patterns": [
+    "^(\\.gitattributes|artifacts/cdl-finite-group-foundation-00a/.*|experiments/cdl-finite-group-foundation-00a/.*|reports/WO-RULIOLOGY-CDL-.*|schemas/.*|src/msk_ruliology/.*|tests/test_cdl_.*|wolfram/.*)$"
+  ],
+  "allowed_paths": [
+    "artifacts/cdl-finite-group-foundation-00a/**",
+    "experiments/cdl-finite-group-foundation-00a/**",
+    "reports/WO-RULIOLOGY-CDL-*",
+    "schemas/**",
+    "src/msk_ruliology/**",
+    "tests/test_cdl_*",
+    "wolfram/**"
+  ],
+  "evidence_base_path": "artifacts/cdl-finite-group-foundation-00a",
+  "expected_base_sha": "975a25190f3522f470215ae9bab52c677b1dae9b",
+  "expected_head_branch": "agent/ruliology-cdl-finite-group-foundation-00a",
+  "expected_head_sha": "e60922065c53570bc7e89046d2899039f20903fd",
+  "expected_pr_number": 146,
+  "forbidden_modify_patterns": [
+    "(^|/)(credential|credentials|secret|secrets)(/|$)",
+    "\\.(pem|key)$",
+    "^\\.github/",
+    "^\\.gitmodules$"
+  ],
+  "forbidden_paths": [
+    ".github/**",
+    "credentials/**",
+    "secrets/**",
+    "**/*.pem",
+    "**/*.key",
+    ".gitmodules"
+  ],
+  "key_evidence_diff_files": [
+    "artifacts/cdl-finite-group-foundation-00a/cross_runtime_parity.json",
+    "artifacts/cdl-finite-group-foundation-00a/definition.json",
+    "artifacts/cdl-finite-group-foundation-00a/execution_receipt.json",
+    "artifacts/cdl-finite-group-foundation-00a/hostile_controls.json",
+    "artifacts/cdl-finite-group-foundation-00a/independent_reconstruction.json",
+    "artifacts/cdl-finite-group-foundation-00a/manifest.json",
+    "artifacts/cdl-finite-group-foundation-00a/normality_matrix.json",
+    "artifacts/cdl-finite-group-foundation-00a/pre_execution_freeze.json",
+    "artifacts/cdl-finite-group-foundation-00a/pre_execution_freeze_r1.json",
+    "artifacts/cdl-finite-group-foundation-00a/solvability_registry.json",
+    "artifacts/cdl-finite-group-foundation-00a/theorem_ground_truth_registry.json",
+    "artifacts/cdl-finite-group-foundation-00a/v4_normality_python.json",
+    "artifacts/cdl-finite-group-foundation-00a/v4_normality_wolfram.json"
+  ],
+  "policy_version": "2.0.0",
+  "repository": "Miskatonic-System/msk-ruliology",
+  "required_evidence_files": [
+    "manifest.json",
+    "execution_receipt.json",
+    "independent_reconstruction.json",
+    "hostile_controls.json",
+    "fixture_registry.json",
+    "derived_series_registry.json",
+    "solvability_registry.json"
+  ],
+  "schema_version": "scientific-target-policy-v1",
+  "verification_profile": "cdl_00a"
+}

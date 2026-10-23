@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local Review Policy Ratification V2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "ratification_id",
+    "ratified_at",
+    "ratified_by",
+    "authority_repository",
+    "designation",
+    "policy_version",
+    "active_reviewer_policy",
+    "legacy_reviewer_policy",
+    "trusted_signer_registry",
+    "trusted_reviewer_registry",
+    "narrower_local_process_guarantee_documented",
+    "notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "local-review-ratification-v2"
+    },
+    "ratification_id": {"type": "string"},
+    "ratified_at": {"type": "string"},
+    "ratified_by": {"type": "string"},
+    "authority_repository": {"type": "string"},
+    "designation": {"type": "string"},
+    "policy_version": {"type": "string"},
+    "active_reviewer_policy": {"type": "string"},
+    "legacy_reviewer_policy": {"type": "string"},
+    "trusted_signer_registry": {"type": "string"},
+    "trusted_reviewer_registry": {"type": "string"},
+    "narrower_local_process_guarantee_documented": {"type": "boolean"},
+    "notes": {"type": "string"}
+  }
+}

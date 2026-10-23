@@ -10,10 +10,123 @@ from .attestation import public_key_fingerprint, verify_attestation
 from .check_publisher import publish_check
 from .github_api import verify_pr_head
 from .github_app import create_installation_token
+from .local_review import run_local_independent_review, verify_and_admit_local_review_receipt
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
 from .util import AuthorityError, read_json
 from .workflow_audit import require_pinned_workflows
+
+
+def _local_review(args: argparse.Namespace) -> int:
+    signed_receipt, sig_path = run_local_independent_review(
+        repository=args.repository,
+        pr_number=args.pr_number,
+        head_branch=args.head_branch,
+        repo_path=args.repo_path,
+        base_sha=args.base_sha,
+        head_sha=args.head_sha,
+        prior_evidence_path=args.prior_evidence,
+        review_packet_path=args.review_packet,
+        producer_bindings_path=args.producer_bindings,
+        reviewer_policy_path=args.reviewer_policy,
+        private_key_path=args.private_key,
+        key_id=args.key_id,
+        output_path=args.output,
+        enforce_strict_isolation=not args.allow_current_user,
+    )
+    print(
+        json.dumps(
+            {
+                "receipt_id": signed_receipt["receipt_id"],
+                "release_authorized": signed_receipt["release_authorized"],
+                "signature_file": sig_path,
+                "status": "LOCAL_REVIEW_COMPLETED",
+                "verdict": signed_receipt["verdict"],
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _admit_local_review(args: argparse.Namespace) -> int:
+    sig_path = args.detached_sig
+    if not sig_path:
+        cand_sig = Path(args.receipt).with_suffix(".sig")
+        if cand_sig.is_file():
+            sig_path = str(cand_sig)
+
+    admission = verify_and_admit_local_review_receipt(
+        receipt_path=args.receipt,
+        detached_sig_path=sig_path,
+        repository=args.repository,
+        expected_pr_number=args.pr_number,
+        expected_head_sha=args.expected_head_sha,
+        expected_base_sha=args.expected_base_sha,
+        target_repo_path=args.target_repo_path,
+        target_policy_path=args.target_policy,
+        trusted_reviewers_policy_path=args.trusted_reviewers_policy,
+        trusted_signers_policy_path=args.trusted_signers_policy,
+        trusted_producers_policy_path=args.trusted_producers_policy,
+        github_app_private_key_path=args.github_app_private_key,
+        output_attestation_path=args.output_attestation,
+    )
+
+    if args.publish_check:
+        token = os.environ.get(args.token_env, "")
+        if not token:
+            raise AuthorityError("GH_APP_TOKEN_MISSING", "publish_check requires GH_APP_TOKEN")
+        check_name = args.check_name or "miskatonic/independent-review"
+        receipt_data = read_json(args.receipt)
+        summary = json.dumps(receipt_data, sort_keys=True, indent=2)[:65000]
+        publish_check(
+            token=token,
+            repository=args.repository,
+            head_sha=args.expected_head_sha,
+            name=check_name,
+            conclusion="success",
+            title=f"Local Review V2: {admission['status']}",
+            summary=summary,
+            details_url=args.details_url,
+        )
+        if args.also_publish_cloud_review:
+            publish_check(
+                token=token,
+                repository=args.repository,
+                head_sha=args.expected_head_sha,
+                name="miskatonic/independent-cloud-review",
+                conclusion="success",
+                title=f"Local Review V2: {admission['status']}",
+                summary=summary,
+                details_url=args.details_url,
+            )
+
+    print(json.dumps(admission, sort_keys=True))
+    return 0
+
+
+def _ratify_v2_policy(args: argparse.Namespace) -> int:
+    rat_path = Path(args.ratification_record)
+    if not rat_path.is_file():
+        raise AuthorityError("RATIFICATION_RECORD_MISSING", str(rat_path))
+    data = read_json(str(rat_path))
+    if data.get("schema_version") != "local-review-ratification-v2":
+        raise AuthorityError("RATIFICATION_SCHEMA_UNSUPPORTED")
+    if data.get("designation") != "LOCAL_REVIEW_V2_AUTHORITY_RATIFICATION":
+        raise AuthorityError("RATIFICATION_DESIGNATION_INVALID")
+    print(
+        json.dumps(
+            {
+                "designation": data["designation"],
+                "ratification_id": data["ratification_id"],
+                "ratified_at": data["ratified_at"],
+                "ratified_by": data["ratified_by"],
+                "status": "LOCAL_REVIEW_AUTHORITY_ACTIVE",
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
 
 
 def _create_app_token(args: argparse.Namespace) -> int:
@@ -260,6 +373,48 @@ def main(argv: list[str] | None = None) -> None:
     stale_head.add_argument("--pr-number", type=int, required=True)
     stale_head.add_argument("--expected-head-sha", required=True)
     stale_head.set_defaults(func=_verify_pr_head_cmd)
+
+    local_rev = subparsers.add_parser("local-review")
+    local_rev.add_argument("--repository", required=True)
+    local_rev.add_argument("--pr-number", type=int, required=True)
+    local_rev.add_argument("--head-branch", required=True)
+    local_rev.add_argument("--repo-path", required=True)
+    local_rev.add_argument("--base-sha", required=True)
+    local_rev.add_argument("--head-sha", required=True)
+    local_rev.add_argument("--prior-evidence", required=True)
+    local_rev.add_argument("--review-packet", required=True)
+    local_rev.add_argument("--producer-bindings", default="policy/trusted-producers.json")
+    local_rev.add_argument("--reviewer-policy", default="policy/trusted-reviewers-v2.json")
+    local_rev.add_argument("--private-key", required=True)
+    local_rev.add_argument("--key-id", required=True)
+    local_rev.add_argument("--output", required=True)
+    local_rev.add_argument("--allow-current-user", action="store_true", default=False)
+    local_rev.set_defaults(func=_local_review)
+
+    admit_rev = subparsers.add_parser("admit-local-review")
+    admit_rev.add_argument("--receipt", required=True)
+    admit_rev.add_argument("--detached-sig", default=None)
+    admit_rev.add_argument("--repository", required=True)
+    admit_rev.add_argument("--pr-number", type=int, required=True)
+    admit_rev.add_argument("--expected-head-sha", required=True)
+    admit_rev.add_argument("--expected-base-sha", required=True)
+    admit_rev.add_argument("--target-repo-path", required=True)
+    admit_rev.add_argument("--target-policy", required=True)
+    admit_rev.add_argument("--trusted-reviewers-policy", default="policy/trusted-reviewers-v2.json")
+    admit_rev.add_argument("--trusted-signers-policy", default="policy/trusted-signers.json")
+    admit_rev.add_argument("--trusted-producers-policy", default="policy/trusted-producers.json")
+    admit_rev.add_argument("--github-app-private-key", default=None)
+    admit_rev.add_argument("--output-attestation", default=None)
+    admit_rev.add_argument("--publish-check", action="store_true", default=False)
+    admit_rev.add_argument("--also-publish-cloud-review", action="store_true", default=False)
+    admit_rev.add_argument("--check-name", default="miskatonic/independent-review")
+    admit_rev.add_argument("--token-env", default="GH_APP_TOKEN")
+    admit_rev.add_argument("--details-url", default=None)
+    admit_rev.set_defaults(func=_admit_local_review)
+
+    ratify = subparsers.add_parser("ratify-v2-policy")
+    ratify.add_argument("--ratification-record", default="roots/local-review-authority-v2.0.0.json")
+    ratify.set_defaults(func=_ratify_v2_policy)
 
     args = parser.parse_args(argv)
     try:

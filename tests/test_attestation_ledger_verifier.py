@@ -123,7 +123,8 @@ def build_evidence(tmp_path, mutate_rec=None, mutate_wrapper=None, mutate_result
         mutate_rec(rec_dict)
 
     if "receipt_digest" not in rec_dict:
-        rec_digest = f"sha256:{hashlib.sha256((json.dumps(rec_dict, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode('utf-8')).hexdigest()}"
+        rec_raw = (json.dumps(rec_dict, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + "\n").encode("utf-8")
+        rec_digest = f"sha256:{hashlib.sha256(rec_raw).hexdigest()}"
         rec_dict["receipt_digest"] = rec_digest
     else:
         rec_digest = rec_dict["receipt_digest"]

@@ -62,17 +62,22 @@ def build_review_packet(
     manifest_files: list[dict[str, Any]] = []
 
     # Priority rules for classification
-    key_evidence_diff_files = {
-        "experiments/cra-high-inversion-holdout-05y/results/certification_envelope_r1_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/execution_result.json",
-        "experiments/cra-high-inversion-holdout-05y/results/high_inversion_holdout_definition_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/hostile_controls_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/independent_member_parity_r1_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/independent_science_parity_r1_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/regression_v0_1.json",
-        "experiments/cra-high-inversion-holdout-05y/results/review_authority_inputs_v0_2.json",
-        "experiments/cra-high-inversion-holdout-05y/results/scientific_result_registry_r1_v0_1.json",
-    }
+    key_evidence_diff_files = set(
+        policy.get(
+            "key_evidence_diff_files",
+            [
+                "experiments/cra-high-inversion-holdout-05y/results/certification_envelope_r1_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/execution_result.json",
+                "experiments/cra-high-inversion-holdout-05y/results/high_inversion_holdout_definition_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/hostile_controls_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/independent_member_parity_r1_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/independent_science_parity_r1_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/regression_v0_1.json",
+                "experiments/cra-high-inversion-holdout-05y/results/review_authority_inputs_v0_2.json",
+                "experiments/cra-high-inversion-holdout-05y/results/scientific_result_registry_r1_v0_1.json",
+            ],
+        )
+    )
 
     for record in records:
         p = record.path
@@ -82,8 +87,9 @@ def build_review_packet(
             classification = "LFS_PAYLOAD_IDENTITY_BOUND"
             lfs_paths.append(p)
         elif (
-            p.endswith((".py", ".lean", ".md"))
+            p.endswith((".py", ".lean", ".md", ".wl", ".wls", ".wlt"))
             or p == ".gitattributes"
+            or p.startswith("schemas/")
             or p in key_evidence_diff_files
         ):
             classification = "FULL_DIFF_REVIEWED"
