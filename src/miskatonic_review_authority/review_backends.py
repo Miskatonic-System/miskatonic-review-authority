@@ -552,7 +552,8 @@ class LocalLlamaCppBackend:
                     "Synthesize the final review verdict. If prior verification passed and slice reviews identified no "
                     "critical bugs (P0/P1), produce APPROVE with release_authorized=true and abstention.abstained=false. "
                     "IMPORTANT: confidence must be a float between 0.0 and 1.0 (e.g., 1.0 for high confidence; do NOT output 100). "
-                    "If critical issues exist, produce REQUEST_CHANGES or REJECT."
+                    "IMPORTANT: If verdict is APPROVE, findings must NOT contain any P0 or P1 severity items (use P2, P3, or INFO for non-blocking observations). "
+                    "If any critical issues (P0 or P1) exist or any slice reported FAIL, you MUST produce REQUEST_CHANGES with release_authorized=false."
                 ),
             },
             ensure_ascii=False,
@@ -594,7 +595,7 @@ class LocalLlamaCppBackend:
         if (any_slice_fail or slice_p0_p1 or synth_p0_p1) and verdict == "APPROVE":
             raise AuthorityError(
                 "LOCAL_REVIEW_FINDINGS_CONTRADICT_APPROVAL",
-                "Model cannot approve candidate with FAIL slice status or P0/P1 findings",
+                f"Model cannot approve candidate with FAIL slice ({any_slice_fail}), slice P0/P1 ({slice_p0_p1}), or synth P0/P1 ({synth_p0_p1})",
             )
 
         # High-severity finding conservation: synthesis may not omit slice P0/P1
