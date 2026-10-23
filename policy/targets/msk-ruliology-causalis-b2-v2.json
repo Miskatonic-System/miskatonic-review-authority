@@ -32,10 +32,10 @@
   "key_evidence_diff_files": [
     "artifacts/causalis-b2-resource-causality-00a/b1_scientific_preservation.json",
     "artifacts/causalis-b2-resource-causality-00a/b2_commutation_theorem.md",
-    "artifacts/causalis-b2-resource-causality-00a/b2_independent_reconstruction.json",
     "artifacts/causalis-b2-resource-causality-00a/b2_resource_lineage_semantics.md",
     "artifacts/causalis-b2-resource-causality-00a/b2_scientific_claim_authority.json",
-    "artifacts/causalis-b2-resource-causality-00a/b2_scientific_definition.json"
+    "artifacts/causalis-b2-resource-causality-00a/b2_scientific_definition.json",
+    "artifacts/causalis-b2-resource-causality-00a/b2_wolfram_causal_surface_assessment.json"
   ],
   "policy_version": "2.0.0",
   "repository": "Miskatonic-System/msk-ruliology",
