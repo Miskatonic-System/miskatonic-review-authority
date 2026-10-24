@@ -1,0 +1,2551 @@
+{
+  "admitted": false,
+  "candidate": {
+    "clean": true,
+    "head": "6824f17d0fc39e8b20f6ec3b48912bb446dadb4c",
+    "tree": "6fa36bb27213b93aa5bbee793ba7c1e7affc0cbf"
+  },
+  "canonical_base": "a87e863173950c7f73072d1647780b3492ab0a43",
+  "changes_from_rejected": [
+    {
+      "git_blob": "5c00d40376fb28f65987fcc60f9c048ca12037ff",
+      "path": ".github/workflows/admit-research-evidence.yml",
+      "sha256": "0bc6a3f2fe69aaeba7ed197a8641f5ee3b001ce8e9f6f17bca62d8bf29f4cfae",
+      "size_bytes": 4784,
+      "status": "M"
+    },
+    {
+      "git_blob": "1b2d5e71a6b2f5006942270eb71d4ac77f629511",
+      "path": "pyproject.toml",
+      "sha256": "75ad5e2e90e6b1a01ce01586fe6157d639bd83d9365c04253c592eb6e1470a34",
+      "size_bytes": 496,
+      "status": "M"
+    },
+    {
+      "git_blob": "71d56386a34d45a5d5b1bd2ad2804736f5a8c14f",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/actionlint-tool-identity.json",
+      "sha256": "62e4c5bcc715679eb3e6ea4ab5f874c222da38aa0582faabce038d924d09ea69",
+      "size_bytes": 425,
+      "status": "A"
+    },
+    {
+      "git_blob": "f0909cdbe68ea4dc3bb36dea5bc18c383cf71f08",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-review.md",
+      "sha256": "eb724f437e1b23ebab1f421b41f3265d922948509c99ac9a8c1a15ee5ec059cd",
+      "size_bytes": 11588,
+      "status": "A"
+    },
+    {
+      "git_blob": "f22bc825ff0d1cd86c5250095ae50e1cf8da5525",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-validation.json",
+      "sha256": "35eb194275030565cf1a267bc3e167bce4562d5f2fce6e5ed934dacbd926e076",
+      "size_bytes": 6400,
+      "status": "A"
+    },
+    {
+      "git_blob": "477bec6e9b3b8b26c59525a40980f3ca0dde1fd6",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/repair-rationale.md",
+      "sha256": "ad30c2c408fd01492ecf67333b09ed8360a563492ff5551f64c1b1d4f52f4041",
+      "size_bytes": 4266,
+      "status": "A"
+    },
+    {
+      "git_blob": "92c69478cba3f8e88781047d9b9f7e63950ed05e",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/starting-state.json",
+      "sha256": "6e3ff895d13da4e70d3af6d268c54a7d764bf9b9868b1f3f9fc218c5668e6de3",
+      "size_bytes": 536,
+      "status": "A"
+    },
+    {
+      "git_blob": "6187aeaf00fefe49e695f65801925a1dc052bdd5",
+      "path": "roots/research-admission-authority-v1.json",
+      "sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163",
+      "size_bytes": 11379,
+      "status": "M"
+    },
+    {
+      "git_blob": "17ea2ada380e394e403f3271e7a4d2a8a23eab54",
+      "path": "tests/test_research_admission.py",
+      "sha256": "76b425efaaf8f6e7e3d8bcd4c10bb77b247b675b46b76ad725e92e0d24536ee4",
+      "size_bytes": 40164,
+      "status": "M"
+    },
+    {
+      "git_blob": "9e47ceef720bb2ab6de1cc306a695aadfa940155",
+      "path": "tests/test_research_admission_workflows.py",
+      "sha256": "3fd46f7252d65e75a45375fa67b44f9a573fae75139a2297f50f6ff22d20fa84",
+      "size_bytes": 3226,
+      "status": "A"
+    }
+  ],
+  "clone_method": "git clone --no-local --no-checkout; detached exact SHA; no alternates or source overlay",
+  "environment": {
+    "packages": {
+      "PyYAML": "6.0.3",
+      "jsonschema": "4.26.0",
+      "pytest": "8.4.2",
+      "ruff": "0.16.8"
+    },
+    "python": "3.13.11 (main, Jan 28 2026, 00:01:45) [Clang 21.1.4 ]"
+  },
+  "frozen_r1_output_count": 8,
+  "frozen_r1_outputs": [
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+      "sha256": "eb45d41ac5ff59cb930025ef6435b437eabdd637e207e78f5bf99b8e75c72577"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+      "sha256": "8d5ed0fd0bad00dbb72f99c1b8a1e692a63279bcb61e58343f0e9d58039e76a4"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+      "sha256": "e180f811030395eed72521873ff03600a06c85ee1ef91675f2261453d1f8d3a4"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+      "sha256": "58b0717e014fc9fc98fd553017f63e3f9c3c39e2023f1f5fa5e30e4361f3bf4f"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+      "sha256": "02e6496f52c998dfadca914d7cb7d76aeecdf7126d083ac8d4ba3bdddb9b1dd5"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+      "sha256": "0621ddea41e3babfdd45bcbf11592d5dde4b5eeb8010c60ab84bd1b01b79e68a"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+      "sha256": "5b0e974bd4aa0a0357961ba249a255a1e51f8f60bf5942cb2c2a85575274bdc1"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+      "sha256": "a3ec9c3f76f11b99113969314370fec6304dd64e8f0e4f7989e5f11214f8c782"
+    }
+  ],
+  "legacy_target_policy_schema": "KNOWN_INCOMPATIBLE_NOT_PASS",
+  "manifest_digest": "ae4462ccbf84ffb352ba461e8896ae54a4a64ebad56ecf50483240158d14b41a",
+  "new_schemas": [
+    {
+      "path": "schemas/research-admission-authority-root-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "3aed65aa1c04c7ac2e4904d13d5e43629235fbfd66375fb0a3e86ea8bfb974e8"
+    },
+    {
+      "path": "schemas/research-admission-policy-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "eded889d312359c14e2ba30b2f3008e531c5dc7614f97fcd9ec8b46952e0b9cd"
+    },
+    {
+      "path": "schemas/research-admission-receipt-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "cc17ead7641c53be4a11c7a12c9dd8aa74315093b8636b3b927f549686b3aaa4"
+    },
+    {
+      "path": "schemas/research-admission-request-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "e89d6afa463b254e8fb9ec75aa8397eced73609f91fe6d53ca2ab93c8f94cb52"
+    },
+    {
+      "path": "schemas/research-authority-ratification-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "e5b389a8fe248b325f15077c965b9e0f9b72b4ea38a52005e5359cdd66da57d5"
+    },
+    {
+      "path": "schemas/research-human-authorization-v1.schema.json",
+      "schema_valid": true,
+      "sha256": "ae392293c4a9bdf48b56d612e37b33fd363afa0218e65a1ef423d6aa32987609"
+    }
+  ],
+  "packet_completeness": {
+    "all_paths_accounted_for": true,
+    "no_unclassified_paths": true,
+    "total_changed": 53,
+    "total_classified": 53
+  },
+  "packet_counts": {
+    "FULL_CONTENT_REVIEWED": 0,
+    "FULL_DIFF_REVIEWED": 27,
+    "HASH_BOUND_GENERATED_ARTIFACT": 26,
+    "LFS_PAYLOAD_IDENTITY_BOUND": 0
+  },
+  "policy_sha256": "9854428efe571e6e5ae47c8e2145d1c93c0993aa101222725bd8f45e5e317556",
+  "predecessor_count": 207,
+  "predecessor_files": [
+    {
+      "git_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/WO-RULIOLOGY-CAUSALIS-B2-RESOURCE-CAUSALITY-00A_COMPLETION.md",
+      "sha256": "e721246ecb1e534429cd60bbd0a55692d5502a7dc86163fb3876071a8ca1c735"
+    },
+    {
+      "git_blob": "84d20d2acb8d72c4e5c142f13b09ca7761a26ba7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b1_scientific_preservation.json",
+      "sha256": "2cf34b34fa31a7e9fcfe0c1fd454e458db7d5c0283d4d9fcb62eb0adda4a368e"
+    },
+    {
+      "git_blob": "0d8be1c9ce893b277902e849c5c1db7cf43f22f7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_causal_poset_results.json",
+      "sha256": "89268d0acc0f19b1d3c2df49cf954285c55f3ed22dea7da88b7b46b44f4de2f0"
+    },
+    {
+      "git_blob": "8258ffe4a04a9a8f40978b5ec056f68cc0bd7f3b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_commutation_theorem.md",
+      "sha256": "e7a01058259c2ca7bd192ee53b63a7e0d6b10493ad87601bf91b10c7af9ae796"
+    },
+    {
+      "git_blob": "5878b5e6fe95a131b2ea4ad83d20328be1b70c48",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_direct_dependency_relations.json",
+      "sha256": "4adfac16e948fef61b6e19d8f3a65c4aaea1a4155541ee1747c2375401243380"
+    },
+    {
+      "git_blob": "7202baa7999302d0e74dd72c6a63b0c0d26802c4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_independent_reconstruction.json",
+      "sha256": "8edacbe06b769cf70fcff13460987f952b53cf861adfd87f283cc138931ebb99"
+    },
+    {
+      "git_blob": "fb0c3c7ded9c01b939658905194a59305b8cc831",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_overlap_conflict_witnesses.json",
+      "sha256": "bb8e922f647438ccd7b1892f434c669b56b36b7a5bdc3aaab7c312975c80a648"
+    },
+    {
+      "git_blob": "9967cef50604757557092b4f9c375670455e3db4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_resource_lineage_semantics.md",
+      "sha256": "e45a7392a9e1697830cbd7a753bdf71366e62f101d649a730a19a115fd7891bd"
+    },
+    {
+      "git_blob": "c0102112392364804cccfea7e0bf91155cdcc3b5",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_scientific_claim_authority.json",
+      "sha256": "e0ced5c31bed95f186215920cb75aea788546a8ac85bbb204ab3cf10b2b07222"
+    },
+    {
+      "git_blob": "cc4ec5648a269ff6078d406f0b704568c631b0e0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_scientific_definition.json",
+      "sha256": "1edf370333df93d403c58c2b4672da2301162895c22190b13eb85702063596eb"
+    },
+    {
+      "git_blob": "7b4de5405352246414bd2ded85f1464d1b2b7bcc",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_wolfram_causal_surface_assessment.json",
+      "sha256": "8a86417e98305eb049d804b4b0c1cc7b0334fb947c5255b20a11379892dac9ca"
+    },
+    {
+      "git_blob": "8bb49f745c7b8fac45da22c1846593b029e4e6a7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/independent_b2_review.md",
+      "sha256": "7601726ef3867214aecacb4ab0a171b9df22e1fcf8905bb616e98422c2a15477"
+    },
+    {
+      "git_blob": "2bdf2f56572fe80ba79d938efb6d277a269fe0e0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R000-AA-AA.causal.raw.json",
+      "sha256": "52cfd668a5db269b03a09c05b64120ea21e693fa046f1a4cd857ba45feb6fe22"
+    },
+    {
+      "git_blob": "fbab05d1dd1ae0e2c979300666b02ff647adea4b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R001-AA-AB.causal.raw.json",
+      "sha256": "90cf4a365afa386b487b2b2ddcb5d4d3de1551ff4057bd27c3f488653947f52f"
+    },
+    {
+      "git_blob": "44644b83dce6fd486336274970ad71f3cce9b41c",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R002-AA-BA.causal.raw.json",
+      "sha256": "f49910e1d7f9780bc5c7f431d1869c132f15c12fc8eee93882b7190b2efd8c41"
+    },
+    {
+      "git_blob": "ade01616863c1fef219eec3f9fb6fd5b1372dd6b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R003-AA-BB.causal.raw.json",
+      "sha256": "a7ce31421b0f4c98689dc6829c0020c214408d6d2971075e81864e891241e409"
+    },
+    {
+      "git_blob": "fa022d2ed7574ebfae4d9d8e69e715b7870843f4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R004-AA-AAA.causal.raw.json",
+      "sha256": "d0c535c99004ef6ebb6d0c9c64a187848c0abd2b1d93c4f236e75470c4d806a6"
+    },
+    {
+      "git_blob": "15b50cc39e78eac3fe868fdbc54074bb444627b4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R005-AA-AAB.causal.raw.json",
+      "sha256": "be21c45f9872aced4065d6b5aebb907e47f6ee86496b312b616c8e9bd2205bb5"
+    },
+    {
+      "git_blob": "dc5a9f64876ab10a03695f309126f600cb3f3944",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R006-AA-ABA.causal.raw.json",
+      "sha256": "3d08edae9ec15bc36db3fddc2707e413ca61272cc52efe2582b6908924fbe7fc"
+    },
+    {
+      "git_blob": "57dfa7cdb4f22a90652767ff6bb68a61db9acbc2",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R007-AA-ABB.causal.raw.json",
+      "sha256": "5b1e26c95235b070b8593e57691f41d1d81c05fac25098804c0f880aa4c30c1e"
+    },
+    {
+      "git_blob": "ad8b5d09ad396218bb4a8ad67b1d381a025da5b5",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R008-AA-BAA.causal.raw.json",
+      "sha256": "815f933725f1679966297a0fa08b52031987940432d4ac02d76b21372d9b414f"
+    },
+    {
+      "git_blob": "5e74c1f0b85d6f8f6d3d0bb82341cbde0c8e5f3e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R009-AA-BAB.causal.raw.json",
+      "sha256": "7256b3ca308996543e17bf41aec82ae15c2d60efc6d8880a9cd221767deca6d2"
+    },
+    {
+      "git_blob": "fecde23906c7cb4806cac3a38861833d8665a8eb",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R010-AA-BBA.causal.raw.json",
+      "sha256": "4c97a47095f0376a4923615bae22a3631b69b9af5e649a243c5900f67c753148"
+    },
+    {
+      "git_blob": "07858d0d9276113795a61a2f5fe0db098d4416d9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R011-AA-BBB.causal.raw.json",
+      "sha256": "12d90d9add11a664c8dc9b6ce2905df2191451c9e51a1e7e5419d2c98190c06a"
+    },
+    {
+      "git_blob": "6b8423c43a038f4c1193e6cf1587324333a7d806",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R012-AB-AA.causal.raw.json",
+      "sha256": "6828180125c1f0d2deab960de70410b2b4edab607baa6fc5fe6baba574c4a3ba"
+    },
+    {
+      "git_blob": "7751afc953965b8f170a3c2d8dd8301e1eb85589",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R013-AB-AB.causal.raw.json",
+      "sha256": "683f5c1cba536054880eb30fbae8c9be0d1c00509aa1390b75af6acb3e480e74"
+    },
+    {
+      "git_blob": "e19d34e34e232a21ebdd9c330dce8ff30d5d08b0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R014-AB-BA.causal.raw.json",
+      "sha256": "c268fd9c0dc47b915500cbb5cbcb76cd9f9d009bad39a27c0d453da99e77b7d7"
+    },
+    {
+      "git_blob": "e2706b08b27a50dc64e5ab04d78fa469fce70247",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R015-AB-BB.causal.raw.json",
+      "sha256": "0b799ffd69546e433da75acb23078948ead0fe11d6ff8ed9c70c9e4c793ca01d"
+    },
+    {
+      "git_blob": "c9c72fadc81bb5c93d6021300d7db5d173a033dd",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R016-AB-AAA.causal.raw.json",
+      "sha256": "e5c3cd10ea6fe472a0bb534c8b2052a0fa86844b81e20d8f8dc71e55aec2302c"
+    },
+    {
+      "git_blob": "e4a97d50399b55d13e2dccded926439c6bceb18b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R017-AB-AAB.causal.raw.json",
+      "sha256": "26ba369b65613e4a17aa5ac3ab5a4c7d20cd2f63868f4eda20549ad3d58ec7a5"
+    },
+    {
+      "git_blob": "9a144c2141b9263c8bbdf9319f879ff156183333",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R018-AB-ABA.causal.raw.json",
+      "sha256": "6218bdf037723d0b27e4651c9c9307bd10a1b78b7bf06f4c0bdc4ade1e327bef"
+    },
+    {
+      "git_blob": "3548ded7c594a9569ca43c13a628b4208bce3614",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R019-AB-ABB.causal.raw.json",
+      "sha256": "186d0b44fcff7491dc21495ea1e1db99ee0044e210c0214841a43229824f62d3"
+    },
+    {
+      "git_blob": "e460abaddbebd8a5efe547392a5feebd7682ffb1",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R020-AB-BAA.causal.raw.json",
+      "sha256": "97d8899e1841bea7291d3f75aeece2dda6091b192dfbfcb921adf9ec736017df"
+    },
+    {
+      "git_blob": "2edd40846117967f4f3bd1ee88cf34746633950b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R021-AB-BAB.causal.raw.json",
+      "sha256": "a870ea36f87cc1ef7c4951043878e1bbebad40707e3275457a18601b36350270"
+    },
+    {
+      "git_blob": "ced83f9b8bf1f007b0cdc2b349258f6c82970ef6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R022-AB-BBA.causal.raw.json",
+      "sha256": "db5e11b5360e31a67f888cc8520991f10e9eaf9ada7c3859922bf4efafd6d28b"
+    },
+    {
+      "git_blob": "a2d54e30727f9403c3695d22660789f0e68b903b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R023-AB-BBB.causal.raw.json",
+      "sha256": "a2950b765c966bb9ec534db8de20e5e197e01fc30cb2ab7cd2acf7ec55ca7ba6"
+    },
+    {
+      "git_blob": "4f35ef4acc3de82df3c8922a3f54f01c356b3523",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R024-BA-AA.causal.raw.json",
+      "sha256": "c864727f5dec76cad17f30c39f0e3a24dedb793ee967d3938f24da29ac99fd5d"
+    },
+    {
+      "git_blob": "a9bcf5f967135c708aff84a67876cf9325589fd4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R025-BA-AB.causal.raw.json",
+      "sha256": "8e43df9e45dc3622c5b2796449ebbcc335fc777b27eec88ba946ba863bc847ae"
+    },
+    {
+      "git_blob": "57b6965a3c604a9e1fe7d5dac96e9ec2a2262055",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R026-BA-BA.causal.raw.json",
+      "sha256": "b4689ff8018dcf657ee3ebd891485a87670b435b03e99cf2874e242df27d5cf3"
+    },
+    {
+      "git_blob": "1c4f93eae3431f9062faa3209ec1272ce36c2967",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R027-BA-BB.causal.raw.json",
+      "sha256": "47954b81da45c083ffff88d468b523be86115db800d1ba2bd73a00d8aa46cdc7"
+    },
+    {
+      "git_blob": "230f7c0ef3a698fb3386864fa5fc8bc9a84ff101",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R028-BA-AAA.causal.raw.json",
+      "sha256": "e20bd35953248d5be8bb43970e8f21d3925c3363b8f5d97f5a464328188ba5db"
+    },
+    {
+      "git_blob": "159173aaad18d6656bdf0db0faa232b5e43a5ce9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R029-BA-AAB.causal.raw.json",
+      "sha256": "afe5256a3b319c5f908d77ab5c161232a172f256bcea78fb08fc16a956e7c123"
+    },
+    {
+      "git_blob": "e41db87332f709388147eb9d9329cd68281189c3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R030-BA-ABA.causal.raw.json",
+      "sha256": "c3942d1f58e9321caa90527cc63757a1272fcc13dd3dac78f70bc805d8d93114"
+    },
+    {
+      "git_blob": "98afbc629da67a714a12aab139e986bdfaeb09b3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R031-BA-ABB.causal.raw.json",
+      "sha256": "3398e91b01ab882474db4f659bede94fd864f5e6880e2cc7322789a5cd369262"
+    },
+    {
+      "git_blob": "20374a58aaef005b6f355171a3e8550d50c92e01",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R032-BA-BAA.causal.raw.json",
+      "sha256": "ea1034f430de2b63028fe53753a8dc9b118268b3ed2e141c6ec448886bb6a9d0"
+    },
+    {
+      "git_blob": "1f399b3310ea8aa563031e2020fe37846390dbe1",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R033-BA-BAB.causal.raw.json",
+      "sha256": "def7497c9da466e3fbf71964c76641e4be2f936d3eca3c1c0a7c909c074b97fe"
+    },
+    {
+      "git_blob": "d479d238c31796f618e7afa818097afa2cec9417",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R034-BA-BBA.causal.raw.json",
+      "sha256": "f2273c8b3a2cdb4595469dfc516a04fc511789b1b7f601559ddefdf6165c78ba"
+    },
+    {
+      "git_blob": "322d47c96e3633cc7c0d03ca72bb61c052cded6e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R035-BA-BBB.causal.raw.json",
+      "sha256": "1f57eeea07d1ee101503cb21f578ad41297255d71f9ee38b9453273d08301f03"
+    },
+    {
+      "git_blob": "f398ac1fa0a2b9ad267a3b2d9088e5bfd579acae",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R036-BB-AA.causal.raw.json",
+      "sha256": "5aab8c6d1c4e65053886581447eea5069564b73df3e8bae72277b0f800e87367"
+    },
+    {
+      "git_blob": "7113e96f413ac54370fae1ef70c5a771f1d8bd3b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R037-BB-AB.causal.raw.json",
+      "sha256": "ce02eaf7f5318cb2eed440840403f0239be5af61e1ed63896bf8ef8f642c2080"
+    },
+    {
+      "git_blob": "9f2431efb2dac24ea16aa8132c44cc3e27002560",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R038-BB-BA.causal.raw.json",
+      "sha256": "c23911609fa00df85f594995d32e1fd6e67c37c3f1c40e3f9a0bb55abd983b09"
+    },
+    {
+      "git_blob": "ed98fd2a7e3d1617e631ea7fcb57f81c3e556d84",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R039-BB-BB.causal.raw.json",
+      "sha256": "8316c93bb19becb7510b58236b3ea6d5fe25aebaa3ba6dd90bf1c7a7cddcda43"
+    },
+    {
+      "git_blob": "3a440081f17c079e958eaa8be132f15c143644f2",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R040-BB-AAA.causal.raw.json",
+      "sha256": "183f1061cb8eabef841764b426b86752fcf1dbc963ddf5c012a212473d744a8f"
+    },
+    {
+      "git_blob": "cc8a10e0f914a6a03c209690f112707032421cb6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R041-BB-AAB.causal.raw.json",
+      "sha256": "ff73b046983d8cedb09d7ca4acd05614db106f58899c6744d632c8258faa0aaf"
+    },
+    {
+      "git_blob": "d1c9160b30f1bb341669bb7285a582f842b78fd6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R042-BB-ABA.causal.raw.json",
+      "sha256": "65f1fe7c097dbfdbb78b06f5728cc42a11e03275f1b560dd5e4a6de4107f460c"
+    },
+    {
+      "git_blob": "2370907ef7d67792785f90def88bfef6fc42df11",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R043-BB-ABB.causal.raw.json",
+      "sha256": "7c8d0cee93df2f7339b95b1f0853459dd6040f039ef22e84be36ddc51884215f"
+    },
+    {
+      "git_blob": "76d43473621a29c0b663741f89477617a9fd1f93",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R044-BB-BAA.causal.raw.json",
+      "sha256": "1b41f96591e93fcfecff4c2543a0be7b2367f609ef357030d9cab05a46af7a02"
+    },
+    {
+      "git_blob": "abeec9389125e9ce50eec19982125ec29018576c",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R045-BB-BAB.causal.raw.json",
+      "sha256": "050fef62392fa3f4c32100eb388077d111669c0556819f6c4c01b209cf8d29ca"
+    },
+    {
+      "git_blob": "edafab65b1858e24bded1d18068ca76d376fce83",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R046-BB-BBA.causal.raw.json",
+      "sha256": "bf34cd6410c67f3db5e210c452c8f9f8fdb2f619bafe3c883d9b45d46073761f"
+    },
+    {
+      "git_blob": "7b8b0a70c22455efd90548ee235c52a9f298a989",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R047-BB-BBB.causal.raw.json",
+      "sha256": "e4d6197ce866b7aeb7ae77026249210f265637e2bebaa8a3b59655263f4fe56d"
+    },
+    {
+      "git_blob": "3985736c9d67f9f095bf97da73167e5911274b24",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M1.causal.raw.json",
+      "sha256": "908ab0fba17c35f3ae834c6b8c1297d652148169d8dbd46786900bd3cfcc90e4"
+    },
+    {
+      "git_blob": "552c1a1dee1672435e83f06a170f1a77a4fa676e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M2.causal.raw.json",
+      "sha256": "897c9e1e3e9c508db8a43adc6487211383d3f3cbf6495a064e3207748055b1c9"
+    },
+    {
+      "git_blob": "a02d0e1c73279316857fb60eaaf4fd939b528c1d",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M3.causal.raw.json",
+      "sha256": "7c503f2a3fd7794bdfb9941759a9532ceeeeea9dc5feb9bd7ace618b4afd765f"
+    },
+    {
+      "git_blob": "5da23543d92a48ad3c6cfa52dd7951bfca1fc79b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M4.causal.raw.json",
+      "sha256": "3fb6baa9e5779f4f165e7150ac3b603a7123976b4a28e1a888dbf5ea97809bbb"
+    },
+    {
+      "git_blob": "06aa67ba294746bb436a4293e5798d159f1fd23d",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M5.causal.raw.json",
+      "sha256": "766f84822f406a6ad5ac52e6a679e6e03eff6d865741c17df09994e50f3c060a"
+    },
+    {
+      "git_blob": "3006105a67aa81554103f96cb493ad25332b0310",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M6.causal.raw.json",
+      "sha256": "376d3b5af95e643db416eac6835cd45268f9743f744d3ceb49dee42c784adc30"
+    },
+    {
+      "git_blob": "4c944eeb64cb4d38e0d16eaa5a20cadc78ad4bc3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M7.causal.raw.json",
+      "sha256": "24070c410136a4460067e6aaf64f27ed5adccaf42ab1c5e8257aeb09a053db7d"
+    },
+    {
+      "git_blob": "2b1e7ac6cbc8b1e1c1dfda026ff056813fb13197",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M8.causal.raw.json",
+      "sha256": "fb1d46ecd887c6807ae84acefc913cb2cc10a7cdd9596d84a123461bf6aa3a77"
+    },
+    {
+      "git_blob": "e8c1cdbc6cc4c5c7c899d1af552862b38ac6886d",
+      "path": "artifacts/causalis-event-instance-parity-01a/cross_runtime_reconciliation.json",
+      "sha256": "95633dd6f4396df25499c771a7d66f31d1ee9e2d57e8d4bc8001df665b2e4748"
+    },
+    {
+      "git_blob": "c77b039e565d1536f2c09d41a32241d5918f0495",
+      "path": "artifacts/causalis-event-instance-parity-01a/definition.json",
+      "sha256": "9871f43c5ce8d702cdb21c0518117696fa4cf99c81bfb49f1cc9b7ef32c7b4f8"
+    },
+    {
+      "git_blob": "b8367fedb767be59eaa6d6e8b90e3906382b5a0b",
+      "path": "artifacts/causalis-event-instance-parity-01a/event_surface_inventory.json",
+      "sha256": "f04847f8247a3d19f968a8f45abd0832e7c55f1eacb227b37f6501df1f7308ae"
+    },
+    {
+      "git_blob": "5de6ade3dd688826ede67a47275cc80b54934d79",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_parity.json",
+      "sha256": "cef62b88341143f993fcc5c496f6101ac9607ff1c7e508c33b49a51211f0126a"
+    },
+    {
+      "git_blob": "8832f1014b221379a17820c78e58de5ecba4818e",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_python.jsonl",
+      "sha256": "cac09d6363552722534d84d6f4f7a91fb6ffadaf5ab76bb09d99b30ff3f83488"
+    },
+    {
+      "git_blob": "f635909062fc4266760c42c126bcea4f7169a87c",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_wolfram.jsonl",
+      "sha256": "e54c41764be8e5c18827d75cd2f51618dc15e4d409620c5ce0e6c7006991f5f0"
+    },
+    {
+      "git_blob": "3fde0c8127318ba6180ffb289f43a9d7c41fe8b3",
+      "path": "artifacts/causalis-event-instance-parity-01a/independent_recheck.json",
+      "sha256": "7ac155d3f613fb80cac5acb53f1de618574f3288a7ae5ad3fbaced838ce9830c"
+    },
+    {
+      "git_blob": "9ef09901e48938a1df296f55dc8dc87a2c6204de",
+      "path": "artifacts/causalis-event-instance-parity-01a/manifest.json",
+      "sha256": "e206e8d40122b3d7127be2e55f52254089d2355118134919eddfb2dfaf80af91"
+    },
+    {
+      "git_blob": "ab3c1241f21f2fe8147f8a3a10bce2437e8e2158",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_parity.json",
+      "sha256": "3566ef8077f5823237f818257917aef7ce754102e19fd5eeb1c5272df7d23992"
+    },
+    {
+      "git_blob": "8d35a8d57e1591b632867e80390cae8c046ff70c",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_python.jsonl",
+      "sha256": "fd106a613f929be90a793c9f71b27c3d1d6ac6906e661719746635204ec2fc08"
+    },
+    {
+      "git_blob": "3066e5a98ffbe1915f546f025439d3c2a230ab0a",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_wolfram.jsonl",
+      "sha256": "e1aaddccdce2de26f573e2702a1b1b23378ce702d471ad0c3c26320940122976"
+    },
+    {
+      "git_blob": "50d7aaaeb15295b1493bcfe343d1ac5aa2639cfe",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/arborescence_audit.json",
+      "sha256": "94f859ccc3528868691ffa4ccf416fae1546c4f31bbcb8d334de10036427a723"
+    },
+    {
+      "git_blob": "3dcef3af2ced8c1a8e2588a8068096a871d05642",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/hostile_controls.json",
+      "sha256": "668b531f2f79048880b09a5947410d9c1f0f29718a985fbc0cc7c81477321e3e"
+    },
+    {
+      "git_blob": "14a9db752b0f73e979f32493be6372698086401e",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_primary_graph_parity.json",
+      "sha256": "15145c52d5e79afa3d4abbbf1a09fa3d99276bdeab79b6211ee3a8f45f7dc1b0"
+    },
+    {
+      "git_blob": "2898d988dca48f67358ece2c475bfbe4ad6abb5f",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_python_reconstruction.jsonl",
+      "sha256": "ee555fb9a9fd46d4cece94f657222763c40e77128b4aea95fb538a9cf607c313"
+    },
+    {
+      "git_blob": "48a8b84b3de9d716c935a1fd8437334a58dd00e9",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_raw_reconstruction.json",
+      "sha256": "eba2ae2b9920e4fd73d2e6b09069fcbbbe42ece357a253fcb1b1289ca787afbd"
+    },
+    {
+      "git_blob": "db863eb988ec5da20706c7406f929e0062a97f4b",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_redex_parity.json",
+      "sha256": "bc16d0dad9de4b292e8d8a4e109dcc0468fa5118236da23322b8c59933cc6c68"
+    },
+    {
+      "git_blob": "fa3cd908d647aa95b54292de6c847b34ed9cc606",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_wolfram_reconstruction.jsonl",
+      "sha256": "012d9a57d6ddfd0415397ba5662c356a469cb682c4bc4c9e784c09837ae9ca6d"
+    },
+    {
+      "git_blob": "7a14c8cbd33a20069b136143bad0f3f948c6f925",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/manifest.json",
+      "sha256": "9a44b088a15fb9ba08e2dd08b5ef1fc46aca69c30816c44640713ddf7c46ed00"
+    },
+    {
+      "git_blob": "a6fbb8be31761d62d492dca81ca1910e0d98d638",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/primary_independent_comparison.json",
+      "sha256": "257adaabf3612492218e03385e4156e9ff9095971844b932d37a461b7dc3ab03"
+    },
+    {
+      "git_blob": "6824734164ed0824e2edf6d84ddca4de8abed66a",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/verification_receipt.json",
+      "sha256": "3fe87255fb5a3c6caea6824c3be658f30d9961517de91bce955d6f987bfcecc9"
+    },
+    {
+      "git_blob": "704262a2e504d89812d837202efaf4e9496180a8",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/wolfram_independent_check.json",
+      "sha256": "a372b054a1aefb6d2c293f165b7b11266f7de400948db6a6cabab69274d6c7ff"
+    },
+    {
+      "git_blob": "a61604e9d567a59605735c9d3283ba98bd4e3d5d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R000-AA-AA.raw.json",
+      "sha256": "ccc513fe3e1c96bc05b55d7fb9e8ad8d99a6ef17f94bb8b74539bb88ba7081af"
+    },
+    {
+      "git_blob": "f7f937f7bc14b26bc5bb47d596a7213ca17079b4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R001-AA-AB.raw.json",
+      "sha256": "cb29cb0ea63c78eb6c0c1f98c831a163c71108ee0544db9f9392869d2d9da73c"
+    },
+    {
+      "git_blob": "be5df05609ec1f7a281929db3f6070349b35b405",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R002-AA-BA.raw.json",
+      "sha256": "0230087a4693dae386355af9494bd8bb860e57f54bf4a1e61194c18ba922a6ad"
+    },
+    {
+      "git_blob": "304166704c57998f907fc31aab63b3c0c30d563c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R003-AA-BB.raw.json",
+      "sha256": "821eceeaf76ec3a6a84a3e2306c0b166d658dc2dda5433e39643caa8f9183b83"
+    },
+    {
+      "git_blob": "dae1af01ba2326aca997988f1886a48d042c7f27",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R004-AA-AAA.raw.json",
+      "sha256": "35869a1bae3482e0452a997cfc5b67a518adb0c8ac72c82f9f65433a9e9c8ff3"
+    },
+    {
+      "git_blob": "dab55124e6ace0588e1e0694397a2f9750b1aedd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R005-AA-AAB.raw.json",
+      "sha256": "1b0f6142329b85f74f58b34fac6fc6f32b03b00dcafa8c699b0101082a9b2ae9"
+    },
+    {
+      "git_blob": "0278bf589c95de905ba5c542846e26650c73f3b0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R006-AA-ABA.raw.json",
+      "sha256": "c8f15428dde68581124a0e8c71f5bd3b8f4540f7d7ae4dcf5f438386eb52d419"
+    },
+    {
+      "git_blob": "5844e557a177456f25ba04692bc3802b23fa0f25",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R007-AA-ABB.raw.json",
+      "sha256": "5dbd43cf6d99215bbefa277415522a2aae26d94a53ded26928f44b9b0ee73463"
+    },
+    {
+      "git_blob": "7742675789e63896f8bd87856b37ca92569b5b35",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R008-AA-BAA.raw.json",
+      "sha256": "d53874c88c2aca41a29360cdcd3d26317052879b3e53f330ece4f677d264a288"
+    },
+    {
+      "git_blob": "44b8facb5ea7be89dffbcb48542b90d452ebf312",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R009-AA-BAB.raw.json",
+      "sha256": "f517e248dcddfb24d3fe20549ebd5559045e228aee178fca91313598575e1199"
+    },
+    {
+      "git_blob": "6c4e0eccbf7da3c03e89246d36aac955d3bf73e3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R010-AA-BBA.raw.json",
+      "sha256": "f000ad786aff2f78615e07b07dad3757fdedba474ed4fd43ae7d2dd5e3d9cbbc"
+    },
+    {
+      "git_blob": "a7402a91efa28ae5e82f7df57b7f609dafcf8c30",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R011-AA-BBB.raw.json",
+      "sha256": "1622c8f61e4e13593bc19602a4d4b8cdc316c97c09046342b5b804400a776889"
+    },
+    {
+      "git_blob": "2c587df9e9eab58d463c7510143e5156e9150876",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R012-AB-AA.raw.json",
+      "sha256": "3e9c1ae85eaedb2a1ee4ab496cc0dc79301d09eb744baea71a2448ed6e1eb456"
+    },
+    {
+      "git_blob": "98622a5da02f1fe90e9b500235b85dbadcd89dc2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R013-AB-AB.raw.json",
+      "sha256": "1562aa5019866a59f49f2ae2508c12892529e2963f647e62b1ace46897fa475e"
+    },
+    {
+      "git_blob": "7593eafc5ab2c0adad219988c39cb75222d1409f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R014-AB-BA.raw.json",
+      "sha256": "2716fe3a17e51e24fdf0a2ae1606091751dfcb2aeba418adfca51caac17b9707"
+    },
+    {
+      "git_blob": "daa3e7d190dc72e185b5ed8d4412175c0d81b61b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R015-AB-BB.raw.json",
+      "sha256": "bf4386f59010b8a8d1610af2a342f2a982db32dc48520d7382406eed3c105148"
+    },
+    {
+      "git_blob": "170ff330b37466225c83984ad0909bd41fcb377c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R016-AB-AAA.raw.json",
+      "sha256": "988e0b95942e755608be2f18a4b473de0d385b331350b87a31e13a7aafd66714"
+    },
+    {
+      "git_blob": "99d525cc39e14787608b9e47fad97b9693d04daa",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R017-AB-AAB.raw.json",
+      "sha256": "787d40928219b0b2942afd051dbe96242ca8e82d39b93fd2cafbea57eb419db4"
+    },
+    {
+      "git_blob": "bacd3a3a4d8b031c6d15b9c6091f4884617a726f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R018-AB-ABA.raw.json",
+      "sha256": "faaacea699e86822bc231475c917abedc513d3bf6d35663c5f7b062e247764b0"
+    },
+    {
+      "git_blob": "ec0464c75303ea07ed8e1eccf84e8ab4a40ad1b0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R019-AB-ABB.raw.json",
+      "sha256": "89bc9b95b0cc9885287cda06798d576e48952e1098f9da42ce9f7213c6223a34"
+    },
+    {
+      "git_blob": "cdd18de0cbe810ee898402f05f1e3be76986cb60",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R020-AB-BAA.raw.json",
+      "sha256": "ce88edb3e7427f1b5e8147029928c346ac697481e0ccb847b3e22a6a8483da0f"
+    },
+    {
+      "git_blob": "101e4a5d9dd8ba34ace830d09478f791329110e0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R021-AB-BAB.raw.json",
+      "sha256": "ab0e3b531f72ae43d434e097e35b5a3569f3464638d4f2fc2e6d0d40b10d5d6d"
+    },
+    {
+      "git_blob": "749042d0d6937a30c86fc6a8b6cc7135c36dcf88",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R022-AB-BBA.raw.json",
+      "sha256": "82bfd795b7430c22cf9099c2762538746676680154a0232ab9d460a960cf0b20"
+    },
+    {
+      "git_blob": "954cacac92c44637ee78b8c48c8a5df386dea7fb",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R023-AB-BBB.raw.json",
+      "sha256": "659dac3e70933642fc70a4f1131680bd32ab718fd819ccc7d4d1f56cf14da1e9"
+    },
+    {
+      "git_blob": "d1c6e0a0e3aa822bc903cefc8875d78e2dfafcdd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R024-BA-AA.raw.json",
+      "sha256": "672fd906f105989d18e44d30ab09ecd5195145a74fc8cf1c211fb8f58147279e"
+    },
+    {
+      "git_blob": "368a4e0c56318637d018f7473a2a21da501f7d62",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R025-BA-AB.raw.json",
+      "sha256": "00b4909a2ff9cc49534387b5ed647caa3d78693a11c382d80efab37b42b5acfb"
+    },
+    {
+      "git_blob": "f58e5d0990567050d7b0c23725a494b0c3dfcd28",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R026-BA-BA.raw.json",
+      "sha256": "59521e2dd1a49e1be1275b359a5e8f9d8610865e57de773e9136874f0f25937e"
+    },
+    {
+      "git_blob": "fdeeb223dbbe870527624e274283f6041d7af5c5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R027-BA-BB.raw.json",
+      "sha256": "29c41a64713349e78a68992146ccc59213539d0b014044bae3ea6127d362bb5f"
+    },
+    {
+      "git_blob": "6003e29cb95c39a9e8646c901c8890a52da4396f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R028-BA-AAA.raw.json",
+      "sha256": "0a6df7422ddb2b861d8106884a24ebe369994040d0dac6957f3bcbceeca274fd"
+    },
+    {
+      "git_blob": "53c72beb157daf3dc04b41447629214697049cb6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R029-BA-AAB.raw.json",
+      "sha256": "2943b8ed243122172808eeb77f787a4ea4bff832cf81b33cfc8da70af365d16d"
+    },
+    {
+      "git_blob": "90f7e8a4524004acaa246422a10c0f876b7fb8db",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R030-BA-ABA.raw.json",
+      "sha256": "b6230b8b968a99f3a328a2cd679ac91e4e6fe917e48f433edd63fd61117423bd"
+    },
+    {
+      "git_blob": "aa680202a3feff9b2d1823c3a1aad9d4104a5a26",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R031-BA-ABB.raw.json",
+      "sha256": "30adcfe11521f75516828e9ecc7d9face9aac58670843b82156f0f139ee7fcae"
+    },
+    {
+      "git_blob": "13f8fb0b3edbde58b8ccf299c1208becdc39e10e",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R032-BA-BAA.raw.json",
+      "sha256": "8a7305d2be228441fee865cb44eabf83ca880ac43796acee7efad382005947b8"
+    },
+    {
+      "git_blob": "c19c4d6ebf082e7403ae84e6d64812d182708d14",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R033-BA-BAB.raw.json",
+      "sha256": "0f89b4bd80160f904f2f123d0bbfb2237c87ed183a393982e3688ed392108b08"
+    },
+    {
+      "git_blob": "865e2f79a6574957f8bbd29ab7d2bf0a626e4365",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R034-BA-BBA.raw.json",
+      "sha256": "11868206cf24175f78eeb1e0bbf47a53efab359e8af68ce3a228d2b8e7323d2f"
+    },
+    {
+      "git_blob": "e45d533c300de67588bdb62007eb5922d038b34c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R035-BA-BBB.raw.json",
+      "sha256": "e16181c3ece415a3f33c432013dfdd0713867bda674e35ba5ba4040e36d05ba6"
+    },
+    {
+      "git_blob": "099088a22ac6c6e6c9df287e8add2d198a5497f5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R036-BB-AA.raw.json",
+      "sha256": "56b2753ae86d2d5577723b7daead06d77b191577536a5f69108327df686c924c"
+    },
+    {
+      "git_blob": "a0ecb0eb8a72aab4b5ed4a63d64b16326d161d3b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R037-BB-AB.raw.json",
+      "sha256": "13a78df38d3e33f78ba4cc4955a45586986cf97e2d81dc22f211f521fa79ca3f"
+    },
+    {
+      "git_blob": "3bf54c28fb4921bfbb7f62528b0d0159834fbcf3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R038-BB-BA.raw.json",
+      "sha256": "4ee51d615c93f75f3785a69f7c1d2a4c779a1dad5e965977b3b62690380ff801"
+    },
+    {
+      "git_blob": "1041c63be2429d11ee2beeabc872f2d48bb07a2c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R039-BB-BB.raw.json",
+      "sha256": "0209301aaa934cdf995ecf792506f44349508b1eb13b1faab42f4fc868fbae7e"
+    },
+    {
+      "git_blob": "624b3c265c37bd8e5145e7e325ca26cc0ebc2e09",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R040-BB-AAA.raw.json",
+      "sha256": "024643f8fc632ea605ee8701de35db02ca0f8ce2b5cfe98b4cb7de752570433c"
+    },
+    {
+      "git_blob": "f2f7060784a35bbe2bb30b696c70e58554e1a568",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R041-BB-AAB.raw.json",
+      "sha256": "4bad462f3058520ce54f0d61350d912ace8035485bb40a1fc389efa9e4cc0986"
+    },
+    {
+      "git_blob": "c84f896c79190c4b2a5633a6b5bb338a5ffb0767",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R042-BB-ABA.raw.json",
+      "sha256": "43d35f25ed59650b00cc21191551adfe114b70ba6f316af973ca0af144a16900"
+    },
+    {
+      "git_blob": "42a852ec8873697d39a7ea41d8b7e81738d0198d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R043-BB-ABB.raw.json",
+      "sha256": "43d2abfeff5f53dd27c843ea12d094e33770ea98ce4c39577c497b6a50156d4a"
+    },
+    {
+      "git_blob": "e6645b3f436c693212b5c9e767935b51e044ef33",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R044-BB-BAA.raw.json",
+      "sha256": "5fcbe1df7719975b321c1830675aadb1fa3f3b0fd10e3091476505ee234b715a"
+    },
+    {
+      "git_blob": "303637a114771f1eb3db0df510e18a4a40d87042",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R045-BB-BAB.raw.json",
+      "sha256": "52d6d973eaabf9c500c661a1db1b963fc741c7214fb31a8a384f26136aa5bb60"
+    },
+    {
+      "git_blob": "2b722843615ec9b50da25e60c2f892abb50df6fd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R046-BB-BBA.raw.json",
+      "sha256": "3c3fb9868ab6053d5160a693e4d080c0a1dd75f3302b86c909f7fcd0d8094c2f"
+    },
+    {
+      "git_blob": "c0126a934be4b2ca366c4a86097d5fc01f6e207b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R047-BB-BBB.raw.json",
+      "sha256": "fbd017d4f07950a1b44fd1e0046e59a883879fb192ef5a916b032c40eea3519e"
+    },
+    {
+      "git_blob": "cf4efbc3ab8d1d36f3922df365c7962d470de515",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M1.raw.json",
+      "sha256": "7143827ede28160f772cfc7a5aa552fb0cc711f8c0cad4618c9b1dab6cc4a4c4"
+    },
+    {
+      "git_blob": "f7996837dd865778afd9f1241d60467427bcda9f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M2.raw.json",
+      "sha256": "510ad6cbb8e1177814fe145d819459e51358f1b249ffbba9488f918b051e7f32"
+    },
+    {
+      "git_blob": "5b19a5d3921948f24f95a1c662621c5b88d5d4f4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M3.raw.json",
+      "sha256": "5932c2a19cd203a82b22f714af25d1b6a4a97b525d085ced8fd6fc036082f1fb"
+    },
+    {
+      "git_blob": "44a05ef821761697130db4d53afce39e544fa0ba",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M4.raw.json",
+      "sha256": "fb64c31d4ef917d903ff16827d6b640148e2108534fa05c0001659e77639115e"
+    },
+    {
+      "git_blob": "5ae93f886ffe5cacbebcf910fb86ea8008256a6c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M5.raw.json",
+      "sha256": "818e264e0d206f36110480539ca97884553daea21b2e4034c814f215c24942ec"
+    },
+    {
+      "git_blob": "2a8a470edd16f25e99270f795c3b57f575e1f866",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M6.raw.json",
+      "sha256": "3136d259c5d3fd1eb904a50df96de1ee3300f2b5651a22d81aff70640981c1af"
+    },
+    {
+      "git_blob": "d71d184726a0fa06fa8d1bb022dd25a7e037e25a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M7.raw.json",
+      "sha256": "0c6aacf972162e267d6c0941c6ec8b4deff5e47945a3d623920335b053b51586"
+    },
+    {
+      "git_blob": "7a4ad6b89bc27cc0d5a2a3ffb4421add99a77de4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M8.raw.json",
+      "sha256": "5886bbe435ed2bbcfdc81a8fa4de62d029c09e7d25a5c8e4b8f55f2228bc6990"
+    },
+    {
+      "git_blob": "70371b425babf517fc30b20d8645547e92d92d64",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R000-AA-AA.raw.json",
+      "sha256": "c394bc2d20d069eb1ddc0589872448729c71b0838d639df80828e07a3b59806d"
+    },
+    {
+      "git_blob": "60db40f6e3705bb384e86ab87ff8dace83d0202b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R001-AA-AB.raw.json",
+      "sha256": "f365ee68372e99738af7628fbdb4d0d6abf97704ef61d38e11b0ec7407d8dedd"
+    },
+    {
+      "git_blob": "03fb21cb64ffe4682b736182ccf001e0d9657265",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R002-AA-BA.raw.json",
+      "sha256": "47ced6d77e8b82de166544cc89e2960cc004a76b2dceb992604155f2c07007e4"
+    },
+    {
+      "git_blob": "ea53dd411eb21d4b919da23b601bbbf4a57b5a3d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R003-AA-BB.raw.json",
+      "sha256": "72fc5cbb7cae5f95d1741218f2bc1c5c91fa79fff7fe5d127a8dcb2cf0eba620"
+    },
+    {
+      "git_blob": "c37cf08253b27330bd4a830694c34a0ddba0818d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R004-AA-AAA.raw.json",
+      "sha256": "a1b924a531cb8734ec92fdb6d0977f61530310ee068f6230301889930e0ead9f"
+    },
+    {
+      "git_blob": "b2de9ea75c6081f2798f73e164423eb1b972efa6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R005-AA-AAB.raw.json",
+      "sha256": "2426d750bd83e38c00963c29aff5e00c843b410b5e19b8dd6f0a289ba26539ac"
+    },
+    {
+      "git_blob": "22c464cc8e8a1c6e72dd7027dae920038928fde2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R006-AA-ABA.raw.json",
+      "sha256": "9578ad5111b4db2073bdcd8347030294ffd7736de042146393b9fcc14bbceac0"
+    },
+    {
+      "git_blob": "9a4ccfd90d021e1f5b31d2003c8bf752c0c1b0f2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R007-AA-ABB.raw.json",
+      "sha256": "56a56d30f985e6bdeb6e515fc3174ff19c76a61ee9a8efa9e82c7898885804fe"
+    },
+    {
+      "git_blob": "a3afb8e06f6de9c864b58209499cf29233ff61f6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R008-AA-BAA.raw.json",
+      "sha256": "aa2c87dae8cce1fcbaf4bec6f49b41a45d4f21dd57b71eac1b74d9ff277b4736"
+    },
+    {
+      "git_blob": "0829e33ee2eeb45eee4710588aba2dd9ce9a8b5a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R009-AA-BAB.raw.json",
+      "sha256": "cb7b458aeb8694a25432a6db4c39f870d46b3e19e59ed74107b1bbc1d54a8c2e"
+    },
+    {
+      "git_blob": "50ac76ef7a85d75ae1d4c7d4b9cebf6c7e03a424",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R010-AA-BBA.raw.json",
+      "sha256": "4bf9515a166e4636e5deebf1154983928a3d8e2f1464e02039214bc208bb8118"
+    },
+    {
+      "git_blob": "db986644e10bbc192ee5cc5366cdd96ad0885452",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R011-AA-BBB.raw.json",
+      "sha256": "4dcfb4046a5abfc3c8b087a050851850d13dd25e6eb0d955866ea4cec0fba940"
+    },
+    {
+      "git_blob": "6ba050dbe86d1a7448c7d10a522657f2843113fc",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R012-AB-AA.raw.json",
+      "sha256": "77379d95e8dc85325e4fc3d99b11e1aac4b18947fdfd4d1d4ea8fcd947a9bb21"
+    },
+    {
+      "git_blob": "7934aa1b533b28305f1c806496eb550932bc0f6d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R013-AB-AB.raw.json",
+      "sha256": "6cf73f6ae3facd24b968c006537d00bbe5220fe7cc587c5013b1312211bf5618"
+    },
+    {
+      "git_blob": "01af0c1545b4bda231b62b43da63e341823dc5de",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R014-AB-BA.raw.json",
+      "sha256": "176cf569afa8ffb32c34868e8e29220f3cde084fbd49b0d7ba7e7cdc9ecd373c"
+    },
+    {
+      "git_blob": "d81f9612206cdd46758c678fbb58c103eab86e91",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R015-AB-BB.raw.json",
+      "sha256": "100021d4353717ca0cd49881ee23bd3774b949b59ed85cdcccadd582c3155f31"
+    },
+    {
+      "git_blob": "b4810c7025ec0d6655d2b420f353f6194a84b131",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R016-AB-AAA.raw.json",
+      "sha256": "44939a029fd007468ee3944a352313e6969ae09895996c62ac5dd71675b35dd4"
+    },
+    {
+      "git_blob": "471e6816da0f634fed1ef0bd3adcd01eae624cdf",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R017-AB-AAB.raw.json",
+      "sha256": "6ea2504508839076f9f6785fd5ed8c001e991a78d783f4cdd4db81a92f14fcae"
+    },
+    {
+      "git_blob": "60ca081f1b974984e50cde7214ce192b0cccd577",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R018-AB-ABA.raw.json",
+      "sha256": "16e4161b9ef82e19d7396c02aad70b7d2ff77d4db208c79b7fcd96dac30ed619"
+    },
+    {
+      "git_blob": "7429809d31cb7aafb7fd058e4b737363ed8a6440",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R019-AB-ABB.raw.json",
+      "sha256": "7ce031828732a46fc5d8f419075d56b57f791527f119d390661f6788bfd11558"
+    },
+    {
+      "git_blob": "4e95b1989e0f23362c17e4e97ff1e00672da0b08",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R020-AB-BAA.raw.json",
+      "sha256": "7bd70d15f93759ea30fde28115c398bcb8949b422ea70ec72bcf818aaf719274"
+    },
+    {
+      "git_blob": "a72376705b52920334d1f22674cfeb33eae46783",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R021-AB-BAB.raw.json",
+      "sha256": "e627f4eac5946837890f022d1f75dd6713a2c42f2bd250d42486edc5c2a482cb"
+    },
+    {
+      "git_blob": "b921228b62b404b77e7fe69f498f183caea97830",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R022-AB-BBA.raw.json",
+      "sha256": "fd67f2be9301bca52854541c178449a031b29cf348bdf210706aba4bc9c48241"
+    },
+    {
+      "git_blob": "81c01a80298097e40ab69ea7e466bf80f0f43c84",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R023-AB-BBB.raw.json",
+      "sha256": "1e70b910b8949f9bcbc18925fd03509e4c782f50abfe044ae9088f846c40e423"
+    },
+    {
+      "git_blob": "da8f84d89ebf1ea6a2e228e6fe5ae55a32f55e96",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R024-BA-AA.raw.json",
+      "sha256": "0fc4dfd2815e571bd2631685c5da4ad5aea68632d1e96daa2d4e01392ff2d742"
+    },
+    {
+      "git_blob": "86f1f95e7b1ffdfcd79f9d4ff29930141490fd83",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R025-BA-AB.raw.json",
+      "sha256": "ed07338fb73765a454b3774acb8c9d38a42f74d3b8c390bbed1b989600259f99"
+    },
+    {
+      "git_blob": "5730a6b672f4b223f90bd1f96373764ca982b726",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R026-BA-BA.raw.json",
+      "sha256": "7511257265f486d5695d9bc577c3f494141f5c3256027beb6236a7e972c1453b"
+    },
+    {
+      "git_blob": "c68536e9dc62f772655d27bb79e5438515847f4c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R027-BA-BB.raw.json",
+      "sha256": "78ce7d759f5e462f87a39b109bdd6efec3370ee33895dd9eaaf0ffb28d6284d8"
+    },
+    {
+      "git_blob": "150832728203a17e089d57e70094d33854074437",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R028-BA-AAA.raw.json",
+      "sha256": "0d1c0970426d44ee4fb9e02edc203737e873348376a864c6a4e997c9d4141a8d"
+    },
+    {
+      "git_blob": "96707cf81c62905b54b374f1ce2267230970e035",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R029-BA-AAB.raw.json",
+      "sha256": "088e84b615615013e20740a7b42c4f6eb2dadf2066b5e28a1ba4fc54f5147dfc"
+    },
+    {
+      "git_blob": "4411d18c43d316d6df58dcc7e6119783818ee800",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R030-BA-ABA.raw.json",
+      "sha256": "7ed791d114f2d52fa992fe28a7883ce4807af768505eaf1322f59c00bb205b2d"
+    },
+    {
+      "git_blob": "d457e77a25a786613ab866fe9abd1a696272c5d3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R031-BA-ABB.raw.json",
+      "sha256": "f78a3c14dcf4565a7937ed2e6df0527ae96a5afddfaaf78a0d39126d67afcb94"
+    },
+    {
+      "git_blob": "fad3ccb4aab89d5097b0e48fd0e0f35fb110699b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R032-BA-BAA.raw.json",
+      "sha256": "30f8b3e55b4eb6877572fe01af76769b3b621dcc7d8fd5320bde26f43a672786"
+    },
+    {
+      "git_blob": "d00b11d302316722a006c40c54a9de488708ee86",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R033-BA-BAB.raw.json",
+      "sha256": "d39c86d67ac851a0b1270e681524d8867e89374864eb649924efb96d92504979"
+    },
+    {
+      "git_blob": "4aeb082d78194ed309019a66793a1a6742b90967",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R034-BA-BBA.raw.json",
+      "sha256": "e7babb89c2127692fedf4dd58580572a29e6b7cbb2636e231e6b98a241d105c4"
+    },
+    {
+      "git_blob": "7c5d87fedb47b1ee76d75222903add3a271a31db",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R035-BA-BBB.raw.json",
+      "sha256": "9b4207846e1cc4baf567a88cc9ec67a262e942bca89dcc7a75d57d2bf807df87"
+    },
+    {
+      "git_blob": "ab579341ac218e0c37e9d84023fafd9f55bfd847",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R036-BB-AA.raw.json",
+      "sha256": "9a8e3c2a519315dda9d6b3e6065eca814c04f48bf09df89ccffc4bb21f8104c7"
+    },
+    {
+      "git_blob": "e4266b8903315ea9e02d01a909d7257a94831079",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R037-BB-AB.raw.json",
+      "sha256": "6f59eb90774c025a529c49fa5908c5061ca171ce2d0f683e8046a8f25d471f14"
+    },
+    {
+      "git_blob": "0b96887684c010746c70f72393be32d1b857b2e2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R038-BB-BA.raw.json",
+      "sha256": "2f7cad2474f63ed3fdb3038be4410aecab322b38893adf3bb0fae554096ecb22"
+    },
+    {
+      "git_blob": "794b927d4d300156672d381704fcd03d34d5d0ca",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R039-BB-BB.raw.json",
+      "sha256": "7c4d5d0f002e10f3485f2e177d18200e5369e7329c48a5694aaf4a26576622b1"
+    },
+    {
+      "git_blob": "f99742c285b0529f495076387cb4730d1b946e71",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R040-BB-AAA.raw.json",
+      "sha256": "037b9027f7c8879c5c8dc2416becf51410b17f5e6b5baafd4b720457c9c3a744"
+    },
+    {
+      "git_blob": "1036afbaea25ab63b8d9c32d1b544bdfd6c90452",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R041-BB-AAB.raw.json",
+      "sha256": "090ffe5df03c237ba26acd31404075ec72cb3ebf1485e1890ea664f048729719"
+    },
+    {
+      "git_blob": "ed304315eb405ba2d9515b1c86745741dc70df51",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R042-BB-ABA.raw.json",
+      "sha256": "cf69c923ac286292054aea33ed5919ae79f4d92e854b1555d214a695b451d4c5"
+    },
+    {
+      "git_blob": "549ec70265041c04f2d6780870d10921f4d8e832",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R043-BB-ABB.raw.json",
+      "sha256": "9152c9986c052404a9e0851e2523614066011c85f4e770ed12e0bbe656cd4fde"
+    },
+    {
+      "git_blob": "2156b89be9e70b2e6c7ccd49310a05d744eb0f4f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R044-BB-BAA.raw.json",
+      "sha256": "769dfd5c774b8f7d2ee1aae7f0fb57769b3589f90f7a6bf6d2cfa7fbdab5795c"
+    },
+    {
+      "git_blob": "1f664daf6d4206f0bb3043ddf1f05e60c97daf21",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R045-BB-BAB.raw.json",
+      "sha256": "bd7b8e470ea67c83cc2b1416e8142f59b10aa9e1bf71c3fc1f3549558b61a158"
+    },
+    {
+      "git_blob": "6f2f69eee3e1653dc6555e71ee6bdd74f1c02d7a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R046-BB-BBA.raw.json",
+      "sha256": "d59203317a4d6c8df3e17cfe119379513efe50de83dfaaee04fbdade2f4a137c"
+    },
+    {
+      "git_blob": "69f03c2c6468c51f8a3d0b56a9c7248fee457ee8",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R047-BB-BBB.raw.json",
+      "sha256": "0b287eed4116839bc6509d5847ec984b81dc069c9c36284aa8fc23e438f41796"
+    },
+    {
+      "git_blob": "ccb0abed7cb8da6de55aa6623655a2c9d37ea4e5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M1.raw.json",
+      "sha256": "0b8776c34d4d64cee7fcf44622b73459363a5e6d9e70e0510935965b13b02bee"
+    },
+    {
+      "git_blob": "bc3732ea55abe13bf0a117444b4a18e20c0dfed3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M2.raw.json",
+      "sha256": "f721e511d781beb1010f671406cdecb49b6ce770b2fc94d20979c9bd4a429be4"
+    },
+    {
+      "git_blob": "4015c09a827fc5595f15250125b2fe1873a83d25",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M3.raw.json",
+      "sha256": "847740d1a39aeee9cc864d85a969c26497095640cc9b2ffab0916c89a7084fd3"
+    },
+    {
+      "git_blob": "1fd9a0fe98c981c7458c38d17c36ebf58f6ca922",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M4.raw.json",
+      "sha256": "201baa5a51ca7e22abd7b46e918ebd144a2c20544dcae23d0c65438988359fc8"
+    },
+    {
+      "git_blob": "e6a4a5b4e5e933a962061b1c042a98513e2fe2a4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M5.raw.json",
+      "sha256": "35ca8a92ce3431baf4e62f8b89a82b96bd52be06f74e03be9f84f1f65bfdc38c"
+    },
+    {
+      "git_blob": "82a23869d0463404d6eba92d5c59f22a9890a7af",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M6.raw.json",
+      "sha256": "0f7b7d29204c5cb4d00fc5ccc44f4595179462b9aa262f10161dd6aa03024275"
+    },
+    {
+      "git_blob": "07028e4a20dc468b5f58e79290c4b336a803dd19",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M7.raw.json",
+      "sha256": "a887560a32230d22ac8488fd8dcbcaf844a3e7e06af36a2568aca74c63ff4f86"
+    },
+    {
+      "git_blob": "99e50b95d46183c9eb83c6b7b379b13639b6983b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M8.raw.json",
+      "sha256": "58e11aa89c611e84a9417baea7fce3e2472dada6edc4525e60ee1c73085c1052"
+    },
+    {
+      "git_blob": "8fda4b0107043e40da4591005d91866beadda064",
+      "path": "experiments/causalis-b2-resource-causality-00a/independent_check.py",
+      "sha256": "f9dcfbd8c1a6e0211470207fd8bfd8931d2795b0f1c9fed7cbfdd90b7f75428a"
+    },
+    {
+      "git_blob": "16560f04b457a66240e5014b276aa7b6cb50991c",
+      "path": "experiments/causalis-b2-resource-causality-00a/run_b2_campaign.py",
+      "sha256": "61eafd501078e96a8e9442729e24d3a16176f89ebbc5460e8f49bac06b858da8"
+    },
+    {
+      "git_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-RESOURCE-CAUSALITY-00A_COMPLETION.md",
+      "sha256": "e721246ecb1e534429cd60bbd0a55692d5502a7dc86163fb3876071a8ca1c735"
+    },
+    {
+      "git_blob": "dcfb383e446831a76ca1194e6512e7b955310f90",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-EVENT-INSTANCE-PARITY-01A-R1_COMPLETION.md",
+      "sha256": "4d7d20859fba6adf6a10868da01f58b703ef6bd7efe4a9921020cc617f49cf3c"
+    },
+    {
+      "git_blob": "ba2915788014746b3fc805e83f7e4473a879e094",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-EVENT-INSTANCE-PARITY-01A_COMPLETION.md",
+      "sha256": "2c011ab907aa8945d7011013bba032bc9d8b0a5f8b7d0a05fe23ae1f240167b9"
+    }
+  ],
+  "preserved_rejected_files": [
+    {
+      "path": ".github/dependabot.yml",
+      "sha256": "883b95e3be554fbadd92b315e4a8c6ea6ca688b64924e22dd61222b07f683507"
+    },
+    {
+      "path": ".github/workflows/admit-local-review.yml",
+      "sha256": "0049bd456e3d90240a692d52f099a4f95d1c3055a58cba118f66ecee6d8e2f21"
+    },
+    {
+      "path": ".github/workflows/app-authentication.yml",
+      "sha256": "3d87ef8a82670304d0c658ed2b4502a61d7ab4c3139a43a47a80714385bac34e"
+    },
+    {
+      "path": ".github/workflows/authority-ci.yml",
+      "sha256": "0cccfdc088cc52556a9d72536e8382a4dee71fae10f6891970b3690763a809fd"
+    },
+    {
+      "path": ".github/workflows/bootstrap-pr3-smoke.yml",
+      "sha256": "b28ca902f4a31a3547cc445c38d419c314cc82b38fdeecf7c2a8c73796ccebca"
+    },
+    {
+      "path": ".github/workflows/independent-cloud-review.yml",
+      "sha256": "f364aed11b079aba4eb8588ce366cdc5f490447c35f8eede04965fb0aaa7312a"
+    },
+    {
+      "path": ".github/workflows/prior-release-verify.yml",
+      "sha256": "4ea26970fe1f4bed001f3d9526af4417f68c91bf175028bffa26c68a0c073964"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "e71b480477e6bc22701817eabf4196fda0047e1b77537395ba64470ce659e3d6"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "fcffe171bb5458cbb61305413c58c1ca02914bae2e57fbbd0ce29546d51b1c85"
+    },
+    {
+      "path": "README.md",
+      "sha256": "c8fb5f83a6b00d6e1b7f1eae831857c7701be975b3ca9901f439c4f290afd8da"
+    },
+    {
+      "path": "docs/BOOTSTRAP_AND_OPERATIONS.md",
+      "sha256": "1d3c64fd280e57249d36f28ae79614b7550d6ce75c8d50f31cab7fc4ec782c65"
+    },
+    {
+      "path": "docs/EXECUTION_ATTESTATION_BOUNDARY.md",
+      "sha256": "464f24422cdad6b2053483eebc96489323546ab956c39762efaa4494135158ba"
+    },
+    {
+      "path": "docs/LOCAL_REVIEW_V2_INDEPENDENCE.md",
+      "sha256": "5db8e0b66294a9f89335dcd0f4916c3e13f8c7683dc216e7f1c3aa766a6bb2cb"
+    },
+    {
+      "path": "docs/research-admission-v1/activation-and-custody.md",
+      "sha256": "1ec407953575a60d02f464514cfd8d17530c9d7187e547eb56ce4f058e8890aa"
+    },
+    {
+      "path": "docs/research-admission-v1/authority-policy-schema-compatibility.md",
+      "sha256": "17a6c05ceca0b824df86356cd7776095f228a6cababc8dc5968588cabf47ec31"
+    },
+    {
+      "path": "docs/research-admission-v1/external-evidence-admission-contract.md",
+      "sha256": "e75c3b180f858c44f30392f574916f5a5c6245a823cc538464e769f8e4caf34c"
+    },
+    {
+      "path": "docs/research-admission-v1/failure-semantics.md",
+      "sha256": "209a1c8b06c992961197ab5aa36045d022780fb006c04cd29c9e5392574c63ec"
+    },
+    {
+      "path": "docs/research-admission-v1/miskatonic-review-authority-threat-model.md",
+      "sha256": "99154525118dd95507b34433ea3f2f8d6a657cb296c6a66de35f31f1a5a91a86"
+    },
+    {
+      "path": "docs/research-admission-v1/review-assurance-risk-classes.md",
+      "sha256": "b869367becb88f9d6e4fcc9574c096ee1f12451485f9b5a3edd6bf1d035145c5"
+    },
+    {
+      "path": "docs/research-admission-v1/reviewer-independence-demarcation.md",
+      "sha256": "8a2d285763465dad233473347da573013d9d81352a1d9ebca6381cc6b6bfeef9"
+    },
+    {
+      "path": "keys/miskatonic-review-authority-app.pub.pem",
+      "sha256": "15f9ba99db75e1d426ec6ef70ce2052cd0efaaf459e1da2ff92867989b064ce8"
+    },
+    {
+      "path": "keys/msk-local-reviewer-v2.pub.pem",
+      "sha256": "4d24e48e689ca6cd3970311ecf7d74e025e5f043df1c30c717e542a4fea81b09"
+    },
+    {
+      "path": "observation/rsi/README.md",
+      "sha256": "20289ed9eb46820963439504f462a5e2a01018f464d83d2b062a9d0cd3c46cea"
+    },
+    {
+      "path": "observation/rsi/adoption-candidate.json",
+      "sha256": "b43c77807008173d304f1e295628e0ba7617eb864a0348f186ef5ca2cb54849f"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/export-and-native-schema-tests.log",
+      "sha256": "facc4fbff3b2f75bf7a7fd4ac2bff59219f380f821ffd3cbb8ff3dabc016cd3c"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/format.log",
+      "sha256": "ef7d13d02214e98ca902b05257cdbe6a8e84f3b4714508efdc19766460b54209"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/local-validation.json",
+      "sha256": "66b2706195148841124d80158149fa45f52e9f5ca03c6ccb380d2da1c5661dbc"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/native-full-suite.log",
+      "sha256": "0a27d9a253cb54cd92c362ee963938cec7944d92e846be69dbe528080bbc99e4"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/repair-candidate.json",
+      "sha256": "b9c44e835c5fd239eb1ddbceae2d3323110fef3ecaf12f724fe8b77daa08e0a6"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "observation/rsi/evidence/export-tests.log",
+      "sha256": "1bbab1908bb1b94868817175f16919c98d914aff1f14da0b1bc3d4a284f787ab"
+    },
+    {
+      "path": "observation/rsi/evidence/format.log",
+      "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de"
+    },
+    {
+      "path": "observation/rsi/evidence/native-tests.log",
+      "sha256": "4e96153e007da9a97f91730f3817fd9b2d2d0cc57eef09fa4b417de5eddb4a9f"
+    },
+    {
+      "path": "observation/rsi/evidence/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "observation/rsi/fixtures/native-review-attestation-v1.v0.2.json",
+      "sha256": "3c4b0054c13cc387afcbb28ddebd86dd4a7111703ea991f681502597d50841ad"
+    },
+    {
+      "path": "observation/rsi/fixtures/native_artifact.v0.2.json",
+      "sha256": "3c4b0054c13cc387afcbb28ddebd86dd4a7111703ea991f681502597d50841ad"
+    },
+    {
+      "path": "observation/rsi/fixtures/native_metadata.json",
+      "sha256": "fb36be027186ec125969550223fc148a2b974d8dec54eb6b1f305e72828951a5"
+    },
+    {
+      "path": "observation/rsi/implementation-evidence.json",
+      "sha256": "fb965d7e98b69cb756dcbde36ae02549159b0fdabddc56b356c18ddbc60af2cc"
+    },
+    {
+      "path": "observation/rsi/native_schema.py",
+      "sha256": "006de442af314de0ad7cbf0dc7497eca2e8bb80d8bce5095edb94b05c9c9eedd"
+    },
+    {
+      "path": "observation/rsi/native_schemas/d4ae8b008b14f8b52b9376691aae6a57ac0fbd575fdb52f7d89b6f9edb90c4ce.json",
+      "sha256": "ccd9bd2d038fab65aca4139da41d8ebb56ffb501101fbe038a217435220d8177"
+    },
+    {
+      "path": "observation/rsi/owner_export.py",
+      "sha256": "af249dd68d5da75646c7d227c8cab83698d1b98a40b9e4231b720f3b5e20a886"
+    },
+    {
+      "path": "observation/rsi/projection.py",
+      "sha256": "0718837000f6838a5d179d896d8e867e18680055c290215247598f123209a6ac"
+    },
+    {
+      "path": "observation/rsi/requirements.txt",
+      "sha256": "9984fa6ad6d35d2468011c4c278583e9bb4983d83be6bb3f5aabcef9c99b19b7"
+    },
+    {
+      "path": "observation/rsi/schemas/rsi-owner-observation-export.v0.1.schema.json",
+      "sha256": "a7cf347480d3b1fb96ff06375b4fd1da45fb17dfc153f359453a292ffebbcc1d"
+    },
+    {
+      "path": "observation/rsi/schemas/rsi-owner-observation-export.v0.2.schema.json",
+      "sha256": "8ef651ff9a7351310785914c16dc5dcb035f1ebbf58fe6b549b92a056c305343"
+    },
+    {
+      "path": "policy/control-plane-upgrade-v1.json",
+      "sha256": "5bb67f05511d9b28e08ca838162c71a0f271df564fe9aa0d1fc9a91635ac1e5e"
+    },
+    {
+      "path": "policy/msk-ruliology-scientific-review-v1.json",
+      "sha256": "f856ebef767ba64612c336b69512b1768cb6205cdea6e2ede8f570b037f72e6e"
+    },
+    {
+      "path": "policy/research-admission/causalis-b2-r2-v1.json",
+      "sha256": "9854428efe571e6e5ae47c8e2145d1c93c0993aa101222725bd8f45e5e317556"
+    },
+    {
+      "path": "policy/research-admission/limitations-v1.json",
+      "sha256": "2cd6fb0a6f3e9f3dd190d99f29a4fefbb27f3ac4101d6abc84caee2385de6574"
+    },
+    {
+      "path": "policy/research-admission/requirements-v1.txt",
+      "sha256": "cf524c8b0b7c184faf6ca54cb17dc9f3d1360e294a2c6af72b01a4665ec61881"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-atlas-v2.json",
+      "sha256": "d515b3970e320a4f62218f3bcebdc91f0008ce1c01841fc478abd7401497b6df"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b1-v2.json",
+      "sha256": "fce559adec8403ab3079fdbfda39e737650b1bb1f5002e64d6cf64a7b4fd19b9"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b2-r1-v2.json",
+      "sha256": "baeda24b30f23712b146ce383f7159485c8359487542ed2bd34c3a40e9d95b34"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b2-v2.json",
+      "sha256": "39fe59958a61559a63d2488e291b9e30956c65551d7ef7f16542d4b4b49cc6c3"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-cdl-v2.json",
+      "sha256": "157e3b0f604767c4be183938c5e5b0151ea13bc3befc07dcff5a1c2676620a73"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-cra-05y-v2.json",
+      "sha256": "6c844baee317ead07dd7adc89712d6daa35f0fa8c4919486a08d8d0f9267e28f"
+    },
+    {
+      "path": "policy/trusted-producers.json",
+      "sha256": "1473696b5d84cf9bb593d846bc8a8604d5515e1b9906cd9b127cf826551a36e2"
+    },
+    {
+      "path": "policy/trusted-reviewers-v2.1.json",
+      "sha256": "0778bff015f846549dbb6a91026541ab13f89ae1f1e45e78818a70bbecc06ba3"
+    },
+    {
+      "path": "policy/trusted-reviewers-v2.json",
+      "sha256": "4a6966d28846c0cee17e1bff028de359e3124634a2794f5118f84302ce1b852c"
+    },
+    {
+      "path": "policy/trusted-reviewers.json",
+      "sha256": "0253a59968b68f6aa84a0817af019332686e9d1ca997c10644189da80d9629b7"
+    },
+    {
+      "path": "policy/trusted-signers.json",
+      "sha256": "6349229a576d9913cdc51eabcd7281a67e1227d6f4619116afa2e9545af6dbc8"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A_COMPLETION.md",
+      "sha256": "57c33cc175a264fb10150e45b0f8be5b4be743bba4cbceeb90842b53610864cb"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/authorization-and-ratification-receipt.md",
+      "sha256": "829b47a55772e4a822973e7aacfa485f80ae4a2c4f9717628839be4bafdce014"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/changed-path-coverage-verification.json",
+      "sha256": "36ca3a7d1fbb107b1e2078600a321255c44570a2df02f4ea76488854044a5d7e"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/ci-authenticated-job-evidence.json",
+      "sha256": "4c0e202e28133127e93d5b75d6c2e43a79cf0a8827896815b22dbd7b707b9d29"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/ci-infrastructure-exception-assessment.json",
+      "sha256": "d23fe8bf47019f7354b71b95dd9ebec8c607588512d535d19e4094f5e83f9447"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/baseline.xml",
+      "sha256": "6e8e099616788abdee442b75c32497d5a07f5bc1cdca30daeb0d95809e99e818"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/candidate-full.xml",
+      "sha256": "e28467f4ed441d2ba059a497ee13cd4c6f3d66ccef87e6b54a4506a3ead14d2a"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compensating-evidence.json",
+      "sha256": "5a0e3334af14f2626fb9a8eebfef6439b7c5dbe74afc58c14b070eb4c598ff21"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compilation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/focused-resumed.xml",
+      "sha256": "6eac67a658da6ed9301d070a5fe30286464c847f6b8aecc402378f5ace377e96"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/format.log",
+      "sha256": "f114d83b30c5c657ee43a847a45bafccaea255d82673feb87c26d252c61e29c1"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/exact-head-evidence-reconciliation.json",
+      "sha256": "0d7f81189cf46c7817ac9612a0963e9ca2ea4c8e53e0630d4ab9fee33060141f"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/historical-preservation-verification.json",
+      "sha256": "ad1ee0471c695f285c18ddc3078f714b566f96961225342ace7939498785145b"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/independent-review-packet.md",
+      "sha256": "e321a3eda6595fbdbca62c596d5580fd685fcb4de8e89770f628928e90cb9892"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/negative-control-results.json",
+      "sha256": "6fa84d632a14e260c29452bf084d7392631d7e7459faffd857f39f971324f0cf"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/new-schema-validation.json",
+      "sha256": "cc0f6ee36c02bdc0a2724f53eab9a0867e15db6662157f028f3f5c630635be9f"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/prior-verification.json",
+      "sha256": "35bc7443ffea68589bc4a6ce076ec3dd9217f909adfde1453f2e27bea2a68af0"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/production-dependency-identities.json",
+      "sha256": "73874807018c3940c7891da5366170a36d748e986d936f9b3140675915e1a005"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/regression-and-compatibility-results.json",
+      "sha256": "81b223db297e9b14b0301a97c0464a68c9a7f4b8b1e6c467790a5211697c8a26"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/security-and-credential-exposure-audit.json",
+      "sha256": "37eea8adc8b912ac181c99ad475a31f6b2bdb98d31296ed2b449a3030dcd1471"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/security-and-credential-exposure-audit.md",
+      "sha256": "cddaa2864e4a8c1b6788cf403c10b63db2ce6174bc952ede5b4d8f17a1460101"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/starting-github-evidence.json",
+      "sha256": "138818a6ef7fbe8bdce118c2d12abaa79d7336274a42f58754d45cf66375adf8"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/starting-state-reconciliation.json",
+      "sha256": "69631590334b3e81a2e60aa1fbf09e15662c66e4c6edb6a9869ec3b80ff70ed8"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/unratified-execution-rejection.json",
+      "sha256": "e73efc266652643199966184ae3967586206ee6a21a11aa857db4f51a723e9e9"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.log",
+      "sha256": "560a4a3b1632995a640955e160a7f4f7b93c51b016aa350fe88c4e9190c5da8f"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.xml",
+      "sha256": "05ed8a50d35e6a6c4936a53891781587e99815d0814679c30520b3ddb9f64cb7"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.log",
+      "sha256": "bff56aca1af8252496a5b5bb091659cf998bfe9639a33340cfe467a0f114a22a"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.xml",
+      "sha256": "af541a1b0e4c71d7263b01bfb95d2f16f00f9606698279087f54fad7d2a65363"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/compilation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/format.log",
+      "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.log",
+      "sha256": "0112f4f61d986ff176c59913af3a9ea24372df633fdf4f506b537544403684f3"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.xml",
+      "sha256": "44dd0a199f9c3b6d39dc47f046f6df4230a2336a357564cac9f15261c6a6cf29"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/wolfram-invocations.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/workflow-audit.log",
+      "sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f"
+    },
+    {
+      "path": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+      "sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22"
+    },
+    {
+      "path": "roots/control-plane-v0.1.0.json",
+      "sha256": "21c1c77499b4c41f9a7c945c3d1e8e6c8eebe088d2aadcffea6520e6e729efec"
+    },
+    {
+      "path": "roots/local-review-authority-v2.0.0.json",
+      "sha256": "53e635926f4e23a5aa70ec6202fc488a415bc7d8c0bf679b154dcca102883505"
+    },
+    {
+      "path": "roots/local-review-authority-v2.1.0.json",
+      "sha256": "107567696376755e7be90250d1fefe341d13cd729b31a0af66d06cb21fb4e7df"
+    },
+    {
+      "path": "schemas/authority-root-v1.schema.json",
+      "sha256": "211b46c125a19b1774f085b19d5824542283b386d9c178d3a0bada63c4f3a94e"
+    },
+    {
+      "path": "schemas/local-review-ratification-v2.schema.json",
+      "sha256": "3f89ac61451052f5a153aaf145c61a21cfb0dfcb61894daf62400dd05bb90f4d"
+    },
+    {
+      "path": "schemas/local-review-receipt-v2.schema.json",
+      "sha256": "f0d20512bfc99b10ce318c5d72131f19b4f1fce0ffe930dca3b15af4c97d6c8f"
+    },
+    {
+      "path": "schemas/research-admission-authority-root-v1.schema.json",
+      "sha256": "3aed65aa1c04c7ac2e4904d13d5e43629235fbfd66375fb0a3e86ea8bfb974e8"
+    },
+    {
+      "path": "schemas/research-admission-policy-v1.schema.json",
+      "sha256": "eded889d312359c14e2ba30b2f3008e531c5dc7614f97fcd9ec8b46952e0b9cd"
+    },
+    {
+      "path": "schemas/research-admission-receipt-v1.schema.json",
+      "sha256": "cc17ead7641c53be4a11c7a12c9dd8aa74315093b8636b3b927f549686b3aaa4"
+    },
+    {
+      "path": "schemas/research-admission-request-v1.schema.json",
+      "sha256": "e89d6afa463b254e8fb9ec75aa8397eced73609f91fe6d53ca2ab93c8f94cb52"
+    },
+    {
+      "path": "schemas/research-authority-ratification-v1.schema.json",
+      "sha256": "e5b389a8fe248b325f15077c965b9e0f9b72b4ea38a52005e5359cdd66da57d5"
+    },
+    {
+      "path": "schemas/research-human-authorization-v1.schema.json",
+      "sha256": "ae392293c4a9bdf48b56d612e37b33fd363afa0218e65a1ef423d6aa32987609"
+    },
+    {
+      "path": "schemas/review-attestation-v1.schema.json",
+      "sha256": "133f5b8c255227f8bb59b93b0e59963dfdb791849c547cf02001d0553f5191a6"
+    },
+    {
+      "path": "schemas/review-packet-manifest-v1.schema.json",
+      "sha256": "8bcee7e68f106d7c8d465784157b5ea4042a2002827a542e3e53c2a1aa9feff9"
+    },
+    {
+      "path": "schemas/reviewer-policy-v2.schema.json",
+      "sha256": "0e2cc25459f245b21e8b6ea17624171168f93c8a41ff0b1ae02e288dc33fce59"
+    },
+    {
+      "path": "schemas/scientific-target-policy-v1.schema.json",
+      "sha256": "9a3bfcd0ed495b98eb6980c23435349959fc859ffa9253be3534d9fb519671e2"
+    },
+    {
+      "path": "schemas/scientific-target-policy-v2.schema.json",
+      "sha256": "1ac65805ca9dfa2564331ab6e788c2788a7e69832bd8d784a8929c9ddf988ef8"
+    },
+    {
+      "path": "scripts/build_research_admission_root.py",
+      "sha256": "fcfb26803f342dacdddf4a02539c92eee9c022079661f7b12cf17d322285656b"
+    },
+    {
+      "path": "src/miskatonic_review_authority/__init__.py",
+      "sha256": "ae25e1d50df01e2ec723543f08fa8d33188149fdfafd3fe4aac1e18bff372a12"
+    },
+    {
+      "path": "src/miskatonic_review_authority/__main__.py",
+      "sha256": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279"
+    },
+    {
+      "path": "src/miskatonic_review_authority/attestation.py",
+      "sha256": "40ed6f0bdc4d8545a468e0a033abfac37c3562a8634fcebfd023ca9c37e231af"
+    },
+    {
+      "path": "src/miskatonic_review_authority/attestation_ledger_verifier.py",
+      "sha256": "bd81ac949badfaf5d959976e818df24eeefc29a2623241c38fa52fa7b54be027"
+    },
+    {
+      "path": "src/miskatonic_review_authority/canonical_digest.py",
+      "sha256": "657ed1248b1256496457e9831fd86ed05f888c8e1e3defbe30703b65338f0b16"
+    },
+    {
+      "path": "src/miskatonic_review_authority/check_publisher.py",
+      "sha256": "a3d459efce85eb8f94fd13d283bf352013c428f7c82d10d5a3ec83f326d97ea7"
+    },
+    {
+      "path": "src/miskatonic_review_authority/cli.py",
+      "sha256": "e64a2b94b585765adceb4388dab1c73a9a03394156950b8738d2d4ff80f06d44"
+    },
+    {
+      "path": "src/miskatonic_review_authority/github_api.py",
+      "sha256": "756bc4363b83b8d0f886501674950cc65df6c70930851b27995ceb12d9297715"
+    },
+    {
+      "path": "src/miskatonic_review_authority/github_app.py",
+      "sha256": "949c808d1ef7d69c162ad089b3e70fa4bc9ff3403c5ce54d00256a0f48830a74"
+    },
+    {
+      "path": "src/miskatonic_review_authority/local_review.py",
+      "sha256": "d086f27611bb071e6b2c6d2a173cf58620f92120f4771ca1a5612f58c5b0867b"
+    },
+    {
+      "path": "src/miskatonic_review_authority/prior_verifier.py",
+      "sha256": "c59932a5b71459a413a959c817a6df0dbbfa5793bc83e1f2cd8095bb5824fc04"
+    },
+    {
+      "path": "src/miskatonic_review_authority/research_admission.py",
+      "sha256": "068a8a8dbdfe0a7e2b878cb5a4e77a1c1cdb630b27caa38f9c88990f255ee54d"
+    },
+    {
+      "path": "src/miskatonic_review_authority/research_admission_github.py",
+      "sha256": "83bf31d76cbec6727a52e859567c2b8b9a15a6d6c440cb278c4b7c3740d702a8"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_backends.py",
+      "sha256": "ca4002961a8cb33147459ac74b5fca657c1af6d8662b671eff75fa54f620320c"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_packet.py",
+      "sha256": "2180865e4793c322323fe84e7c30a29da96218317d7f3e1730a935a25164fc5e"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_runner.py",
+      "sha256": "039efa2bae2b99407f316788ed275af898c14d8e51f871435dfea2b45b4fba22"
+    },
+    {
+      "path": "src/miskatonic_review_authority/root.py",
+      "sha256": "0cc97be5539188eb26daff2147d0a12426101f020700c0b4ba779d4907e7fb11"
+    },
+    {
+      "path": "src/miskatonic_review_authority/scientific_verifier.py",
+      "sha256": "3591dfd9d6beec1f4ad092dd6e4266e2b810b2a1cb625004a5a0dd2fad278277"
+    },
+    {
+      "path": "src/miskatonic_review_authority/util.py",
+      "sha256": "832796ecf5eb4737f9d22f8ae6f26349c0c61de92d7e5d8767465076c7f3a0fd"
+    },
+    {
+      "path": "src/miskatonic_review_authority/workflow_audit.py",
+      "sha256": "ab0491b472a0fabf3b86e71b9594d007209c4cc2c382280b33e454df49f043c7"
+    },
+    {
+      "path": "tests/test_attestation.py",
+      "sha256": "a899e2da950a34b12441ee1753e95f8ad902726b5abe1b0c413f1a5acb3e793e"
+    },
+    {
+      "path": "tests/test_attestation_ledger_verifier.py",
+      "sha256": "e956211a34a74e5ad2d8724a9999221d3e54a942411e2a034ea6cbabb9ca5fc0"
+    },
+    {
+      "path": "tests/test_canonical_digest.py",
+      "sha256": "a8641c11ec8990058865eca57113c54c5bb2b9eb7e8cdafb0e7ceec11805e422"
+    },
+    {
+      "path": "tests/test_github_app.py",
+      "sha256": "3749561cba3f93ecaa9040ecf30da05b1859ddf1d50670edb3f96bb67a5aeb83"
+    },
+    {
+      "path": "tests/test_local_hostile_qualification.py",
+      "sha256": "69adb3638383baeaf2d09beaba08abc91ba6adec5413a7dd99b9b5be016dbcb1"
+    },
+    {
+      "path": "tests/test_local_hostile_qualification_v2_1.py",
+      "sha256": "ee6cf74869aedf2a3d274bddcb0b65bc582ffe063155aadfb0f279301603b9b3"
+    },
+    {
+      "path": "tests/test_prior_verifier.py",
+      "sha256": "eb1e8e8f5b311c46c33e8ecc5580465b19df0436c99062c0d44d959ff7afc39e"
+    },
+    {
+      "path": "tests/test_review_validation.py",
+      "sha256": "e5afe007b0b0229f18536587e4899b323cec447fe2a6d792e4bbd623212c1377"
+    },
+    {
+      "path": "tests/test_root.py",
+      "sha256": "ef8c397bbd5803223a0237a7c983a537395871c9fa0e299f95504eb8b7003fe6"
+    },
+    {
+      "path": "tests/test_rsi_native_schema.py",
+      "sha256": "cdf2609d60e2aabd6554b34f168cdc25c5f38f8360de7994d93f4da7dbc1f984"
+    },
+    {
+      "path": "tests/test_rsi_observation_export.py",
+      "sha256": "03ee9942267dea1aea6d43552d92cd4e4958e65bd9d87d77193376b43424db44"
+    },
+    {
+      "path": "tests/test_scientific_admission.py",
+      "sha256": "f2f37c8fc98c1972d2f53b6beffda4be9a1c158371d064cd22a8f5fd1de14e2d"
+    },
+    {
+      "path": "tests/test_scientific_verifier_causalis_b2_r1.py",
+      "sha256": "133a446ee235af7e303618ce6aeb4e4294d40f14fb9d7ae1ad0e3bbdb357a735"
+    },
+    {
+      "path": "tests/test_workflow_audit.py",
+      "sha256": "853d473a3ff2f2c0babc2ce1173c8f645e10d3f7c2cc2be13e7cd32c910f6635"
+    }
+  ],
+  "prior_verification": {
+    "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+    "candidate_digest": "c70a9d2add189ae490ebcb7bc2ae06ee13e966827d6e6c10d7d341c67d880621",
+    "candidate_record": {
+      "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "records": [
+        {
+          "new_mode": "100644",
+          "new_oid": "d83ee56b1db77a623d530bfd5d235df9e54c24c4",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "6930a8c71b376b083567f8ceabf3f6dce4b5c2e8",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "a292a45282d47eb9525947a6f2bca53fefb6163e",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "d53cde64b857f12618894224b09b20789e054cf3",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_causal_semantics_classification.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "86856a1454025c263e2d63df42ed565d8f0642b6",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_event_identity_contract.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "f5188262265eb22200c5d0c7a74a71641bb99083",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "3c2c04860af9ef5168556dbfed110f135277fcea",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "6c2fbe1751ea0cde4bf9ff0380a1fc1e9e69cbce",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "6d075d50cc0cc21eff17f22d3dd475464799ad3e",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "1b14caf2b87e84502b395d683ec54311f2b65d13",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "81146c8571999b1cab929a47bd2df83825c843d6",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_signature_and_merge_erratum.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "14103a036d8e7cd6fe20c5f228765f1181b778a2",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "e443387a187c41350ede250e7a46dfe1b243d4ac",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/independent_b2_r1_review.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "1c40ea765814aea11402da63d333b46a6b5d0b8d",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "5d2c6b6bd1ddffba7f26c2e4d4d45b855e1fb753",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "ecbc881c2cf834308e306ce9a0f97002dc59c82f",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_builder_check.log",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "97c1eab0b730d3541b817acd5f42e177f4cfd163",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_failure_reproduction.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "13b7746f02c843e3aaeda3c20d4f015fd7b3898a",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_gate_status.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "cfef1fa92b1968c9dfee348e37bfde791e5027f3",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_hosted_ci_observation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "c575b2e67d5131537288a277d4132d4bec015194",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_independent_review.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "2298a2c0a6063b3f7942d78385257855b7f6a65d",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_negative_controls.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "d6ebe42fcd0db334e6ba2a18d2d9e309effd3beb",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_preservation_verification.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "4f55933b73b4b68862864a0bec72a955f5784fef",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_proposed_builder_resolution.patch",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "125fcce8341237556cda478f5ba9a02af099b210",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_regression_receipt.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "53d540c63ec2909103ed25d66173fd95604b2980",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_review_authority_binding.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "a9c6839529f7c8db9023ae4ce04334247c489d53",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_scientific_output_parity.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "699d7c0a2549a60ebc667ac6e76c8aa27a33f56b",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_source_identity_contract.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "48008426dd639105f4313a1e39c605116e792fdd",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_starting_reconciliation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/wolfram-invocations.log",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "5b65448026111e55d905b2843e0a9d9b16c973c9",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_check.log",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "d7d2f442951cfac626d19498532682c07e311c36",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_resolution_authorization.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "60e7a852c7a14e838733f73584bf1e61b625fdbd",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_changed_file_inventory.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "617781347b9b9c8130ac5af19138c33c6976970a",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_failure_reproduction.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "70408e394d20f799c5c8ff2fbbae98b8672c9a3c",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_gate_status.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "cfef1fa92b1968c9dfee348e37bfde791e5027f3",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_hosted_ci_observation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "028d761bee7e9b67ecc420e86a0d423fc8f1201d",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_independent_review.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "c0760d4ba5c103c87a5de35a7410a266ef1ea069",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_negative_controls.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "e431ccff45f0028bf837793910ccca2f2fb01ceb",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_preservation_verification.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "4f55933b73b4b68862864a0bec72a955f5784fef",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_proposed_builder_resolution.patch",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "e24f1e39a1762c91251b84632a697ffe3d89a134",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "ddab2a3119c916d0ad681c4f8b97cba588404dd6",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_review_authority_binding.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "3cf82662f247b557773dea3019abbe954b8b644b",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "8c9dc6aed4e3c60402e1e51d85ace43d45c91526",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identities.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "b9372b3c85cc9dda7d48bcbe9f1bfd12fd479e61",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identity_contract.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "48008426dd639105f4313a1e39c605116e792fdd",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_starting_reconciliation.json",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/wolfram-invocations.log",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "d32cfa4b44517943dcb3c7d0177a6182d021d5c3",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "d83ee56b1db77a623d530bfd5d235df9e54c24c4",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "9721ec98999a12e473be09e8d767bff13f6da464",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "f5be0478d96078964360835e7f993544936dc353",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "99755e134b518d9fbf0e6b7fa77bf9ba45443de9",
+          "old_mode": "100644",
+          "old_oid": "47ce284435b9ef588d1ce5c776312249e028e018",
+          "path": "src/msk_ruliology/causalis_b2_resource_causality.py",
+          "status": "M"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "0bee00687a7e369029481995ccdde6217a749a65",
+          "old_mode": "000000",
+          "old_oid": "0000000000000000000000000000000000000000",
+          "path": "tests/test_causalis_b2_r1_edge_reconciliation.py",
+          "status": "A"
+        },
+        {
+          "new_mode": "100644",
+          "new_oid": "c12db71ef91c19afcf1c153b170045d955e9437d",
+          "old_mode": "100644",
+          "old_oid": "ee3edd67842107f13772e35b5b628198c3da831c",
+          "path": "tests/test_causalis_b2_resource_causality.py",
+          "status": "M"
+        }
+      ],
+      "repository": "miskatonic-system/msk-ruliology",
+      "schema_version": "candidate-digest-v1"
+    },
+    "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "lfs_verifications": [],
+    "path_results": [
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_causal_semantics_classification.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_event_identity_contract.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_signature_and_merge_erratum.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/independent_b2_r1_review.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_builder_check.log",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_failure_reproduction.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_gate_status.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_hosted_ci_observation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_independent_review.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_negative_controls.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_preservation_verification.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_proposed_builder_resolution.patch",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_regression_receipt.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_review_authority_binding.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_scientific_output_parity.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_source_identity_contract.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_starting_reconciliation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/wolfram-invocations.log",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_check.log",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_resolution_authorization.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_changed_file_inventory.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_failure_reproduction.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_gate_status.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_hosted_ci_observation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_independent_review.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_negative_controls.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_preservation_verification.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_proposed_builder_resolution.patch",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_review_authority_binding.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identities.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identity_contract.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_starting_reconciliation.json",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/wolfram-invocations.log",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "src/msk_ruliology/causalis_b2_resource_causality.py",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "tests/test_causalis_b2_r1_edge_reconciliation.py",
+        "reason": "admitted by scientific policy"
+      },
+      {
+        "allowed": true,
+        "path": "tests/test_causalis_b2_resource_causality.py",
+        "reason": "admitted by scientific policy"
+      }
+    ],
+    "policy_version": "2.0.0",
+    "repository": "miskatonic-system/msk-ruliology",
+    "schema_version": "prior-verification-evidence-v1",
+    "scientific_evidence_verifications": {
+      "disposition_counts": {
+        "EVENT_LINEAGE_EDGE_PARITY_EXACT": 48,
+        "OBSERVED_EDGE_DISAGREEMENT": 8
+      },
+      "fixture_count": 56,
+      "independent_review_verdict": "ACCEPT_WITH_LIMITATIONS",
+      "max_causal_depth": 5,
+      "preserved_historical_files": 207,
+      "transitive_causal_relations": 20866,
+      "wolfram_primary_calls_made": 0
+    },
+    "target_policy_schema": "scientific-target-policy-v1",
+    "verdict": "PASS"
+  },
+  "ratified": false,
+  "rejected_ancestor": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+  "rejected_review_preserved_sha256": "eb724f437e1b23ebab1f421b41f3265d922948509c99ac9a8c1a15ee5ec059cd",
+  "release_authorized": false,
+  "root_change": "Only repaired workflow object Git blob and SHA-256; no authority-semantic changes",
+  "root_manifest_objects": 43,
+  "root_policy_instance_validation": "PASS",
+  "root_sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163",
+  "state": "VERIFIED_CLEAN_COMMITTED_CHECKOUT",
+  "target": {
+    "clean": true,
+    "head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "tree": "a9d867a34ad21524a8f835774bca29ad33a8300d"
+  },
+  "target_review_sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22",
+  "wolfram_calls": 0
+}

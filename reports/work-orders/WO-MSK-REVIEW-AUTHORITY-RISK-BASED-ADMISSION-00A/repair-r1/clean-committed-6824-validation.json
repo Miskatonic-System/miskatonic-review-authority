@@ -1,0 +1,294 @@
+{
+  "admitted": false,
+  "adversarial_controls": [
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T01_head_changed"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T02_base_changed"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T03_foreign_repository_or_pr"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T04_report_digest_substitution"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T05_historical_R1_report_reuse"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T06_wrong_review_head"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T07_omitted_material_limitation"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T08_generated_promoted_to_full_review"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T09_missing_path"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T10_allowlist_expansion_cannot_replace_pinned_policy"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T11_producer_claims_reviewer"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T12_shared_review_claimed_isolated"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T13_local_check_impersonation_rejected_by_schema"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T14_untrusted_ratification"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T15_forged_supplied_github_actor"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T16_wrong_target_app_token_scope"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T17_unknown_error_does_not_expose_credentials"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T18_hosted_failure_never_pass"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T19_executed_test_failure_not_startup"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T20_foreign_PR_scope"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T21_future_head_scope"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T22_expired_and_revoked"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T23_conflicting_duplicate_fails_without_second_check"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T24_unknown_version"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T25_unreviewed_authority_commit"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T26_schema_error_fails_closed"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T27_dispatch_is_not_authorization"
+    },
+    {
+      "result": "PASS",
+      "test": "tests.test_research_admission::test_T28_compromised_review_despite_prior_PASS"
+    }
+  ],
+  "baseline": {
+    "all_test_ids_retained_and_passing": true,
+    "collected": 127,
+    "head": "a87e863173950c7f73072d1647780b3492ab0a43",
+    "passed": 127
+  },
+  "candidate": {
+    "clean": true,
+    "head": "6824f17d0fc39e8b20f6ec3b48912bb446dadb4c",
+    "tree": "6fa36bb27213b93aa5bbee793ba7c1e7affc0cbf"
+  },
+  "clone_method": "git clone --no-local --no-checkout; detached exact SHA; no alternates or source overlay",
+  "commands": {
+    "actions": "actionlint -shellcheck= -pyflakes= .github/workflows/*.yml",
+    "compile": "PYTHON -X pycache_prefix=R1_VALIDATION_DIR/compile-6824 -m compileall -q src scripts tests",
+    "root": "PYTHON scripts/build_research_admission_root.py --check",
+    "tests": "PATH=WOLFRAM_FAILING_SHIM:$PATH PYTHONDONTWRITEBYTECODE=1 MSK_CAUSALIS_FROZEN_REPO=FROZEN_TARGET_CHECKOUT PYTHONPATH=src PYTHON -m pytest -p no:cacheprovider --basetemp=R1_VALIDATION_DIR/pytest-6824 --junitxml=R1_VALIDATION_DIR/full-6824.xml"
+  },
+  "environment": {
+    "packages": {
+      "PyYAML": "6.0.3",
+      "jsonschema": "4.26.0",
+      "pytest": "8.4.2",
+      "ruff": "0.16.8"
+    },
+    "python": "3.13.11 (main, Jan 28 2026, 00:01:45) [Clang 21.1.4 ]"
+  },
+  "logs": {
+    "action-audit-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f",
+      "path": "action-audit-6824.log",
+      "sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f"
+    },
+    "actionlint-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "actionlint-6824.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "clean-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "8e40eeb16e6fee44a814dadc5b6df1b9c349463fbeca0a551b05219ee31bf3dc",
+      "path": "clean-6824.log",
+      "sha256": "e4cafdbc3c42ee81be4eb8801d540edc3b35a03df9f5a1b407d79c35b870e3d9"
+    },
+    "clean-6824.xml": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "b27d19c31df5d296c8bdf1f61207ce7dc900142a3111c35df08a2ca6cd5bf5fe",
+      "path": "clean-6824.xml",
+      "sha256": "a5a88d29b3e92848c9b6b9ffed6767c845c0d619d55effba250529076080c63b"
+    },
+    "compile-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "compile-6824.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "f114d83b30c5c657ee43a847a45bafccaea255d82673feb87c26d252c61e29c1",
+      "path": "format-6824.log",
+      "sha256": "f114d83b30c5c657ee43a847a45bafccaea255d82673feb87c26d252c61e29c1"
+    },
+    "lint-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "path": "lint-6824.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "root-check-6824.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "09264fd2b5a4ab3d5455fbc55c96855024a288adbc2fa796cf8419f964472312",
+      "path": "root-check-6824.log",
+      "sha256": "09264fd2b5a4ab3d5455fbc55c96855024a288adbc2fa796cf8419f964472312"
+    },
+    "wolfram-invocations.log": {
+      "normalization": "Private paths/hostname only; names/statuses unchanged.",
+      "original_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "wolfram-invocations.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "new_r1_tests": [
+    "tests.test_research_admission::test_snapshot_is_clean_exact_committed_candidate",
+    "tests.test_research_admission_workflows::test_command_quoting_preserves_installation_and_admission_guards",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[admit-local-review.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[admit-research-evidence.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[app-authentication.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[authority-ci.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[bootstrap-pr3-smoke.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[independent-cloud-review.yml]",
+    "tests.test_research_admission_workflows::test_complete_workflow_yaml_parses[prior-release-verify.yml]",
+    "tests.test_research_admission_workflows::test_rejected_workflow_remains_an_invalid_yaml_negative_control",
+    "tests.test_research_admission_workflows::test_yaml_dependency_is_test_only"
+  ],
+  "ratified": false,
+  "rejected": {
+    "all_test_ids_retained": true,
+    "collected": 186,
+    "every_former_error_passes": true,
+    "head": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+    "passed": 141,
+    "restored_error_test_ids": [
+      "tests.test_research_admission::test_T01_head_changed",
+      "tests.test_research_admission::test_T02_base_changed",
+      "tests.test_research_admission::test_T03_foreign_repository_or_pr",
+      "tests.test_research_admission::test_T04_report_digest_substitution",
+      "tests.test_research_admission::test_T05_historical_R1_report_reuse",
+      "tests.test_research_admission::test_T06_wrong_review_head",
+      "tests.test_research_admission::test_T07_omitted_material_limitation",
+      "tests.test_research_admission::test_T08_generated_promoted_to_full_review",
+      "tests.test_research_admission::test_T09_missing_path",
+      "tests.test_research_admission::test_T10_allowlist_expansion_cannot_replace_pinned_policy",
+      "tests.test_research_admission::test_T11_producer_claims_reviewer",
+      "tests.test_research_admission::test_T12_shared_review_claimed_isolated",
+      "tests.test_research_admission::test_T13_local_check_impersonation_rejected_by_schema",
+      "tests.test_research_admission::test_T14_untrusted_ratification",
+      "tests.test_research_admission::test_T15_forged_supplied_github_actor",
+      "tests.test_research_admission::test_T16_wrong_target_app_token_scope",
+      "tests.test_research_admission::test_T18_hosted_failure_never_pass",
+      "tests.test_research_admission::test_T19_executed_test_failure_not_startup",
+      "tests.test_research_admission::test_T20_foreign_PR_scope",
+      "tests.test_research_admission::test_T21_future_head_scope",
+      "tests.test_research_admission::test_T22_expired_and_revoked",
+      "tests.test_research_admission::test_T23_conflicting_duplicate_fails_without_second_check",
+      "tests.test_research_admission::test_T24_unknown_version",
+      "tests.test_research_admission::test_T25_unreviewed_authority_commit",
+      "tests.test_research_admission::test_T26_schema_error_fails_closed",
+      "tests.test_research_admission::test_T27_dispatch_is_not_authorization",
+      "tests.test_research_admission::test_T28_compromised_review_despite_prior_PASS",
+      "tests.test_research_admission::test_approval_edit_and_authority_review_binding",
+      "tests.test_research_admission::test_both_policy_and_root_cannot_nominate_an_attacker",
+      "tests.test_research_admission::test_ci_cause_unknown_and_baseline_unmatched",
+      "tests.test_research_admission::test_dispatcher_is_not_producer_identity",
+      "tests.test_research_admission::test_frozen_causalis_integration_reconciles_actual53_paths",
+      "tests.test_research_admission::test_head_movement_before_success_never_publishes_success",
+      "tests.test_research_admission::test_identical_completed_request_is_idempotent",
+      "tests.test_research_admission::test_invalid_request_has_no_signing_or_check_side_effect",
+      "tests.test_research_admission::test_ledger_uses_authority_only_nonforced_updates",
+      "tests.test_research_admission::test_packet_blob_substitution_and_diff_truncation",
+      "tests.test_research_admission::test_partial_publication_is_recorded_and_never_blindly_retried",
+      "tests.test_research_admission::test_schema_contracts_are_closed_and_well_formed",
+      "tests.test_research_admission::test_security_report_requires_exact_tree_and_disclosures",
+      "tests.test_research_admission::test_signed_synthetic_receipt_and_distinct_check_only",
+      "tests.test_research_admission::test_strict_dates_and_policy_versions",
+      "tests.test_research_admission::test_strict_json_rejects_duplicate_nan_and_unknown",
+      "tests.test_research_admission::test_synthetic_complete_route_requires_all_evidence",
+      "tests.test_research_admission::test_unprotected_auto_created_environment_is_rejected"
+    ],
+    "setup_errors": 45
+  },
+  "release_authorized": false,
+  "scope": "This receipt binds the stated clean committed repair. A later evidence-only final HEAD must be tested from another fresh checkout; no automatic verdict transfer.",
+  "state": "VERIFIED_CLEAN_COMMITTED_REPAIR_NOT_RELEASE_AUTHORIZED",
+  "static_checks": {
+    "actionlint_options": [
+      "-shellcheck=",
+      "-pyflakes="
+    ],
+    "actions_syntax_expressions_all_seven_files": "PASS_ACTIONLINT1.7.12",
+    "compilation": "PASS_ALL_SOURCE_SCRIPTS_TESTS",
+    "format": "PASS_NEW_PYTHON_FILES",
+    "immutable_action_references": "PASS",
+    "legacy_target_policy_schema": "KNOWN_INCOMPATIBLE_NOT_PASS",
+    "lint": "PASS_CHANGED_PYTHON_FILES",
+    "new_json_schemas_and_root_policy": "PASS",
+    "root_offline_reproduction": "PASS",
+    "yaml_all_seven_files": "PASS_PYYAML6.0.3"
+  },
+  "suite": {
+    "collected": 197,
+    "errors": 0,
+    "failures": 0,
+    "passed": 197,
+    "skipped": 0
+  }
+}
