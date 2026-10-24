@@ -1,0 +1,98 @@
+{
+  "assessment": {
+    "compensating_evidence_digest": "3a86786d45c83e1decdb40c8434abd92dfb6627fff5132818815ee13886b02cf",
+    "explicit_human_risk_acceptance_required": true,
+    "hosted_ci_pass": false,
+    "jobs": [
+      {
+        "cause": "AUTHENTICATED_GITHUB_BILLING_STARTUP_FAILURE",
+        "conclusion": "failure",
+        "executed_steps": 0,
+        "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+        "job_id": 120970719460,
+        "run_id": 40127087284
+      },
+      {
+        "cause": "AUTHENTICATED_GITHUB_BILLING_STARTUP_FAILURE",
+        "conclusion": "failure",
+        "executed_steps": 0,
+        "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+        "job_id": 120970719691,
+        "run_id": 40127087396
+      },
+      {
+        "cause": "AUTHENTICATED_GITHUB_BILLING_STARTUP_FAILURE",
+        "conclusion": "failure",
+        "executed_steps": 0,
+        "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+        "job_id": 120970719946,
+        "run_id": 40127087410
+      },
+      {
+        "cause": "AUTHENTICATED_GITHUB_BILLING_STARTUP_FAILURE",
+        "conclusion": "failure",
+        "executed_steps": 0,
+        "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+        "job_id": 120970720137,
+        "run_id": 40127087396
+      }
+    ],
+    "state": "HOSTED_CI_INFRASTRUCTURE_UNAVAILABLE_WITH_COMPENSATING_EVIDENCE"
+  },
+  "branch_protection": {
+    "data": {
+      "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+      "message": "Upgrade to GitHub Pro or make this repository public to enable this feature.",
+      "status": "403"
+    },
+    "status": 1
+  },
+  "candidate": {
+    "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+    "candidate_digest": "c70a9d2add189ae490ebcb7bc2ae06ee13e966827d6e6c10d7d341c67d880621",
+    "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "pr_number": 156,
+    "repository": "Miskatonic-System/msk-ruliology",
+    "tree_sha": "a9d867a34ad21524a8f835774bca29ad33a8300d"
+  },
+  "compensating_controls_authorized": false,
+  "compensating_evidence": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compensating-evidence.json",
+  "hosted_ci_pass": false,
+  "independent_assessment_reference": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+  "observed_at": "2026-10-24T21:54:09.985074+00:00",
+  "protected_environment_exists": false,
+  "release_blocker": "GitHub protection/ruleset visibility unavailable (403); no bypass authorized.",
+  "retained_api_evidence": "ci-authenticated-job-evidence.json",
+  "rulesets": {
+    "data": {
+      "documentation_url": "https://docs.github.com/rest/repos/rules#get-all-repository-rulesets",
+      "message": "Upgrade to GitHub Pro or make this repository public to enable this feature.",
+      "status": "403"
+    },
+    "status": 1
+  },
+  "state": "VERIFIED_ELIGIBILITY_AWAITING_EXPLICIT_HUMAN_AUTHORIZATION",
+  "workflow_runs": [
+    {
+      "conclusion": "failure",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "id": 40127087396,
+      "name": "Test",
+      "url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087396"
+    },
+    {
+      "conclusion": "failure",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "id": 40127087410,
+      "name": "Lint",
+      "url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087410"
+    },
+    {
+      "conclusion": "failure",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "id": 40127087284,
+      "name": "Schema Validation",
+      "url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087284"
+    }
+  ]
+}

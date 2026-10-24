@@ -1,0 +1,134 @@
+{
+  "added_passing_cases": 87,
+  "all_original_statuses_unchanged": true,
+  "baseline": {
+    "failed": 8,
+    "failure_ids": [
+      "tests.test_lpo_d2_preregistration::test_v1_to_v10_00c_r1_github_operator_identity_reconciliation",
+      "tests.test_lpo_d3_execution::test_all_d3_prefit_hostile_controls",
+      "tests.test_lpo_d3_execution::test_d3_ast_and_preservation_controls",
+      "tests.test_lpo_publication_adversarial::test_m15_correct_report_but_incorrect_pr_metadata",
+      "tests.test_lpo_publication_adversarial::test_m16_pr_no_longer_draft",
+      "tests.test_lpo_publication_adversarial::test_m17_pr_state_closed_or_merged",
+      "tests.test_lpo_publication_adversarial::test_m29_missing_repository_or_branch_identity",
+      "tests.test_lpo_reconciliation_adversarial::test_h38_live_valid"
+    ],
+    "passed": 855,
+    "skipped": 0
+  },
+  "candidate": {
+    "failed": 8,
+    "failure_ids": [
+      "tests.test_lpo_d2_preregistration::test_v1_to_v10_00c_r1_github_operator_identity_reconciliation",
+      "tests.test_lpo_d3_execution::test_all_d3_prefit_hostile_controls",
+      "tests.test_lpo_d3_execution::test_d3_ast_and_preservation_controls",
+      "tests.test_lpo_publication_adversarial::test_m15_correct_report_but_incorrect_pr_metadata",
+      "tests.test_lpo_publication_adversarial::test_m16_pr_no_longer_draft",
+      "tests.test_lpo_publication_adversarial::test_m17_pr_state_closed_or_merged",
+      "tests.test_lpo_publication_adversarial::test_m29_missing_repository_or_branch_identity",
+      "tests.test_lpo_reconciliation_adversarial::test_h38_live_valid"
+    ],
+    "passed": 942,
+    "skipped": 0
+  },
+  "candidate_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+  "commands_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json#/commands",
+  "compilation": "PASS",
+  "focused": {
+    "failed": 0,
+    "failure_ids": [],
+    "passed": 126,
+    "skipped": 0
+  },
+  "format": "PASS",
+  "junit_reports": {
+    "baseline": {
+      "original_digest_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json#/retained_logs/baseline.xml/sha256",
+      "original_raw_sha256": "2a783b214208cff8a330fae85c446aa58afc9b4155b780bdabe1c50f3740630d",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/baseline.xml",
+      "sha256": "6e8e099616788abdee442b75c32497d5a07f5bc1cdca30daeb0d95809e99e818"
+    },
+    "candidate": {
+      "original_digest_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json#/retained_logs/candidate-full.xml/sha256",
+      "original_raw_sha256": "a0ed6dc409ec6f07bba8acf7b4b36ababdc10ae71842e74ae41efc78701a4af7",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/candidate-full.xml",
+      "sha256": "e28467f4ed441d2ba059a497ee13cd4c6f3d66ccef87e6b54a4506a3ead14d2a"
+    },
+    "focused": {
+      "original_digest_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json#/retained_logs/focused-resumed.xml/sha256",
+      "original_raw_sha256": "744944c20ecaa0eec5b2e8fb8cbc6be9d9459af6b15658cb1f300cbefa71e918",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/focused-resumed.xml",
+      "sha256": "6eac67a658da6ed9301d070a5fe30286464c847f6b8aecc402378f5ace377e96"
+    }
+  },
+  "lint": "PASS",
+  "new_failures": [],
+  "normalization": "Retained XML/log host path strings normalized for public custody only, preserving test names, statuses and diagnostics; original raw digests were verified against the immutable target receipt before importing. No tests or experiments were rerun for this import; bounded static checks were rerun without source changes. JUnit hostname attributes are also normalized to REVIEW_ENVIRONMENT; original unnormalized source digests remain pinned.",
+  "packages": {
+    "jsonschema": "4.26.0",
+    "networkx": "3.6.1",
+    "pydantic": "2.13.5",
+    "pypdf": "6.19.0",
+    "pytest": "8.4.2",
+    "ruff": "0.16.8"
+  },
+  "python": "3.13.11 (main, Jan 28 2026, 00:01:45) [Clang 21.1.4 ]",
+  "review_report_path": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+  "review_report_sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22",
+  "schema_version": "research-ci-compensating-evidence-v1",
+  "static_checks": {
+    "compilation": {
+      "command": [
+        "AUTHOR_WORKSPACE/repos/msk-ruliology/.venv/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+        "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+        "src/msk_ruliology/causalis_b2_resource_causality.py",
+        "tests/test_causalis_b2_r1_edge_reconciliation.py",
+        "tests/test_causalis_b2_resource_causality.py"
+      ],
+      "exit_code": 0,
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compilation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "state": "PASS"
+    },
+    "format": {
+      "command": [
+        "AUTHOR_WORKSPACE/repos/msk-ruliology/.venv/bin/ruff",
+        "format",
+        "--check",
+        "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+        "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+        "src/msk_ruliology/causalis_b2_resource_causality.py",
+        "tests/test_causalis_b2_r1_edge_reconciliation.py",
+        "tests/test_causalis_b2_resource_causality.py"
+      ],
+      "exit_code": 0,
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/format.log",
+      "sha256": "f114d83b30c5c657ee43a847a45bafccaea255d82673feb87c26d252c61e29c1",
+      "source_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "state": "PASS"
+    },
+    "lint": {
+      "command": [
+        "AUTHOR_WORKSPACE/repos/msk-ruliology/.venv/bin/ruff",
+        "check",
+        "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+        "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+        "src/msk_ruliology/causalis_b2_resource_causality.py",
+        "tests/test_causalis_b2_r1_edge_reconciliation.py",
+        "tests/test_causalis_b2_resource_causality.py"
+      ],
+      "exit_code": 0,
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "source_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "state": "PASS"
+    }
+  },
+  "target_receipt_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+  "target_receipt_sha256": "928499fee39360e84497bbb7c9ba20b7ccc246effe47b7de98315cdca63c7f17"
+}

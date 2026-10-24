@@ -1,0 +1,161 @@
+{
+  "$id": "https://miskatonic.example/schemas/research-admission-authority-root-v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "activation": {
+      "const": "AUTHENTICATED_EXACT_HEAD_AUTHORITY_PR_RATIFICATION_AND_CANONICAL_MERGE"
+    },
+    "authority_repository": {
+      "const": "Miskatonic-System/miskatonic-review-authority"
+    },
+    "designation": {
+      "const": "PROPOSED_RESEARCH_ASSURANCE_SUCCESSOR"
+    },
+    "implementation_objects": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "git_blob_sha": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "git_blob_sha",
+          "sha256"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "policy_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "predecessor_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "predecessor_root": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "preserved_local_review_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "ratifying_principal": {
+      "additionalProperties": false,
+      "properties": {
+        "github_id": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "github_login": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "github_type": {
+          "const": "User"
+        }
+      },
+      "required": [
+        "github_id",
+        "github_login",
+        "github_type"
+      ],
+      "type": "object"
+    },
+    "revocation_semantics": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "revoked": {
+      "type": "boolean"
+    },
+    "rollback_semantics": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "routes": {
+      "additionalProperties": false,
+      "properties": {
+        "EXTERNAL_EVIDENCE_ADMISSION_V1": {
+          "const": "REQUIRES_CANONICAL_MERGE_AND_EXPLICIT_RATIFICATION"
+        },
+        "LOCAL_REVIEW_V2_1": {
+          "const": "PRESERVED_UNCHANGED"
+        }
+      },
+      "required": [
+        "LOCAL_REVIEW_V2_1",
+        "EXTERNAL_EVIDENCE_ADMISSION_V1"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "research-admission-authority-root-v1"
+    }
+  },
+  "required": [
+    "schema_version",
+    "designation",
+    "authority_repository",
+    "predecessor_commit",
+    "predecessor_root",
+    "preserved_local_review_policy",
+    "routes",
+    "ratifying_principal",
+    "policy_path",
+    "policy_sha256",
+    "implementation_objects",
+    "activation",
+    "revoked",
+    "revocation_semantics",
+    "rollback_semantics"
+  ],
+  "type": "object"
+}

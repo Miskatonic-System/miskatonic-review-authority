@@ -1,0 +1,21 @@
+{
+  "authorization_identity": {},
+  "authorized": false,
+  "candidate_identity": {},
+  "candidate_remains_eligible": false,
+  "credential_session_issued": false,
+  "credential_session_revoked": false,
+  "decision_code": "ADMISSION_POLICY_NOT_RATIFIED",
+  "eligible": false,
+  "evidence_identity": {},
+  "execution_began": false,
+  "external_side_effect": false,
+  "failure_cause_code": null,
+  "limitations": [],
+  "policy_identity": {},
+  "required_followups": [
+    "No success check or release authorization may be inferred."
+  ],
+  "retry_evidence_required": "Supply valid evidence under a ratified scoped policy.",
+  "retry_permitted": false
+}
