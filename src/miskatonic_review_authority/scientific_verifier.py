@@ -138,6 +138,8 @@ def verify_scientific_evidence(
         return _verify_causalis_b1_evidence(target_path, policy, base_sha, head_sha)
     if profile == "causalis_b2":
         return _verify_causalis_b2_evidence(target_path, policy, base_sha, head_sha)
+    if profile == "causalis_b2_r1":
+        return _verify_causalis_b2_r1_evidence(target_path, policy, base_sha, head_sha)
     if profile == "atlas_01a":
         return _verify_atlas_01a_evidence(target_path, policy, base_sha, head_sha)
     if profile == "cdl_00a":
@@ -944,6 +946,139 @@ def _verify_causalis_b2_evidence(
 
     return verified_summary, payload_hashes
 
+
+
+_B2_R1_REQUIRED_FILES = [
+    "b2_r1_canonical_predecessor.json",
+    "b2_r1_historical_artifact_preservation.json",
+    "b2_r1_aggregate_metric_reconciliation.json",
+    "b2_r1_event_identity_contract.md",
+    "b2_r1_wolfram_edge_relation_audit.json",
+    "b2_r1_positive_parity_controls.json",
+    "b2_r1_mismatch_witnesses.json",
+    "b2_r1_causal_semantics_classification.md",
+    "b2_r1_scientific_claim_supersession.json",
+    "b2_r1_signature_and_merge_erratum.md",
+    "b2_r1_negative_controls.json",
+    "independent_b2_r1_review.md",
+    "WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+]
+
+_B2_R1_EXPECTED_TOTALS = {
+    "distinct_event_nodes": 2102,
+    "maximal_histories": 1597,
+    "history_event_occurrences": 9392,
+    "per_history_direct_edge_occurrences": 10160,
+    "transitive_causal_relations": 20866,
+    "incomparable_pairs": 2486,
+    "unique_direct_edges": 2832,
+}
+
+
+def _verify_causalis_b2_r1_evidence(
+    target_path: str,
+    policy: dict[str, Any],
+    base_sha: str,
+    head_sha: str,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    """Deterministically verifies CAUSALIS B2 R1 exact edge-reconciliation evidence."""
+    del head_sha
+    root = Path(target_path)
+    base_results = root / policy.get(
+        "evidence_base_path", "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1"
+    )
+    if not base_results.is_dir():
+        raise AuthorityError("SCIENTIFIC_EVIDENCE_DIRECTORY_MISSING", str(base_results))
+    required_files = policy.get("required_evidence_files", _B2_R1_REQUIRED_FILES)
+    for rf in required_files:
+        if not (base_results / rf).is_file():
+            raise AuthorityError("SCIENTIFIC_INPUTS_MISSING", rf)
+
+    # 1. Canonical predecessor
+    pred = read_json(base_results / "b2_r1_canonical_predecessor.json")
+    checks = pred.get("merge_parent_check", {})
+    if (
+        pred.get("canonical_base") != base_sha
+        or checks.get("first_parent_is_predecessor_pr_base") is not True
+        or checks.get("second_parent_is_predecessor_accepted_head") is not True
+    ):
+        raise AuthorityError("CANDIDATE_BASE_SHA_MISMATCH", "R1 canonical predecessor invalid")
+
+    # 2. Historical preservation, re-hashed in the candidate checkout
+    pres = read_json(base_results / "b2_r1_historical_artifact_preservation.json")
+    rows = pres.get("files", [])
+    if pres.get("all_byte_identical") is not True or len(rows) != pres.get("file_count") or not rows:
+        raise AuthorityError("B2_R1_PRESERVATION_FAILED", "preservation record invalid")
+    for row in rows:
+        fp = root / row["path"]
+        if not fp.is_file() or sha256_file(fp) != row.get("canonical_base_sha256"):
+            raise AuthorityError("B2_R1_PRESERVATION_FAILED", row.get("path", "?"))
+
+    # 3. Aggregate metric reconciliation
+    agg = read_json(base_results / "b2_r1_aggregate_metric_reconciliation.json")
+    rows = {r["metric"]: r for r in agg.get("metrics", [])}
+    if agg.get("all_expected_values_verified") is not True:
+        raise AuthorityError("B2_R1_AGGREGATE_METRICS_INVALID", "not all verified")
+    for k, v in _B2_R1_EXPECTED_TOTALS.items():
+        if rows.get(k, {}).get("recomputed") != v:
+            raise AuthorityError("B2_R1_AGGREGATE_METRICS_INVALID", k)
+    depth_max = max(int(r["depth"]) for r in agg.get("causal_depth_distribution", []))
+    if depth_max != 5:
+        raise AuthorityError("B2_R1_AGGREGATE_METRICS_INVALID", "max causal depth")
+
+    # 4. Edge relation audit
+    audit = read_json(base_results / "b2_r1_wolfram_edge_relation_audit.json")
+    counts = audit.get("disposition_counts", {})
+    if (
+        audit.get("fixture_count") != 56
+        or audit.get("wolfram_primary_calls_made") != 0
+        or counts.get("EVENT_LINEAGE_EDGE_PARITY_EXACT", 0)
+        + counts.get("OBSERVED_EDGE_DISAGREEMENT", 0)
+        + counts.get("LABELED_GRAPH_ISOMORPHISM_ONLY", 0)
+        + counts.get("EVENT_CORRESPONDENCE_UNRESOLVED", 0)
+        + counts.get("OBSERVED_EVENT_SET_DISAGREEMENT", 0)
+        + counts.get("COUNT_PARITY_ONLY", 0)
+        + counts.get("OBSERVED_COUNT_DISAGREEMENT", 0)
+        + counts.get("PARITY_NOT_AVAILABLE", 0)
+        != 56
+    ):
+        raise AuthorityError("B2_R1_EDGE_AUDIT_INVALID", "fixture accounting")
+    for fid, fx in audit.get("fixtures", {}).items():
+        if fx.get("disposition") == "EVENT_LINEAGE_EDGE_PARITY_EXACT":
+            er = fx.get("edge_relation", {})
+            if (
+                fx.get("correspondence", {}).get("status") != "COMPLETE"
+                or er.get("missing_in_wolfram") != 0
+                or er.get("extra_in_wolfram") != 0
+            ):
+                raise AuthorityError("B2_R1_EDGE_AUDIT_INVALID", f"exact without basis: {fid}")
+
+    # 5. Negative controls
+    neg = read_json(base_results / "b2_r1_negative_controls.json")
+    for key in ("control_A_R014", "control_B_R004", "control_C_missing_result"):
+        if neg.get(key, {}).get("pass") is not True:
+            raise AuthorityError("B2_R1_NEGATIVE_CONTROL_FAILED", key)
+
+    # 6. Supersession and independent review
+    sup = read_json(base_results / "b2_r1_scientific_claim_supersession.json")
+    if not sup.get("records") or sup.get("r1_fixture_dispositions") != counts:
+        raise AuthorityError("B2_R1_SUPERSESSION_INVALID", "records")
+    review = (base_results / "independent_b2_r1_review.md").read_text(encoding="utf-8")
+    verdicts = re.findall(r"^VERDICT: ([A-Z_]+)\s*$", review, flags=re.MULTILINE)
+    if len(verdicts) != 1 or verdicts[0] not in ("ACCEPT", "ACCEPT_WITH_LIMITATIONS"):
+        raise AuthorityError("B2_R1_INDEPENDENT_REVIEW_NOT_ACCEPTING", str(verdicts))
+
+    payload_hashes = {rf: sha256_file(base_results / rf) for rf in required_files}
+    summary = {
+        "disposition_counts": counts,
+        "fixture_count": audit.get("fixture_count"),
+        "independent_review_verdict": verdicts[0],
+        "preserved_historical_files": len(pres.get("files", [])),
+        "transitive_causal_relations": _B2_R1_EXPECTED_TOTALS["transitive_causal_relations"],
+        "max_causal_depth": depth_max,
+        "wolfram_primary_calls_made": 0,
+    }
+    return summary, payload_hashes
 
 
 def run_scientific_prior_verification(
