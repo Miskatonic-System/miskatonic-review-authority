@@ -63,11 +63,11 @@
     {
       "binding_authority": "trusted-starter:kowen9024AI",
       "head_branch": "agent/ruliology-causalis-b2-exact-edge-reconciliation-00a-r1",
-      "notes": "Target binding for CAUSALIS B2 R1 PR #156 (WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1).",
+      "notes": "R2 repair of PR #156 authored by OpenAI Codex, GPT-6 family, under WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2 and its explicit historical S11 continuation authorization. Original R1 Claude Code commits remain ancestors; this update does not impersonate the original producer or reuse its review qualification. Binding is a proposal until separately reviewed and merged.",
       "pr_number": 156,
       "producer_class": "cloud_model",
-      "producer_model": "claude-opus-5-5",
-      "producer_principal": "cloud-authoring-service:anthropic-claude-code",
+      "producer_model": "GPT-6 family (precise deployment identifier not exposed)",
+      "producer_principal": "cloud-authoring-service:openai-codex",
       "repository": "Miskatonic-System/msk-ruliology"
     }
   ],
