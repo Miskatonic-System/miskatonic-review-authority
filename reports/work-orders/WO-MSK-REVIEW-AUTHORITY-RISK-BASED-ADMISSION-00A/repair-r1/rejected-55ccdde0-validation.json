@@ -1,0 +1,120 @@
+{
+  "baseline_original_tests": {
+    "all_statuses_preserved": true,
+    "count": 127
+  },
+  "blocking_findings": [
+    "F1_SECURITY_TEST_SNAPSHOT_CANNOT_COMMIT_CLEAN_FROZEN_HEAD",
+    "F2_PRODUCTION_WORKFLOW_INVALID_YAML"
+  ],
+  "candidate_modified": false,
+  "command": "PATH=REVIEW_WOLFRAM_FAILING_SHIM:$PATH PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src MSK_CAUSALIS_FROZEN_REPO=FROZEN_TARGET_CHECKOUT python3.13 -m pytest -p no:cacheprovider --basetemp=REVIEW_TMP/pytest --junitxml=REVIEW_TMP/full-tests.xml",
+  "counts": {
+    "ERROR": 45,
+    "FAIL": 0,
+    "PASS": 141,
+    "SKIP": 0
+  },
+  "environment": {
+    "documented_pytest": "8.4.2",
+    "jsonschema": "4.26.0",
+    "pytest": "9.1.1",
+    "python": "3.13.11 (main, Jan 28 2026, 00:01:45) [Clang 21.1.4 ]",
+    "runner_limitation": "Independent runner pytest9.1.1 differs from retained pytest8.4.2; direct clean-Git no-change fixture cause does not depend on pytest version."
+  },
+  "error_case_ids": [
+    "tests.test_research_admission::test_T01_head_changed",
+    "tests.test_research_admission::test_T02_base_changed",
+    "tests.test_research_admission::test_T03_foreign_repository_or_pr",
+    "tests.test_research_admission::test_T04_report_digest_substitution",
+    "tests.test_research_admission::test_T05_historical_R1_report_reuse",
+    "tests.test_research_admission::test_T06_wrong_review_head",
+    "tests.test_research_admission::test_T07_omitted_material_limitation",
+    "tests.test_research_admission::test_T08_generated_promoted_to_full_review",
+    "tests.test_research_admission::test_T09_missing_path",
+    "tests.test_research_admission::test_T10_allowlist_expansion_cannot_replace_pinned_policy",
+    "tests.test_research_admission::test_T11_producer_claims_reviewer",
+    "tests.test_research_admission::test_T12_shared_review_claimed_isolated",
+    "tests.test_research_admission::test_T13_local_check_impersonation_rejected_by_schema",
+    "tests.test_research_admission::test_T14_untrusted_ratification",
+    "tests.test_research_admission::test_T15_forged_supplied_github_actor",
+    "tests.test_research_admission::test_T16_wrong_target_app_token_scope",
+    "tests.test_research_admission::test_T18_hosted_failure_never_pass",
+    "tests.test_research_admission::test_T19_executed_test_failure_not_startup",
+    "tests.test_research_admission::test_T20_foreign_PR_scope",
+    "tests.test_research_admission::test_T21_future_head_scope",
+    "tests.test_research_admission::test_T22_expired_and_revoked",
+    "tests.test_research_admission::test_T23_conflicting_duplicate_fails_without_second_check",
+    "tests.test_research_admission::test_T24_unknown_version",
+    "tests.test_research_admission::test_T25_unreviewed_authority_commit",
+    "tests.test_research_admission::test_T26_schema_error_fails_closed",
+    "tests.test_research_admission::test_T27_dispatch_is_not_authorization",
+    "tests.test_research_admission::test_T28_compromised_review_despite_prior_PASS",
+    "tests.test_research_admission::test_approval_edit_and_authority_review_binding",
+    "tests.test_research_admission::test_both_policy_and_root_cannot_nominate_an_attacker",
+    "tests.test_research_admission::test_ci_cause_unknown_and_baseline_unmatched",
+    "tests.test_research_admission::test_dispatcher_is_not_producer_identity",
+    "tests.test_research_admission::test_frozen_causalis_integration_reconciles_actual53_paths",
+    "tests.test_research_admission::test_head_movement_before_success_never_publishes_success",
+    "tests.test_research_admission::test_identical_completed_request_is_idempotent",
+    "tests.test_research_admission::test_invalid_request_has_no_signing_or_check_side_effect",
+    "tests.test_research_admission::test_ledger_uses_authority_only_nonforced_updates",
+    "tests.test_research_admission::test_packet_blob_substitution_and_diff_truncation",
+    "tests.test_research_admission::test_partial_publication_is_recorded_and_never_blindly_retried",
+    "tests.test_research_admission::test_schema_contracts_are_closed_and_well_formed",
+    "tests.test_research_admission::test_security_report_requires_exact_tree_and_disclosures",
+    "tests.test_research_admission::test_signed_synthetic_receipt_and_distinct_check_only",
+    "tests.test_research_admission::test_strict_dates_and_policy_versions",
+    "tests.test_research_admission::test_strict_json_rejects_duplicate_nan_and_unknown",
+    "tests.test_research_admission::test_synthetic_complete_route_requires_all_evidence",
+    "tests.test_research_admission::test_unprotected_auto_created_environment_is_rejected"
+  ],
+  "evidence": {
+    "exact-changed-path-inventory.json": {
+      "sha256": "a6435e60ec78734f4041f040f8beb711c4a94b0cbb14884585115578104a46af",
+      "size_bytes": 19048
+    },
+    "full-tests.log": {
+      "sha256": "5c922a1bd3ac3ae7e6a57054f17eafcf3ae8741e072c452af4072ca40a117c61",
+      "size_bytes": 282446
+    },
+    "full-tests.xml": {
+      "sha256": "25e9968f6cdaec9baf78debe3de40e3044cd15d80f741222bab77da16b0c3e63",
+      "size_bytes": 309928
+    },
+    "independent-custody-verification.json": {
+      "sha256": "727d0e78eab41e29f56360fdd69651ca75f3efa6f5da3e68bae04432c9dc7f0e",
+      "size_bytes": 72326
+    },
+    "independent-target-reconciliation.json": {
+      "sha256": "968bd9cfec9c68348bc8a25795543c5b17018e3ebd1571130bc5d84dc7696b16",
+      "size_bytes": 1336
+    },
+    "original-environment-reproduction-reference.json": {
+      "sha256": "4b73309fb03130b867fdef65a286291acdbb3d562efab00ae742e4403478fe6e",
+      "size_bytes": 840
+    },
+    "wolfram-invocations.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "workflow-yaml-validation.json": {
+      "sha256": "ab9689452fba7a665891042143645fbf43fa171f1e5d11b8bb50275a1c7c16c6",
+      "size_bytes": 1042
+    }
+  },
+  "network_or_authority_mutations": false,
+  "new_tests": {
+    "count": 59,
+    "passed": 14,
+    "setup_errors": 45
+  },
+  "reason": "SECURITY_TEST_SNAPSHOT_CANNOT_COMMIT_CLEAN_FROZEN_HEAD",
+  "review_head": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+  "review_tree": "319f37649b1de9a7c533105582ee50c662796fff",
+  "source_reference": "tests/test_research_admission.py:61-70",
+  "state": "REVIEW_REJECTED_PENDING_REPAIR",
+  "synthetic_clone_clean": true,
+  "synthetic_clone_head": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+  "wolfram_invocations": 0
+}

@@ -9,7 +9,6 @@ from __future__ import annotations
 import copy
 import json
 import os
-import shutil
 import subprocess
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -33,40 +32,22 @@ def cmd(*args, cwd=None):
 
 @pytest.fixture(scope="session")
 def snapshot(tmp_path_factory):
+    # Qualification must use committed bytes. No distinct authority commit is
+    # needed: the fake review facts bind this exact checkout's existing identity.
+    source_head = cmd("git", "rev-parse", "HEAD", cwd=REPO)
     path = tmp_path_factory.mktemp("TEST_ONLY_auth") / "authority"
     subprocess.run(
-        ["git", "clone", "--shared", str(REPO), str(path)],
+        ["git", "clone", "--shared", "--no-checkout", str(REPO), str(path)],
         check=True,
         capture_output=True,
     )
-    for name in (
-        "src",
-        "schemas",
-        "roots",
-        "policy",
-        "reviews",
-        "reports",
-        ".github",
-        "scripts",
-    ):
-        shutil.copytree(
-            REPO / name,
-            path / name,
-            dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns("__pycache__"),
-        )
-    cmd("git", "config", "user.name", "TEST ONLY synthetic authority", cwd=path)
-    cmd("git", "config", "user.email", "test@example.invalid", cwd=path)
-    cmd("git", "add", ".", cwd=path)
     cmd(
         "git",
         "-c",
         "core.hooksPath=/dev/null",
-        "-c",
-        "commit.gpgsign=false",
-        "commit",
-        "-m",
-        "TEST ONLY unratified snapshot",
+        "checkout",
+        "--detach",
+        source_head,
         cwd=path,
     )
     root, policy = ra.load_contract(path)
@@ -351,6 +332,17 @@ def reject(c, code=None):
     assert not caught.value.decision.authorized
     assert not caught.value.decision.external_side_effect
     return caught.value.code
+
+
+def test_snapshot_is_clean_exact_committed_candidate(snapshot):
+    authority = snapshot[0]
+    assert cmd("git", "rev-parse", "HEAD", cwd=authority) == cmd(
+        "git", "rev-parse", "HEAD", cwd=REPO
+    )
+    assert cmd("git", "rev-parse", "HEAD^{tree}", cwd=authority) == cmd(
+        "git", "rev-parse", "HEAD^{tree}", cwd=REPO
+    )
+    assert cmd("git", "status", "--porcelain", cwd=authority) == ""
 
 
 def test_synthetic_complete_route_requires_all_evidence(case):
@@ -1079,6 +1071,7 @@ def test_all_historical_authority_bytes_preserved_except_reviewed_cli_ci_changes
     allowed = {
         "src/miskatonic_review_authority/cli.py",
         ".github/workflows/authority-ci.yml",
+        "pyproject.toml",  # R1 adds only the test-only YAML parser dependency.
     }
     for path in paths:
         if path not in allowed:

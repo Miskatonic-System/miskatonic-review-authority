@@ -1,0 +1,8 @@
+{
+  "source": "https://github.com/rhysd/actionlint/releases/tag/v1.7.12",
+  "version": "1.7.12",
+  "archive": "actionlint_1.7.12_linux_amd64.tar.gz",
+  "archive_sha256": "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8",
+  "official_checksums_sha256": "433028cf0ba3c42163ea1a668dedce30fcdbe84fe912b1a5e288c006eab8a4f5",
+  "binary_sha256": "c872d6db8c6bf83a8eaa704fc93999f027d55dffbc63b8a6abdccb47df5f4cd4"
+}

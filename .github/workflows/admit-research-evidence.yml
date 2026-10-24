@@ -35,7 +35,7 @@ jobs:
           git -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$AUTH_HEAD"
           git checkout --detach "$AUTH_HEAD"
       - name: Install authority dependencies only
-        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt"
       - name: Reconcile exact evidence and prepare explicit approval
         env:
           AUTHORITY_TOKEN: ${{ github.token }}
@@ -81,7 +81,7 @@ jobs:
           git -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$AUTH_HEAD"
           git checkout --detach "$AUTH_HEAD"
       - name: Install authority dependencies only
-        run: python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt"
       - name: Independently re-read authorization and evidence then authenticate bounded admission
         env:
           AUTHORITY_TOKEN: ${{ github.token }}
