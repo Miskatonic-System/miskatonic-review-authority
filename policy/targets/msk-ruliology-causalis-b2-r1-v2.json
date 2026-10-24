@@ -1,6 +1,8 @@
 {
   "allowed_modify_patterns": [
-    "^(artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/.*|experiments/causalis-b2-exact-edge-reconciliation-00a-r1/.*|reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION\\.md|src/msk_ruliology/causalis_b2_r1_edge_reconciliation\\.py|src/msk_ruliology/causalis_b2_resource_causality\\.py|tests/test_causalis_b2_r1_edge_reconciliation\\.py|tests/test_causalis_b2_resource_causality\\.py)$"
+    "^(artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/.*|experiments/causalis-b2-exact-edge-reconciliation-00a-r1/.*|reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION\\.md|src/msk_ruliology/causalis_b2_r1_edge_reconciliation\\.py|src/msk_ruliology/causalis_b2_resource_causality\\.py|tests/test_causalis_b2_r1_edge_reconciliation\\.py|tests/test_causalis_b2_resource_causality\\.py)$",
+    "^artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/.*$",
+    "^reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION\\.md$"
   ],
   "allowed_paths": [
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/**",
@@ -9,12 +11,14 @@
     "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
     "src/msk_ruliology/causalis_b2_resource_causality.py",
     "tests/test_causalis_b2_r1_edge_reconciliation.py",
-    "tests/test_causalis_b2_resource_causality.py"
+    "tests/test_causalis_b2_resource_causality.py",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/**",
+    "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md"
   ],
   "evidence_base_path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1",
   "expected_base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
   "expected_head_branch": "agent/ruliology-causalis-b2-exact-edge-reconciliation-00a-r1",
-  "expected_head_sha": "34c8c2d3a8f52a674e71e770b7a29d621fc8fb8b",
+  "expected_head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
   "expected_pr_number": 156,
   "forbidden_modify_patterns": [
     "(^|/)(credential|credentials|secret|secrets)(/|$)",
@@ -30,13 +34,31 @@
     "**/*.key",
     ".gitmodules"
   ],
+  "independent_r2_review": {
+    "historical_r1_review_is_not_r2_qualification": true,
+    "report_path": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+    "report_sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22",
+    "reviewed_head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "reviewed_tree_sha": "a9d867a34ad21524a8f835774bca29ad33a8300d",
+    "reviewer_identity": "OpenAI Codex independent delegated reviewer; distinct from implementation author; no signing authority claimed",
+    "scope": "Fresh R2 exact-head semantic acceptance; isolated Local Review V2.1 and signed admission remain mandatory.",
+    "verdict": "ACCEPT_WITH_LIMITATIONS"
+  },
   "key_evidence_diff_files": [
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_event_identity_contract.md",
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_causal_semantics_classification.md",
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_signature_and_merge_erratum.md",
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
     "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
-    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/independent_b2_r1_review.md"
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/independent_b2_r1_review.md",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identity_contract.md",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identities.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_resolution_authorization.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_failure_reproduction.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_negative_controls.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+    "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_gate_status.json"
   ],
   "policy_version": "2.0.0",
   "repository": "Miskatonic-System/msk-ruliology",
@@ -53,7 +75,20 @@
     "b2_r1_signature_and_merge_erratum.md",
     "b2_r1_negative_controls.json",
     "independent_b2_r1_review.md",
-    "WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md"
+    "WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identity_contract.md",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identities.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_resolution_authorization.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_failure_reproduction.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_negative_controls.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_gate_status.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_preservation_verification.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_changed_file_inventory.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_review_authority_binding.json",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/r2_independent_review.md",
+    "../causalis-b2-exact-edge-reconciliation-00a-r2/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md"
   ],
   "schema_version": "scientific-target-policy-v1",
   "verification_profile": "causalis_b2_r1"
