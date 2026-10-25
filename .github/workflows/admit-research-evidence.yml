@@ -1,0 +1,101 @@
+name: Admit bounded external research evidence
+on:
+  workflow_dispatch:
+    inputs:
+      ratification_pr:
+        description: Merged authority PR independently reviewed and explicitly ratified
+        required: true
+      ratification_comment:
+        description: Trusted-starter exact-head ratification comment ID on that PR
+        required: true
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+concurrency:
+  group: external-evidence-causalis-r2-089cec23
+  cancel-in-progress: false
+env:
+  PYTHONPATH: src
+  GIT_LFS_SKIP_SMUDGE: '1'
+jobs:
+  prepare:
+    if: github.repository == 'Miskatonic-System/miskatonic-review-authority' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact canonical authority code without third-party actions
+        env:
+          AUTH_TOKEN: ${{ github.token }}
+          AUTH_HEAD: ${{ github.sha }}
+        run: |
+          set -eu
+          git init .
+          git remote add origin https://github.com/Miskatonic-System/miskatonic-review-authority.git
+          auth=$(printf 'x-access-token:%s' "$AUTH_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$AUTH_HEAD"
+          git checkout --detach "$AUTH_HEAD"
+      - name: Install authority dependencies only
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt"
+      - name: Reconcile exact evidence and prepare explicit approval
+        env:
+          AUTHORITY_TOKEN: ${{ github.token }}
+          REVIEW_APP_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          RATIFICATION_PR: ${{ inputs.ratification_pr }}
+          RATIFICATION_COMMENT: ${{ inputs.ratification_comment }}
+        run: |
+          set -eu
+          umask 077
+          key="$RUNNER_TEMP/research-app-key.pem"
+          trap 'rm -f "$key"' EXIT
+          printf '%s' "$REVIEW_APP_PRIVATE_KEY" > "$key"
+          python3 -m miskatonic_review_authority research-admission-run \
+            --phase plan --authority-path . --target-path "$RUNNER_TEMP/frozen-candidate" \
+            --private-key "$key" --authority-token-env AUTHORITY_TOKEN \
+            --run-id "$GITHUB_RUN_ID" --ratification-pr "$RATIFICATION_PR" \
+            --ratification-comment "$RATIFICATION_COMMENT" --output evidence/plan.json
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          value=json.load(open('evidence/plan.json'))
+          print('Human reviewer: inspect the complete request, CI compensation and limitations. This preparation does not authorize admission or release.')
+          print('```json\n'+json.dumps(value,indent=2,sort_keys=True)+'\n```')
+          PY
+  admit:
+    needs: prepare
+    if: github.repository == 'Miskatonic-System/miskatonic-review-authority' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: research-evidence-admission
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    steps:
+      - name: Checkout exact canonical authority code without third-party actions
+        env:
+          AUTH_TOKEN: ${{ github.token }}
+          AUTH_HEAD: ${{ github.sha }}
+        run: |
+          set -eu
+          git init .
+          git remote add origin https://github.com/Miskatonic-System/miskatonic-review-authority.git
+          auth=$(printf 'x-access-token:%s' "$AUTH_TOKEN" | base64 -w0)
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$AUTH_HEAD"
+          git checkout --detach "$AUTH_HEAD"
+      - name: Install authority dependencies only
+        run: "python3 -m pip install --disable-pip-version-check --only-binary=:all: --require-hashes -r policy/research-admission/requirements-v1.txt"
+      - name: Independently re-read authorization and evidence then authenticate bounded admission
+        env:
+          AUTHORITY_TOKEN: ${{ github.token }}
+          REVIEW_APP_PRIVATE_KEY: ${{ secrets.MSK_REVIEW_APP_PRIVATE_KEY }}
+          RATIFICATION_PR: ${{ inputs.ratification_pr }}
+          RATIFICATION_COMMENT: ${{ inputs.ratification_comment }}
+        run: |
+          set -eu
+          umask 077
+          key="$RUNNER_TEMP/research-app-key.pem"
+          trap 'rm -f "$key"' EXIT
+          printf '%s' "$REVIEW_APP_PRIVATE_KEY" > "$key"
+          python3 -m miskatonic_review_authority research-admission-run \
+            --phase admit --authority-path . --target-path "$RUNNER_TEMP/frozen-candidate" \
+            --private-key "$key" --authority-token-env AUTHORITY_TOKEN \
+            --run-id "$GITHUB_RUN_ID" --ratification-pr "$RATIFICATION_PR" \
+            --ratification-comment "$RATIFICATION_COMMENT" --output evidence/admission-result.json

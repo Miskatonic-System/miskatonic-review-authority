@@ -1,0 +1,297 @@
+{
+  "$id": "https://miskatonic.example/schemas/research-admission-policy-v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admission_route": {
+      "const": "EXTERNAL_EVIDENCE_ADMISSION_V1"
+    },
+    "approval_identity": {
+      "type": "null"
+    },
+    "approval_state": {
+      "const": "MUST_BE_RESOLVED_FROM_AUTHENTICATED_PROTECTED_REVIEW"
+    },
+    "approval_timestamp": {
+      "type": "null"
+    },
+    "authorization_principal": {
+      "additionalProperties": false,
+      "properties": {
+        "github_id": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "github_login": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "github_type": {
+          "const": "User"
+        }
+      },
+      "required": [
+        "github_id",
+        "github_login",
+        "github_type"
+      ],
+      "type": "object"
+    },
+    "candidate": {
+      "additionalProperties": false,
+      "properties": {
+        "base_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "candidate_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "head_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "pr_number": {
+          "const": 156
+        },
+        "repository": {
+          "const": "Miskatonic-System/msk-ruliology"
+        },
+        "tree_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "pr_number",
+        "base_sha",
+        "head_sha",
+        "tree_sha",
+        "candidate_digest"
+      ],
+      "type": "object"
+    },
+    "ci_qualification_state": {
+      "const": "HOSTED_CI_INFRASTRUCTURE_UNAVAILABLE_WITH_COMPENSATING_EVIDENCE"
+    },
+    "ci_runs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "type": "array"
+    },
+    "compensating_evidence_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "compensating_evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "eligibility_rationale": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "expected_app_id": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "expected_packet_counts": {
+      "additionalProperties": false,
+      "properties": {
+        "FULL_CONTENT_REVIEWED": {
+          "const": 0
+        },
+        "FULL_DIFF_REVIEWED": {
+          "const": 27
+        },
+        "HASH_BOUND_GENERATED_ARTIFACT": {
+          "const": 26
+        },
+        "LFS_PAYLOAD_IDENTITY_BOUND": {
+          "const": 0
+        }
+      },
+      "required": [
+        "FULL_DIFF_REVIEWED",
+        "HASH_BOUND_GENERATED_ARTIFACT",
+        "FULL_CONTENT_REVIEWED",
+        "LFS_PAYLOAD_IDENTITY_BOUND"
+      ],
+      "type": "object"
+    },
+    "expires_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "enum": [
+          "DISTINCT_AGENT_REPORTED",
+          "SHARED_PROVIDER",
+          "SHARED_FILESYSTEM",
+          "NO_OS_ISOLATED_REVIEW",
+          "NO_SIGNED_REVIEWER_VERDICT",
+          "HUMAN_RISK_ACCEPTANCE_NOT_SCIENTIFIC_REVIEW",
+          "APPROVER_PRODUCER_TRANSPORT_OVERLAP_DISCLOSED",
+          "GENERATED_ARTIFACTS_HASH_BOUND_NOT_FULLY_REVIEWED",
+          "FINITE_COHORT_ONLY",
+          "MODEL_REPRODUCED_NOT_PROVEN",
+          "NO_GENERAL_SERIALIZABILITY_THEOREM",
+          "HOSTED_CI_NOT_PASS",
+          "LEGACY_TARGET_SCHEMA_INCOMPATIBLE",
+          "RELEASE_AND_MERGE_SEPARATE"
+        ]
+      },
+      "maxItems": 14,
+      "minItems": 14,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "policy_authority": {
+      "const": "github-app:miskatonic-review-authority"
+    },
+    "policy_id": {
+      "const": "causalis-b2-r2-pr156-only"
+    },
+    "policy_version": {
+      "const": "1.0.0"
+    },
+    "predecessor_authority_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "producer_binding_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer_bindings_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "producer_transport_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_class": {
+          "const": "REPORTED_AND_PR_OWNER_ACCOUNT_CORROBORATED"
+        },
+        "github_id": {
+          "const": 267743825
+        },
+        "github_login": {
+          "const": "kowen9024AI"
+        }
+      },
+      "required": [
+        "github_id",
+        "github_login",
+        "evidence_class"
+      ],
+      "type": "object"
+    },
+    "review_report_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "review_report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "review_verdict": {
+      "const": "ACCEPT_WITH_LIMITATIONS"
+    },
+    "reviewer_identity": {
+      "const": "reported-agent:r2_independent_review:openai-codex"
+    },
+    "reviewer_independence": {
+      "const": "DISTINCT_AGENT_SHARED_PROVIDER_AND_FILESYSTEM"
+    },
+    "revoked": {
+      "type": "boolean"
+    },
+    "risk_acceptance_required": {
+      "const": true
+    },
+    "risk_class": {
+      "const": "R1_EXPERIMENTAL_RESEARCH"
+    },
+    "schema_version": {
+      "const": "research-admission-exception-v1"
+    },
+    "scope": {
+      "const": "NON_PRODUCTION_RESEARCH"
+    },
+    "single_use": {
+      "const": true
+    },
+    "status": {
+      "const": "PROPOSED_UNTIL_AUTHENTICATED_RATIFICATION"
+    },
+    "target_policy_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_policy_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "policy_version",
+    "status",
+    "policy_authority",
+    "policy_id",
+    "candidate",
+    "admission_route",
+    "risk_class",
+    "scope",
+    "eligibility_rationale",
+    "expires_at",
+    "single_use",
+    "revoked",
+    "authorization_principal",
+    "approval_identity",
+    "approval_timestamp",
+    "approval_state",
+    "expected_app_id",
+    "review_report_path",
+    "review_report_sha256",
+    "review_verdict",
+    "reviewer_identity",
+    "reviewer_independence",
+    "limitations",
+    "target_policy_path",
+    "target_policy_sha256",
+    "producer_bindings_path",
+    "producer_binding_sha256",
+    "predecessor_authority_commit",
+    "ci_runs",
+    "expected_packet_counts",
+    "ci_qualification_state",
+    "compensating_evidence_path",
+    "compensating_evidence_sha256",
+    "risk_acceptance_required",
+    "producer_transport_identity"
+  ],
+  "type": "object"
+}

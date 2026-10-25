@@ -1,0 +1,144 @@
+{
+  "added_passing_cases": 59,
+  "all_original_statuses_unchanged": true,
+  "authority_base": "a87e863173950c7f73072d1647780b3492ab0a43",
+  "authority_baseline": {
+    "failed": 0,
+    "passed": 127,
+    "skipped": 0
+  },
+  "authority_candidate": {
+    "failed": 0,
+    "passed": 186,
+    "skipped": 0
+  },
+  "command": "PATH=LOGGING_WOLFRAM_SHIM:$PATH MSK_CAUSALIS_FROZEN_REPO=FROZEN_CANDIDATE_CHECKOUT PYTHONPATH=src PYTHON -m pytest --junitxml=VALIDATION_OUTPUT/full-tests.xml",
+  "command_path_note": "Role paths in public commands replace private workstation paths; raw local logs are digest-bound. All commands used the recorded Python3.13.11 environment.",
+  "hosted_ci_pass": false,
+  "local_and_cloud_compatibility": "Original 127 authority tests retain their passing statuses; local code/workflow/root/policies and historical cloud workflow preserved byte-for-byte.",
+  "logs": {
+    "authority-baseline.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "1e55cb31b19971028e451836577f164bd6799491ad27a85b169b6b8f73f48d7c",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.log",
+      "sha256": "560a4a3b1632995a640955e160a7f4f7b93c51b016aa350fe88c4e9190c5da8f"
+    },
+    "authority-baseline.xml": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "e6bed32d41ea4be242cfdc5864f6e5dbec8747c2ea90e5e52cdebc076468ef93",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.xml",
+      "sha256": "05ed8a50d35e6a6c4936a53891781587e99815d0814679c30520b3ddb9f64cb7"
+    },
+    "authority-full.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "b62a71ae8ceb952cf6334861a205279197174d2723b407bcbb47a734bd4109a8",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.log",
+      "sha256": "bff56aca1af8252496a5b5bb091659cf998bfe9639a33340cfe467a0f114a22a"
+    },
+    "authority-full.xml": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "8a5b568c36c4f90b5cef400a2323095a760445139886837bf6325a466f9fb054",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.xml",
+      "sha256": "af541a1b0e4c71d7263b01bfb95d2f16f00f9606698279087f54fad7d2a65363"
+    },
+    "compilation.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/compilation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/format.log",
+      "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de"
+    },
+    "lint.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/lint.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "portable-tests.log": {
+      "original_raw_sha256": "1890db216be79b3b002e945ad48e6572e2204db50bd00fcbae18e18b69630089",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.log",
+      "sha256": "0112f4f61d986ff176c59913af3a9ea24372df633fdf4f506b537544403684f3"
+    },
+    "portable-tests.xml": {
+      "original_raw_sha256": "dcdce541ca1c60ff418c331294fc60ec1a30c63e31d3c63f709a1faf654d3bac",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.xml",
+      "sha256": "44dd0a199f9c3b6d39dc47f046f6df4230a2336a357564cac9f15261c6a6cf29"
+    },
+    "wolfram-invocations.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/wolfram-invocations.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "workflow-audit.log": {
+      "normalization": "Private host paths and JUnit hostname only; counts/statuses unchanged.",
+      "original_raw_sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f",
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/workflow-audit.log",
+      "sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f"
+    }
+  },
+  "new_failures": [],
+  "observed_at": "2026-10-24T21:54:09.985074+00:00",
+  "packages": {
+    "attrs": "26.1.0",
+    "jsonschema": "4.26.0",
+    "jsonschema-specifications": "2025.9.1",
+    "pytest": "8.4.2",
+    "referencing": "0.37.0",
+    "rpds-py": "2026.6.3",
+    "ruff": "0.16.8"
+  },
+  "portable_ci_note": "Exactly one integration test requires the private frozen corpus; when absent that test skips. All T01\u2013T28 controls remain portable and run.",
+  "portable_new_controls": {
+    "failed": 0,
+    "passed": 58,
+    "skip": "Only private frozen-corpus integration; all T01-T28 execute.",
+    "skipped": 1
+  },
+  "production_dependency_lock": {
+    "platform": "manylinux2014_x86_64",
+    "python": "3.12",
+    "state": "VERIFIED_BINARY_DOWNLOAD_ONLY_NO_INSTALL_OR_EXECUTION",
+    "wheels": [
+      {
+        "filename": "attrs-26.1.0-py3-none-any.whl",
+        "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+      },
+      {
+        "filename": "jsonschema-4.26.0-py3-none-any.whl",
+        "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce"
+      },
+      {
+        "filename": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
+        "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe"
+      },
+      {
+        "filename": "referencing-0.37.0-py3-none-any.whl",
+        "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231"
+      },
+      {
+        "filename": "rpds_py-2026.6.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "sha256": "ecabd69db66de867690f9797f2f8fa27ba501bbc24540cbdbdc649cd15888ba6"
+      },
+      {
+        "filename": "typing_extensions-4.16.0-py3-none-any.whl",
+        "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+      }
+    ]
+  },
+  "python": "3.13.11 (main, Jan 28 2026, 00:01:45) [Clang 21.1.4 ]",
+  "state": "VERIFIED_LOCAL_EXECUTION",
+  "static_checks": {
+    "compilation": "PASS_ALL_AUTHORITY_SOURCE",
+    "format": "PASS_NEW_FILES_AND_FORMATTED_CHANGED_CLI_FUNCTION",
+    "immutable_action_audit": "PASS",
+    "lint": "PASS_CHANGED_PYTHON_FILES",
+    "patch_whitespace": "PASS except preserved trailing whitespace inside imported baseline/candidate JUnit failure transcripts; those two XML files are excluded from the patch-whitespace check to preserve diagnostics."
+  },
+  "target_regression_comparison": "Retained and reconciled, not rerun: focused126, candidate942+8 failures, original855+same8, added87 all pass. See compensating-evidence."
+}

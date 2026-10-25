@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.11, pytest-8.4.2, pluggy-1.6.0
+rootdir: AUTHOR_WORKSPACE/worktrees/review-authority-risk-based-admission-00a
+configfile: pyproject.toml
+collected 127 items
+
+tests/test_attestation.py .                                              [  0%]
+tests/test_attestation_ledger_verifier.py ................               [ 13%]
+tests/test_canonical_digest.py .                                         [ 14%]
+tests/test_github_app.py .                                               [ 14%]
+tests/test_local_hostile_qualification.py ............                   [ 24%]
+tests/test_local_hostile_qualification_v2_1.py ...................       [ 39%]
+tests/test_prior_verifier.py .                                           [ 40%]
+tests/test_review_validation.py ..                                       [ 41%]
+tests/test_root.py .                                                     [ 42%]
+tests/test_rsi_native_schema.py ............                             [ 51%]
+tests/test_rsi_observation_export.py ........................            [ 70%]
+tests/test_scientific_admission.py ..............................        [ 94%]
+tests/test_scientific_verifier_causalis_b2_r1.py .....                   [ 98%]
+tests/test_workflow_audit.py ..                                          [100%]
+
+-------- generated xml file: /tmp/risk-admission-authority-baseline.xml --------
+============================= 127 passed in 12.44s =============================

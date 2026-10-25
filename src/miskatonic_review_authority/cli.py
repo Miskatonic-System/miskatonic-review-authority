@@ -10,7 +10,10 @@ from .attestation import public_key_fingerprint, verify_attestation
 from .check_publisher import publish_check
 from .github_api import verify_pr_head
 from .github_app import create_installation_token
-from .local_review import run_local_independent_review, verify_and_admit_local_review_receipt
+from .local_review import (
+    run_local_independent_review,
+    verify_and_admit_local_review_receipt,
+)
 from .prior_verifier import run_prior_verification
 from .review_runner import run_review
 from .util import AuthorityError, read_json
@@ -204,6 +207,8 @@ def _prior_verify(args: argparse.Namespace) -> int:
 
 
 def _publish_check(args: argparse.Namespace) -> int:
+    if args.name == "miskatonic/research-evidence-admission":
+        raise AuthorityError("ADMISSION_ROUTE_REQUIRED", "Use the complete ratified research admission route")
     token = os.environ.get(args.token_env, "")
     summary = args.summary
     if args.evidence and Path(args.evidence).is_file():
@@ -301,6 +306,45 @@ def _verify_pr_head_cmd(args: argparse.Namespace) -> int:
                 "head_sha": actual_head,
                 "pr_number": args.pr_number,
                 "status": "verified",
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _research_admission_run(args: argparse.Namespace) -> int:
+    from .research_admission import AdmissionError, canonical, decision_json
+    from .research_admission_github import run_actions_phase
+
+    try:
+        result = run_actions_phase(
+            Path(args.authority_path),
+            Path(args.target_path),
+            phase=args.phase,
+            private_key=args.private_key,
+            ratification_pr=args.ratification_pr,
+            ratification_comment=args.ratification_comment,
+            run_id=args.run_id,
+            authority_token=os.environ.get(args.authority_token_env, ""),
+            output=Path(args.output),
+        )
+    except AdmissionError as error:
+        print(canonical(decision_json(error.decision)).decode(), file=sys.stderr)
+        return 1
+    except Exception:  # noqa: BLE001 - never expose raw credential transport errors
+        print(
+            canonical(
+                decision_json(AdmissionError("ADMISSION_UNKNOWN_ERROR").decision)
+            ).decode(),
+            file=sys.stderr,
+        )
+        return 1
+    print(
+        json.dumps(
+            {
+                "state": result.get("state", result.get("status")),
+                "release_authorized": False,
             },
             sort_keys=True,
         )
@@ -429,6 +473,18 @@ def main(argv: list[str] | None = None) -> None:
     ratify = subparsers.add_parser("ratify-v2-policy")
     ratify.add_argument("--ratification-record", default="roots/local-review-authority-v2.0.0.json")
     ratify.set_defaults(func=_ratify_v2_policy)
+
+    research = subparsers.add_parser("research-admission-run")
+    research.add_argument("--phase", choices=("plan", "admit"), required=True)
+    research.add_argument("--authority-path", required=True)
+    research.add_argument("--target-path", required=True)
+    research.add_argument("--private-key", required=True)
+    research.add_argument("--authority-token-env", default="AUTHORITY_TOKEN")
+    research.add_argument("--ratification-pr", type=int, required=True)
+    research.add_argument("--ratification-comment", type=int, required=True)
+    research.add_argument("--run-id", type=int, required=True)
+    research.add_argument("--output", required=True)
+    research.set_defaults(func=_research_admission_run)
 
     args = parser.parse_args(argv)
     try:

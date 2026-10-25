@@ -1,0 +1,46 @@
+{
+  "legacy_target_policy_schema_validation": "KNOWN_INCOMPATIBLE_NOT_PASS",
+  "negative_instances": "Unknown properties, versions, nonfinite/duplicate JSON, invalid timestamps rejected.",
+  "request_authorization_and_receipt_instances": "PASS_IN_RETAINED_SYNTHETIC_TESTS",
+  "root_and_policy_instances": "PASS",
+  "schemas": [
+    {
+      "closed": true,
+      "path": "schemas/research-admission-authority-root-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "3aed65aa1c04c7ac2e4904d13d5e43629235fbfd66375fb0a3e86ea8bfb974e8"
+    },
+    {
+      "closed": true,
+      "path": "schemas/research-admission-policy-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "eded889d312359c14e2ba30b2f3008e531c5dc7614f97fcd9ec8b46952e0b9cd"
+    },
+    {
+      "closed": true,
+      "path": "schemas/research-admission-receipt-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "cc17ead7641c53be4a11c7a12c9dd8aa74315093b8636b3b927f549686b3aaa4"
+    },
+    {
+      "closed": true,
+      "path": "schemas/research-admission-request-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "e89d6afa463b254e8fb9ec75aa8397eced73609f91fe6d53ca2ab93c8f94cb52"
+    },
+    {
+      "closed": true,
+      "path": "schemas/research-authority-ratification-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "e5b389a8fe248b325f15077c965b9e0f9b72b4ea38a52005e5359cdd66da57d5"
+    },
+    {
+      "closed": true,
+      "path": "schemas/research-human-authorization-v1.schema.json",
+      "schema_well_formed": true,
+      "sha256": "ae392293c4a9bdf48b56d612e37b33fd363afa0218e65a1ef423d6aa32987609"
+    }
+  ],
+  "state": "NEW_ADMISSION_SCHEMA_VALIDATION_VERIFIED",
+  "v2_design": "Separate proposed schema; tests require known evidence digests and reject missing/unknown fields; no V1 bytes changed or migration performed."
+}

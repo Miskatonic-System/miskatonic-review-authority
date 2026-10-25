@@ -1,0 +1,1716 @@
+{
+  "authority_base": "a87e863173950c7f73072d1647780b3492ab0a43",
+  "authority_historical_files_preserved": [
+    {
+      "path": ".github/dependabot.yml",
+      "sha256": "883b95e3be554fbadd92b315e4a8c6ea6ca688b64924e22dd61222b07f683507"
+    },
+    {
+      "path": ".github/workflows/admit-local-review.yml",
+      "sha256": "0049bd456e3d90240a692d52f099a4f95d1c3055a58cba118f66ecee6d8e2f21"
+    },
+    {
+      "path": ".github/workflows/app-authentication.yml",
+      "sha256": "3d87ef8a82670304d0c658ed2b4502a61d7ab4c3139a43a47a80714385bac34e"
+    },
+    {
+      "path": ".github/workflows/bootstrap-pr3-smoke.yml",
+      "sha256": "b28ca902f4a31a3547cc445c38d419c314cc82b38fdeecf7c2a8c73796ccebca"
+    },
+    {
+      "path": ".github/workflows/independent-cloud-review.yml",
+      "sha256": "f364aed11b079aba4eb8588ce366cdc5f490447c35f8eede04965fb0aaa7312a"
+    },
+    {
+      "path": ".github/workflows/prior-release-verify.yml",
+      "sha256": "4ea26970fe1f4bed001f3d9526af4417f68c91bf175028bffa26c68a0c073964"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "e71b480477e6bc22701817eabf4196fda0047e1b77537395ba64470ce659e3d6"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "fcffe171bb5458cbb61305413c58c1ca02914bae2e57fbbd0ce29546d51b1c85"
+    },
+    {
+      "path": "README.md",
+      "sha256": "c8fb5f83a6b00d6e1b7f1eae831857c7701be975b3ca9901f439c4f290afd8da"
+    },
+    {
+      "path": "docs/BOOTSTRAP_AND_OPERATIONS.md",
+      "sha256": "1d3c64fd280e57249d36f28ae79614b7550d6ce75c8d50f31cab7fc4ec782c65"
+    },
+    {
+      "path": "docs/EXECUTION_ATTESTATION_BOUNDARY.md",
+      "sha256": "464f24422cdad6b2053483eebc96489323546ab956c39762efaa4494135158ba"
+    },
+    {
+      "path": "docs/LOCAL_REVIEW_V2_INDEPENDENCE.md",
+      "sha256": "5db8e0b66294a9f89335dcd0f4916c3e13f8c7683dc216e7f1c3aa766a6bb2cb"
+    },
+    {
+      "path": "keys/miskatonic-review-authority-app.pub.pem",
+      "sha256": "15f9ba99db75e1d426ec6ef70ce2052cd0efaaf459e1da2ff92867989b064ce8"
+    },
+    {
+      "path": "keys/msk-local-reviewer-v2.pub.pem",
+      "sha256": "4d24e48e689ca6cd3970311ecf7d74e025e5f043df1c30c717e542a4fea81b09"
+    },
+    {
+      "path": "observation/rsi/README.md",
+      "sha256": "20289ed9eb46820963439504f462a5e2a01018f464d83d2b062a9d0cd3c46cea"
+    },
+    {
+      "path": "observation/rsi/adoption-candidate.json",
+      "sha256": "b43c77807008173d304f1e295628e0ba7617eb864a0348f186ef5ca2cb54849f"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/export-and-native-schema-tests.log",
+      "sha256": "facc4fbff3b2f75bf7a7fd4ac2bff59219f380f821ffd3cbb8ff3dabc016cd3c"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/format.log",
+      "sha256": "ef7d13d02214e98ca902b05257cdbe6a8e84f3b4714508efdc19766460b54209"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/local-validation.json",
+      "sha256": "66b2706195148841124d80158149fa45f52e9f5ca03c6ccb380d2da1c5661dbc"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/native-full-suite.log",
+      "sha256": "0a27d9a253cb54cd92c362ee963938cec7944d92e846be69dbe528080bbc99e4"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/repair-candidate.json",
+      "sha256": "b9c44e835c5fd239eb1ddbceae2d3323110fef3ecaf12f724fe8b77daa08e0a6"
+    },
+    {
+      "path": "observation/rsi/evidence/00D-R1/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "observation/rsi/evidence/export-tests.log",
+      "sha256": "1bbab1908bb1b94868817175f16919c98d914aff1f14da0b1bc3d4a284f787ab"
+    },
+    {
+      "path": "observation/rsi/evidence/format.log",
+      "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de"
+    },
+    {
+      "path": "observation/rsi/evidence/native-tests.log",
+      "sha256": "4e96153e007da9a97f91730f3817fd9b2d2d0cc57eef09fa4b417de5eddb4a9f"
+    },
+    {
+      "path": "observation/rsi/evidence/ruff.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "observation/rsi/fixtures/native-review-attestation-v1.v0.2.json",
+      "sha256": "3c4b0054c13cc387afcbb28ddebd86dd4a7111703ea991f681502597d50841ad"
+    },
+    {
+      "path": "observation/rsi/fixtures/native_artifact.v0.2.json",
+      "sha256": "3c4b0054c13cc387afcbb28ddebd86dd4a7111703ea991f681502597d50841ad"
+    },
+    {
+      "path": "observation/rsi/fixtures/native_metadata.json",
+      "sha256": "fb36be027186ec125969550223fc148a2b974d8dec54eb6b1f305e72828951a5"
+    },
+    {
+      "path": "observation/rsi/implementation-evidence.json",
+      "sha256": "fb965d7e98b69cb756dcbde36ae02549159b0fdabddc56b356c18ddbc60af2cc"
+    },
+    {
+      "path": "observation/rsi/native_schema.py",
+      "sha256": "006de442af314de0ad7cbf0dc7497eca2e8bb80d8bce5095edb94b05c9c9eedd"
+    },
+    {
+      "path": "observation/rsi/native_schemas/d4ae8b008b14f8b52b9376691aae6a57ac0fbd575fdb52f7d89b6f9edb90c4ce.json",
+      "sha256": "ccd9bd2d038fab65aca4139da41d8ebb56ffb501101fbe038a217435220d8177"
+    },
+    {
+      "path": "observation/rsi/owner_export.py",
+      "sha256": "af249dd68d5da75646c7d227c8cab83698d1b98a40b9e4231b720f3b5e20a886"
+    },
+    {
+      "path": "observation/rsi/projection.py",
+      "sha256": "0718837000f6838a5d179d896d8e867e18680055c290215247598f123209a6ac"
+    },
+    {
+      "path": "observation/rsi/requirements.txt",
+      "sha256": "9984fa6ad6d35d2468011c4c278583e9bb4983d83be6bb3f5aabcef9c99b19b7"
+    },
+    {
+      "path": "observation/rsi/schemas/rsi-owner-observation-export.v0.1.schema.json",
+      "sha256": "a7cf347480d3b1fb96ff06375b4fd1da45fb17dfc153f359453a292ffebbcc1d"
+    },
+    {
+      "path": "observation/rsi/schemas/rsi-owner-observation-export.v0.2.schema.json",
+      "sha256": "8ef651ff9a7351310785914c16dc5dcb035f1ebbf58fe6b549b92a056c305343"
+    },
+    {
+      "path": "policy/control-plane-upgrade-v1.json",
+      "sha256": "5bb67f05511d9b28e08ca838162c71a0f271df564fe9aa0d1fc9a91635ac1e5e"
+    },
+    {
+      "path": "policy/msk-ruliology-scientific-review-v1.json",
+      "sha256": "f856ebef767ba64612c336b69512b1768cb6205cdea6e2ede8f570b037f72e6e"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-atlas-v2.json",
+      "sha256": "d515b3970e320a4f62218f3bcebdc91f0008ce1c01841fc478abd7401497b6df"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b1-v2.json",
+      "sha256": "fce559adec8403ab3079fdbfda39e737650b1bb1f5002e64d6cf64a7b4fd19b9"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b2-r1-v2.json",
+      "sha256": "baeda24b30f23712b146ce383f7159485c8359487542ed2bd34c3a40e9d95b34"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-causalis-b2-v2.json",
+      "sha256": "39fe59958a61559a63d2488e291b9e30956c65551d7ef7f16542d4b4b49cc6c3"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-cdl-v2.json",
+      "sha256": "157e3b0f604767c4be183938c5e5b0151ea13bc3befc07dcff5a1c2676620a73"
+    },
+    {
+      "path": "policy/targets/msk-ruliology-cra-05y-v2.json",
+      "sha256": "6c844baee317ead07dd7adc89712d6daa35f0fa8c4919486a08d8d0f9267e28f"
+    },
+    {
+      "path": "policy/trusted-producers.json",
+      "sha256": "1473696b5d84cf9bb593d846bc8a8604d5515e1b9906cd9b127cf826551a36e2"
+    },
+    {
+      "path": "policy/trusted-reviewers-v2.1.json",
+      "sha256": "0778bff015f846549dbb6a91026541ab13f89ae1f1e45e78818a70bbecc06ba3"
+    },
+    {
+      "path": "policy/trusted-reviewers-v2.json",
+      "sha256": "4a6966d28846c0cee17e1bff028de359e3124634a2794f5118f84302ce1b852c"
+    },
+    {
+      "path": "policy/trusted-reviewers.json",
+      "sha256": "0253a59968b68f6aa84a0817af019332686e9d1ca997c10644189da80d9629b7"
+    },
+    {
+      "path": "policy/trusted-signers.json",
+      "sha256": "6349229a576d9913cdc51eabcd7281a67e1227d6f4619116afa2e9545af6dbc8"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "73d802284be737102c34dac9672f6f9f947c56adba3c05976ba36480f5095ef4"
+    },
+    {
+      "path": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+      "sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22"
+    },
+    {
+      "path": "roots/control-plane-v0.1.0.json",
+      "sha256": "21c1c77499b4c41f9a7c945c3d1e8e6c8eebe088d2aadcffea6520e6e729efec"
+    },
+    {
+      "path": "roots/local-review-authority-v2.0.0.json",
+      "sha256": "53e635926f4e23a5aa70ec6202fc488a415bc7d8c0bf679b154dcca102883505"
+    },
+    {
+      "path": "roots/local-review-authority-v2.1.0.json",
+      "sha256": "107567696376755e7be90250d1fefe341d13cd729b31a0af66d06cb21fb4e7df"
+    },
+    {
+      "path": "schemas/authority-root-v1.schema.json",
+      "sha256": "211b46c125a19b1774f085b19d5824542283b386d9c178d3a0bada63c4f3a94e"
+    },
+    {
+      "path": "schemas/local-review-ratification-v2.schema.json",
+      "sha256": "3f89ac61451052f5a153aaf145c61a21cfb0dfcb61894daf62400dd05bb90f4d"
+    },
+    {
+      "path": "schemas/local-review-receipt-v2.schema.json",
+      "sha256": "f0d20512bfc99b10ce318c5d72131f19b4f1fce0ffe930dca3b15af4c97d6c8f"
+    },
+    {
+      "path": "schemas/review-attestation-v1.schema.json",
+      "sha256": "133f5b8c255227f8bb59b93b0e59963dfdb791849c547cf02001d0553f5191a6"
+    },
+    {
+      "path": "schemas/review-packet-manifest-v1.schema.json",
+      "sha256": "8bcee7e68f106d7c8d465784157b5ea4042a2002827a542e3e53c2a1aa9feff9"
+    },
+    {
+      "path": "schemas/reviewer-policy-v2.schema.json",
+      "sha256": "0e2cc25459f245b21e8b6ea17624171168f93c8a41ff0b1ae02e288dc33fce59"
+    },
+    {
+      "path": "schemas/scientific-target-policy-v1.schema.json",
+      "sha256": "9a3bfcd0ed495b98eb6980c23435349959fc859ffa9253be3534d9fb519671e2"
+    },
+    {
+      "path": "src/miskatonic_review_authority/__init__.py",
+      "sha256": "ae25e1d50df01e2ec723543f08fa8d33188149fdfafd3fe4aac1e18bff372a12"
+    },
+    {
+      "path": "src/miskatonic_review_authority/__main__.py",
+      "sha256": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279"
+    },
+    {
+      "path": "src/miskatonic_review_authority/attestation.py",
+      "sha256": "40ed6f0bdc4d8545a468e0a033abfac37c3562a8634fcebfd023ca9c37e231af"
+    },
+    {
+      "path": "src/miskatonic_review_authority/attestation_ledger_verifier.py",
+      "sha256": "bd81ac949badfaf5d959976e818df24eeefc29a2623241c38fa52fa7b54be027"
+    },
+    {
+      "path": "src/miskatonic_review_authority/canonical_digest.py",
+      "sha256": "657ed1248b1256496457e9831fd86ed05f888c8e1e3defbe30703b65338f0b16"
+    },
+    {
+      "path": "src/miskatonic_review_authority/check_publisher.py",
+      "sha256": "a3d459efce85eb8f94fd13d283bf352013c428f7c82d10d5a3ec83f326d97ea7"
+    },
+    {
+      "path": "src/miskatonic_review_authority/github_api.py",
+      "sha256": "756bc4363b83b8d0f886501674950cc65df6c70930851b27995ceb12d9297715"
+    },
+    {
+      "path": "src/miskatonic_review_authority/github_app.py",
+      "sha256": "949c808d1ef7d69c162ad089b3e70fa4bc9ff3403c5ce54d00256a0f48830a74"
+    },
+    {
+      "path": "src/miskatonic_review_authority/local_review.py",
+      "sha256": "d086f27611bb071e6b2c6d2a173cf58620f92120f4771ca1a5612f58c5b0867b"
+    },
+    {
+      "path": "src/miskatonic_review_authority/prior_verifier.py",
+      "sha256": "c59932a5b71459a413a959c817a6df0dbbfa5793bc83e1f2cd8095bb5824fc04"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_backends.py",
+      "sha256": "ca4002961a8cb33147459ac74b5fca657c1af6d8662b671eff75fa54f620320c"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_packet.py",
+      "sha256": "2180865e4793c322323fe84e7c30a29da96218317d7f3e1730a935a25164fc5e"
+    },
+    {
+      "path": "src/miskatonic_review_authority/review_runner.py",
+      "sha256": "039efa2bae2b99407f316788ed275af898c14d8e51f871435dfea2b45b4fba22"
+    },
+    {
+      "path": "src/miskatonic_review_authority/root.py",
+      "sha256": "0cc97be5539188eb26daff2147d0a12426101f020700c0b4ba779d4907e7fb11"
+    },
+    {
+      "path": "src/miskatonic_review_authority/scientific_verifier.py",
+      "sha256": "3591dfd9d6beec1f4ad092dd6e4266e2b810b2a1cb625004a5a0dd2fad278277"
+    },
+    {
+      "path": "src/miskatonic_review_authority/util.py",
+      "sha256": "832796ecf5eb4737f9d22f8ae6f26349c0c61de92d7e5d8767465076c7f3a0fd"
+    },
+    {
+      "path": "src/miskatonic_review_authority/workflow_audit.py",
+      "sha256": "ab0491b472a0fabf3b86e71b9594d007209c4cc2c382280b33e454df49f043c7"
+    },
+    {
+      "path": "tests/test_attestation.py",
+      "sha256": "a899e2da950a34b12441ee1753e95f8ad902726b5abe1b0c413f1a5acb3e793e"
+    },
+    {
+      "path": "tests/test_attestation_ledger_verifier.py",
+      "sha256": "e956211a34a74e5ad2d8724a9999221d3e54a942411e2a034ea6cbabb9ca5fc0"
+    },
+    {
+      "path": "tests/test_canonical_digest.py",
+      "sha256": "a8641c11ec8990058865eca57113c54c5bb2b9eb7e8cdafb0e7ceec11805e422"
+    },
+    {
+      "path": "tests/test_github_app.py",
+      "sha256": "3749561cba3f93ecaa9040ecf30da05b1859ddf1d50670edb3f96bb67a5aeb83"
+    },
+    {
+      "path": "tests/test_local_hostile_qualification.py",
+      "sha256": "69adb3638383baeaf2d09beaba08abc91ba6adec5413a7dd99b9b5be016dbcb1"
+    },
+    {
+      "path": "tests/test_local_hostile_qualification_v2_1.py",
+      "sha256": "ee6cf74869aedf2a3d274bddcb0b65bc582ffe063155aadfb0f279301603b9b3"
+    },
+    {
+      "path": "tests/test_prior_verifier.py",
+      "sha256": "eb1e8e8f5b311c46c33e8ecc5580465b19df0436c99062c0d44d959ff7afc39e"
+    },
+    {
+      "path": "tests/test_review_validation.py",
+      "sha256": "e5afe007b0b0229f18536587e4899b323cec447fe2a6d792e4bbd623212c1377"
+    },
+    {
+      "path": "tests/test_root.py",
+      "sha256": "ef8c397bbd5803223a0237a7c983a537395871c9fa0e299f95504eb8b7003fe6"
+    },
+    {
+      "path": "tests/test_rsi_native_schema.py",
+      "sha256": "cdf2609d60e2aabd6554b34f168cdc25c5f38f8360de7994d93f4da7dbc1f984"
+    },
+    {
+      "path": "tests/test_rsi_observation_export.py",
+      "sha256": "03ee9942267dea1aea6d43552d92cd4e4958e65bd9d87d77193376b43424db44"
+    },
+    {
+      "path": "tests/test_scientific_admission.py",
+      "sha256": "f2f37c8fc98c1972d2f53b6beffda4be9a1c158371d064cd22a8f5fd1de14e2d"
+    },
+    {
+      "path": "tests/test_scientific_verifier_causalis_b2_r1.py",
+      "sha256": "133a446ee235af7e303618ce6aeb4e4294d40f14fb9d7ae1ad0e3bbdb357a735"
+    },
+    {
+      "path": "tests/test_workflow_audit.py",
+      "sha256": "853d473a3ff2f2c0babc2ce1173c8f645e10d3f7c2cc2be13e7cd32c910f6635"
+    }
+  ],
+  "builder_reexecuted_this_work_order": false,
+  "builder_reproduction_reference": {
+    "git_reference": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+    "historical_result": {
+      "differs": [],
+      "regenerated": 8
+    },
+    "sha256": "8f05b7d1350189fc5f6e2a048519cde0c27a0647a364ff3b633c0f00b2428aa2"
+  },
+  "explicit_existing_file_modifications": [
+    "src/miskatonic_review_authority/cli.py",
+    ".github/workflows/authority-ci.yml"
+  ],
+  "frozen_r1_json_count": 8,
+  "frozen_r1_outputs": [
+    {
+      "byte_identical": true,
+      "original_r1_blob": "6930a8c71b376b083567f8ceabf3f6dce4b5c2e8",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+      "r2_blob": "6930a8c71b376b083567f8ceabf3f6dce4b5c2e8",
+      "sha256": "eb45d41ac5ff59cb930025ef6435b437eabdd637e207e78f5bf99b8e75c72577"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "a292a45282d47eb9525947a6f2bca53fefb6163e",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+      "r2_blob": "a292a45282d47eb9525947a6f2bca53fefb6163e",
+      "sha256": "8d5ed0fd0bad00dbb72f99c1b8a1e692a63279bcb61e58343f0e9d58039e76a4"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "f5188262265eb22200c5d0c7a74a71641bb99083",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+      "r2_blob": "f5188262265eb22200c5d0c7a74a71641bb99083",
+      "sha256": "e180f811030395eed72521873ff03600a06c85ee1ef91675f2261453d1f8d3a4"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "3c2c04860af9ef5168556dbfed110f135277fcea",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+      "r2_blob": "3c2c04860af9ef5168556dbfed110f135277fcea",
+      "sha256": "58b0717e014fc9fc98fd553017f63e3f9c3c39e2023f1f5fa5e30e4361f3bf4f"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "6c2fbe1751ea0cde4bf9ff0380a1fc1e9e69cbce",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+      "r2_blob": "6c2fbe1751ea0cde4bf9ff0380a1fc1e9e69cbce",
+      "sha256": "02e6496f52c998dfadca914d7cb7d76aeecdf7126d083ac8d4ba3bdddb9b1dd5"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "6d075d50cc0cc21eff17f22d3dd475464799ad3e",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+      "r2_blob": "6d075d50cc0cc21eff17f22d3dd475464799ad3e",
+      "sha256": "0621ddea41e3babfdd45bcbf11592d5dde4b5eeb8010c60ab84bd1b01b79e68a"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "1b14caf2b87e84502b395d683ec54311f2b65d13",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+      "r2_blob": "1b14caf2b87e84502b395d683ec54311f2b65d13",
+      "sha256": "5b0e974bd4aa0a0357961ba249a255a1e51f8f60bf5942cb2c2a85575274bdc1"
+    },
+    {
+      "byte_identical": true,
+      "original_r1_blob": "14103a036d8e7cd6fe20c5f228765f1181b778a2",
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+      "r2_blob": "14103a036d8e7cd6fe20c5f228765f1181b778a2",
+      "sha256": "a3ec9c3f76f11b99113969314370fec6304dd64e8f0e4f7989e5f11214f8c782"
+    }
+  ],
+  "new_wolfram_calls": 0,
+  "original_r1_ancestor": true,
+  "predecessor_count": 207,
+  "predecessor_files": [
+    {
+      "base_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "byte_identical": true,
+      "candidate_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/WO-RULIOLOGY-CAUSALIS-B2-RESOURCE-CAUSALITY-00A_COMPLETION.md"
+    },
+    {
+      "base_blob": "84d20d2acb8d72c4e5c142f13b09ca7761a26ba7",
+      "byte_identical": true,
+      "candidate_blob": "84d20d2acb8d72c4e5c142f13b09ca7761a26ba7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b1_scientific_preservation.json"
+    },
+    {
+      "base_blob": "0d8be1c9ce893b277902e849c5c1db7cf43f22f7",
+      "byte_identical": true,
+      "candidate_blob": "0d8be1c9ce893b277902e849c5c1db7cf43f22f7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_causal_poset_results.json"
+    },
+    {
+      "base_blob": "8258ffe4a04a9a8f40978b5ec056f68cc0bd7f3b",
+      "byte_identical": true,
+      "candidate_blob": "8258ffe4a04a9a8f40978b5ec056f68cc0bd7f3b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_commutation_theorem.md"
+    },
+    {
+      "base_blob": "5878b5e6fe95a131b2ea4ad83d20328be1b70c48",
+      "byte_identical": true,
+      "candidate_blob": "5878b5e6fe95a131b2ea4ad83d20328be1b70c48",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_direct_dependency_relations.json"
+    },
+    {
+      "base_blob": "7202baa7999302d0e74dd72c6a63b0c0d26802c4",
+      "byte_identical": true,
+      "candidate_blob": "7202baa7999302d0e74dd72c6a63b0c0d26802c4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_independent_reconstruction.json"
+    },
+    {
+      "base_blob": "fb0c3c7ded9c01b939658905194a59305b8cc831",
+      "byte_identical": true,
+      "candidate_blob": "fb0c3c7ded9c01b939658905194a59305b8cc831",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_overlap_conflict_witnesses.json"
+    },
+    {
+      "base_blob": "9967cef50604757557092b4f9c375670455e3db4",
+      "byte_identical": true,
+      "candidate_blob": "9967cef50604757557092b4f9c375670455e3db4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_resource_lineage_semantics.md"
+    },
+    {
+      "base_blob": "c0102112392364804cccfea7e0bf91155cdcc3b5",
+      "byte_identical": true,
+      "candidate_blob": "c0102112392364804cccfea7e0bf91155cdcc3b5",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_scientific_claim_authority.json"
+    },
+    {
+      "base_blob": "cc4ec5648a269ff6078d406f0b704568c631b0e0",
+      "byte_identical": true,
+      "candidate_blob": "cc4ec5648a269ff6078d406f0b704568c631b0e0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_scientific_definition.json"
+    },
+    {
+      "base_blob": "7b4de5405352246414bd2ded85f1464d1b2b7bcc",
+      "byte_identical": true,
+      "candidate_blob": "7b4de5405352246414bd2ded85f1464d1b2b7bcc",
+      "path": "artifacts/causalis-b2-resource-causality-00a/b2_wolfram_causal_surface_assessment.json"
+    },
+    {
+      "base_blob": "8bb49f745c7b8fac45da22c1846593b029e4e6a7",
+      "byte_identical": true,
+      "candidate_blob": "8bb49f745c7b8fac45da22c1846593b029e4e6a7",
+      "path": "artifacts/causalis-b2-resource-causality-00a/independent_b2_review.md"
+    },
+    {
+      "base_blob": "2bdf2f56572fe80ba79d938efb6d277a269fe0e0",
+      "byte_identical": true,
+      "candidate_blob": "2bdf2f56572fe80ba79d938efb6d277a269fe0e0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R000-AA-AA.causal.raw.json"
+    },
+    {
+      "base_blob": "fbab05d1dd1ae0e2c979300666b02ff647adea4b",
+      "byte_identical": true,
+      "candidate_blob": "fbab05d1dd1ae0e2c979300666b02ff647adea4b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R001-AA-AB.causal.raw.json"
+    },
+    {
+      "base_blob": "44644b83dce6fd486336274970ad71f3cce9b41c",
+      "byte_identical": true,
+      "candidate_blob": "44644b83dce6fd486336274970ad71f3cce9b41c",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R002-AA-BA.causal.raw.json"
+    },
+    {
+      "base_blob": "ade01616863c1fef219eec3f9fb6fd5b1372dd6b",
+      "byte_identical": true,
+      "candidate_blob": "ade01616863c1fef219eec3f9fb6fd5b1372dd6b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R003-AA-BB.causal.raw.json"
+    },
+    {
+      "base_blob": "fa022d2ed7574ebfae4d9d8e69e715b7870843f4",
+      "byte_identical": true,
+      "candidate_blob": "fa022d2ed7574ebfae4d9d8e69e715b7870843f4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R004-AA-AAA.causal.raw.json"
+    },
+    {
+      "base_blob": "15b50cc39e78eac3fe868fdbc54074bb444627b4",
+      "byte_identical": true,
+      "candidate_blob": "15b50cc39e78eac3fe868fdbc54074bb444627b4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R005-AA-AAB.causal.raw.json"
+    },
+    {
+      "base_blob": "dc5a9f64876ab10a03695f309126f600cb3f3944",
+      "byte_identical": true,
+      "candidate_blob": "dc5a9f64876ab10a03695f309126f600cb3f3944",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R006-AA-ABA.causal.raw.json"
+    },
+    {
+      "base_blob": "57dfa7cdb4f22a90652767ff6bb68a61db9acbc2",
+      "byte_identical": true,
+      "candidate_blob": "57dfa7cdb4f22a90652767ff6bb68a61db9acbc2",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R007-AA-ABB.causal.raw.json"
+    },
+    {
+      "base_blob": "ad8b5d09ad396218bb4a8ad67b1d381a025da5b5",
+      "byte_identical": true,
+      "candidate_blob": "ad8b5d09ad396218bb4a8ad67b1d381a025da5b5",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R008-AA-BAA.causal.raw.json"
+    },
+    {
+      "base_blob": "5e74c1f0b85d6f8f6d3d0bb82341cbde0c8e5f3e",
+      "byte_identical": true,
+      "candidate_blob": "5e74c1f0b85d6f8f6d3d0bb82341cbde0c8e5f3e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R009-AA-BAB.causal.raw.json"
+    },
+    {
+      "base_blob": "fecde23906c7cb4806cac3a38861833d8665a8eb",
+      "byte_identical": true,
+      "candidate_blob": "fecde23906c7cb4806cac3a38861833d8665a8eb",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R010-AA-BBA.causal.raw.json"
+    },
+    {
+      "base_blob": "07858d0d9276113795a61a2f5fe0db098d4416d9",
+      "byte_identical": true,
+      "candidate_blob": "07858d0d9276113795a61a2f5fe0db098d4416d9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R011-AA-BBB.causal.raw.json"
+    },
+    {
+      "base_blob": "6b8423c43a038f4c1193e6cf1587324333a7d806",
+      "byte_identical": true,
+      "candidate_blob": "6b8423c43a038f4c1193e6cf1587324333a7d806",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R012-AB-AA.causal.raw.json"
+    },
+    {
+      "base_blob": "7751afc953965b8f170a3c2d8dd8301e1eb85589",
+      "byte_identical": true,
+      "candidate_blob": "7751afc953965b8f170a3c2d8dd8301e1eb85589",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R013-AB-AB.causal.raw.json"
+    },
+    {
+      "base_blob": "e19d34e34e232a21ebdd9c330dce8ff30d5d08b0",
+      "byte_identical": true,
+      "candidate_blob": "e19d34e34e232a21ebdd9c330dce8ff30d5d08b0",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R014-AB-BA.causal.raw.json"
+    },
+    {
+      "base_blob": "e2706b08b27a50dc64e5ab04d78fa469fce70247",
+      "byte_identical": true,
+      "candidate_blob": "e2706b08b27a50dc64e5ab04d78fa469fce70247",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R015-AB-BB.causal.raw.json"
+    },
+    {
+      "base_blob": "c9c72fadc81bb5c93d6021300d7db5d173a033dd",
+      "byte_identical": true,
+      "candidate_blob": "c9c72fadc81bb5c93d6021300d7db5d173a033dd",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R016-AB-AAA.causal.raw.json"
+    },
+    {
+      "base_blob": "e4a97d50399b55d13e2dccded926439c6bceb18b",
+      "byte_identical": true,
+      "candidate_blob": "e4a97d50399b55d13e2dccded926439c6bceb18b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R017-AB-AAB.causal.raw.json"
+    },
+    {
+      "base_blob": "9a144c2141b9263c8bbdf9319f879ff156183333",
+      "byte_identical": true,
+      "candidate_blob": "9a144c2141b9263c8bbdf9319f879ff156183333",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R018-AB-ABA.causal.raw.json"
+    },
+    {
+      "base_blob": "3548ded7c594a9569ca43c13a628b4208bce3614",
+      "byte_identical": true,
+      "candidate_blob": "3548ded7c594a9569ca43c13a628b4208bce3614",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R019-AB-ABB.causal.raw.json"
+    },
+    {
+      "base_blob": "e460abaddbebd8a5efe547392a5feebd7682ffb1",
+      "byte_identical": true,
+      "candidate_blob": "e460abaddbebd8a5efe547392a5feebd7682ffb1",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R020-AB-BAA.causal.raw.json"
+    },
+    {
+      "base_blob": "2edd40846117967f4f3bd1ee88cf34746633950b",
+      "byte_identical": true,
+      "candidate_blob": "2edd40846117967f4f3bd1ee88cf34746633950b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R021-AB-BAB.causal.raw.json"
+    },
+    {
+      "base_blob": "ced83f9b8bf1f007b0cdc2b349258f6c82970ef6",
+      "byte_identical": true,
+      "candidate_blob": "ced83f9b8bf1f007b0cdc2b349258f6c82970ef6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R022-AB-BBA.causal.raw.json"
+    },
+    {
+      "base_blob": "a2d54e30727f9403c3695d22660789f0e68b903b",
+      "byte_identical": true,
+      "candidate_blob": "a2d54e30727f9403c3695d22660789f0e68b903b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R023-AB-BBB.causal.raw.json"
+    },
+    {
+      "base_blob": "4f35ef4acc3de82df3c8922a3f54f01c356b3523",
+      "byte_identical": true,
+      "candidate_blob": "4f35ef4acc3de82df3c8922a3f54f01c356b3523",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R024-BA-AA.causal.raw.json"
+    },
+    {
+      "base_blob": "a9bcf5f967135c708aff84a67876cf9325589fd4",
+      "byte_identical": true,
+      "candidate_blob": "a9bcf5f967135c708aff84a67876cf9325589fd4",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R025-BA-AB.causal.raw.json"
+    },
+    {
+      "base_blob": "57b6965a3c604a9e1fe7d5dac96e9ec2a2262055",
+      "byte_identical": true,
+      "candidate_blob": "57b6965a3c604a9e1fe7d5dac96e9ec2a2262055",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R026-BA-BA.causal.raw.json"
+    },
+    {
+      "base_blob": "1c4f93eae3431f9062faa3209ec1272ce36c2967",
+      "byte_identical": true,
+      "candidate_blob": "1c4f93eae3431f9062faa3209ec1272ce36c2967",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R027-BA-BB.causal.raw.json"
+    },
+    {
+      "base_blob": "230f7c0ef3a698fb3386864fa5fc8bc9a84ff101",
+      "byte_identical": true,
+      "candidate_blob": "230f7c0ef3a698fb3386864fa5fc8bc9a84ff101",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R028-BA-AAA.causal.raw.json"
+    },
+    {
+      "base_blob": "159173aaad18d6656bdf0db0faa232b5e43a5ce9",
+      "byte_identical": true,
+      "candidate_blob": "159173aaad18d6656bdf0db0faa232b5e43a5ce9",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R029-BA-AAB.causal.raw.json"
+    },
+    {
+      "base_blob": "e41db87332f709388147eb9d9329cd68281189c3",
+      "byte_identical": true,
+      "candidate_blob": "e41db87332f709388147eb9d9329cd68281189c3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R030-BA-ABA.causal.raw.json"
+    },
+    {
+      "base_blob": "98afbc629da67a714a12aab139e986bdfaeb09b3",
+      "byte_identical": true,
+      "candidate_blob": "98afbc629da67a714a12aab139e986bdfaeb09b3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R031-BA-ABB.causal.raw.json"
+    },
+    {
+      "base_blob": "20374a58aaef005b6f355171a3e8550d50c92e01",
+      "byte_identical": true,
+      "candidate_blob": "20374a58aaef005b6f355171a3e8550d50c92e01",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R032-BA-BAA.causal.raw.json"
+    },
+    {
+      "base_blob": "1f399b3310ea8aa563031e2020fe37846390dbe1",
+      "byte_identical": true,
+      "candidate_blob": "1f399b3310ea8aa563031e2020fe37846390dbe1",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R033-BA-BAB.causal.raw.json"
+    },
+    {
+      "base_blob": "d479d238c31796f618e7afa818097afa2cec9417",
+      "byte_identical": true,
+      "candidate_blob": "d479d238c31796f618e7afa818097afa2cec9417",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R034-BA-BBA.causal.raw.json"
+    },
+    {
+      "base_blob": "322d47c96e3633cc7c0d03ca72bb61c052cded6e",
+      "byte_identical": true,
+      "candidate_blob": "322d47c96e3633cc7c0d03ca72bb61c052cded6e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R035-BA-BBB.causal.raw.json"
+    },
+    {
+      "base_blob": "f398ac1fa0a2b9ad267a3b2d9088e5bfd579acae",
+      "byte_identical": true,
+      "candidate_blob": "f398ac1fa0a2b9ad267a3b2d9088e5bfd579acae",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R036-BB-AA.causal.raw.json"
+    },
+    {
+      "base_blob": "7113e96f413ac54370fae1ef70c5a771f1d8bd3b",
+      "byte_identical": true,
+      "candidate_blob": "7113e96f413ac54370fae1ef70c5a771f1d8bd3b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R037-BB-AB.causal.raw.json"
+    },
+    {
+      "base_blob": "9f2431efb2dac24ea16aa8132c44cc3e27002560",
+      "byte_identical": true,
+      "candidate_blob": "9f2431efb2dac24ea16aa8132c44cc3e27002560",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R038-BB-BA.causal.raw.json"
+    },
+    {
+      "base_blob": "ed98fd2a7e3d1617e631ea7fcb57f81c3e556d84",
+      "byte_identical": true,
+      "candidate_blob": "ed98fd2a7e3d1617e631ea7fcb57f81c3e556d84",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R039-BB-BB.causal.raw.json"
+    },
+    {
+      "base_blob": "3a440081f17c079e958eaa8be132f15c143644f2",
+      "byte_identical": true,
+      "candidate_blob": "3a440081f17c079e958eaa8be132f15c143644f2",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R040-BB-AAA.causal.raw.json"
+    },
+    {
+      "base_blob": "cc8a10e0f914a6a03c209690f112707032421cb6",
+      "byte_identical": true,
+      "candidate_blob": "cc8a10e0f914a6a03c209690f112707032421cb6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R041-BB-AAB.causal.raw.json"
+    },
+    {
+      "base_blob": "d1c9160b30f1bb341669bb7285a582f842b78fd6",
+      "byte_identical": true,
+      "candidate_blob": "d1c9160b30f1bb341669bb7285a582f842b78fd6",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R042-BB-ABA.causal.raw.json"
+    },
+    {
+      "base_blob": "2370907ef7d67792785f90def88bfef6fc42df11",
+      "byte_identical": true,
+      "candidate_blob": "2370907ef7d67792785f90def88bfef6fc42df11",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R043-BB-ABB.causal.raw.json"
+    },
+    {
+      "base_blob": "76d43473621a29c0b663741f89477617a9fd1f93",
+      "byte_identical": true,
+      "candidate_blob": "76d43473621a29c0b663741f89477617a9fd1f93",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R044-BB-BAA.causal.raw.json"
+    },
+    {
+      "base_blob": "abeec9389125e9ce50eec19982125ec29018576c",
+      "byte_identical": true,
+      "candidate_blob": "abeec9389125e9ce50eec19982125ec29018576c",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R045-BB-BAB.causal.raw.json"
+    },
+    {
+      "base_blob": "edafab65b1858e24bded1d18068ca76d376fce83",
+      "byte_identical": true,
+      "candidate_blob": "edafab65b1858e24bded1d18068ca76d376fce83",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R046-BB-BBA.causal.raw.json"
+    },
+    {
+      "base_blob": "7b8b0a70c22455efd90548ee235c52a9f298a989",
+      "byte_identical": true,
+      "candidate_blob": "7b8b0a70c22455efd90548ee235c52a9f298a989",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/EXP-RUL-001-R047-BB-BBB.causal.raw.json"
+    },
+    {
+      "base_blob": "3985736c9d67f9f095bf97da73167e5911274b24",
+      "byte_identical": true,
+      "candidate_blob": "3985736c9d67f9f095bf97da73167e5911274b24",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M1.causal.raw.json"
+    },
+    {
+      "base_blob": "552c1a1dee1672435e83f06a170f1a77a4fa676e",
+      "byte_identical": true,
+      "candidate_blob": "552c1a1dee1672435e83f06a170f1a77a4fa676e",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M2.causal.raw.json"
+    },
+    {
+      "base_blob": "a02d0e1c73279316857fb60eaaf4fd939b528c1d",
+      "byte_identical": true,
+      "candidate_blob": "a02d0e1c73279316857fb60eaaf4fd939b528c1d",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M3.causal.raw.json"
+    },
+    {
+      "base_blob": "5da23543d92a48ad3c6cfa52dd7951bfca1fc79b",
+      "byte_identical": true,
+      "candidate_blob": "5da23543d92a48ad3c6cfa52dd7951bfca1fc79b",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M4.causal.raw.json"
+    },
+    {
+      "base_blob": "06aa67ba294746bb436a4293e5798d159f1fd23d",
+      "byte_identical": true,
+      "candidate_blob": "06aa67ba294746bb436a4293e5798d159f1fd23d",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M5.causal.raw.json"
+    },
+    {
+      "base_blob": "3006105a67aa81554103f96cb493ad25332b0310",
+      "byte_identical": true,
+      "candidate_blob": "3006105a67aa81554103f96cb493ad25332b0310",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M6.causal.raw.json"
+    },
+    {
+      "base_blob": "4c944eeb64cb4d38e0d16eaa5a20cadc78ad4bc3",
+      "byte_identical": true,
+      "candidate_blob": "4c944eeb64cb4d38e0d16eaa5a20cadc78ad4bc3",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M7.causal.raw.json"
+    },
+    {
+      "base_blob": "2b1e7ac6cbc8b1e1c1dfda026ff056813fb13197",
+      "byte_identical": true,
+      "candidate_blob": "2b1e7ac6cbc8b1e1c1dfda026ff056813fb13197",
+      "path": "artifacts/causalis-b2-resource-causality-00a/raw/wolfram/M8.causal.raw.json"
+    },
+    {
+      "base_blob": "e8c1cdbc6cc4c5c7c899d1af552862b38ac6886d",
+      "byte_identical": true,
+      "candidate_blob": "e8c1cdbc6cc4c5c7c899d1af552862b38ac6886d",
+      "path": "artifacts/causalis-event-instance-parity-01a/cross_runtime_reconciliation.json"
+    },
+    {
+      "base_blob": "c77b039e565d1536f2c09d41a32241d5918f0495",
+      "byte_identical": true,
+      "candidate_blob": "c77b039e565d1536f2c09d41a32241d5918f0495",
+      "path": "artifacts/causalis-event-instance-parity-01a/definition.json"
+    },
+    {
+      "base_blob": "b8367fedb767be59eaa6d6e8b90e3906382b5a0b",
+      "byte_identical": true,
+      "candidate_blob": "b8367fedb767be59eaa6d6e8b90e3906382b5a0b",
+      "path": "artifacts/causalis-event-instance-parity-01a/event_surface_inventory.json"
+    },
+    {
+      "base_blob": "5de6ade3dd688826ede67a47275cc80b54934d79",
+      "byte_identical": true,
+      "candidate_blob": "5de6ade3dd688826ede67a47275cc80b54934d79",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_parity.json"
+    },
+    {
+      "base_blob": "8832f1014b221379a17820c78e58de5ecba4818e",
+      "byte_identical": true,
+      "candidate_blob": "8832f1014b221379a17820c78e58de5ecba4818e",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_python.jsonl"
+    },
+    {
+      "base_blob": "f635909062fc4266760c42c126bcea4f7169a87c",
+      "byte_identical": true,
+      "candidate_blob": "f635909062fc4266760c42c126bcea4f7169a87c",
+      "path": "artifacts/causalis-event-instance-parity-01a/full_sweep_wolfram.jsonl"
+    },
+    {
+      "base_blob": "3fde0c8127318ba6180ffb289f43a9d7c41fe8b3",
+      "byte_identical": true,
+      "candidate_blob": "3fde0c8127318ba6180ffb289f43a9d7c41fe8b3",
+      "path": "artifacts/causalis-event-instance-parity-01a/independent_recheck.json"
+    },
+    {
+      "base_blob": "9ef09901e48938a1df296f55dc8dc87a2c6204de",
+      "byte_identical": true,
+      "candidate_blob": "9ef09901e48938a1df296f55dc8dc87a2c6204de",
+      "path": "artifacts/causalis-event-instance-parity-01a/manifest.json"
+    },
+    {
+      "base_blob": "ab3c1241f21f2fe8147f8a3a10bce2437e8e2158",
+      "byte_identical": true,
+      "candidate_blob": "ab3c1241f21f2fe8147f8a3a10bce2437e8e2158",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_parity.json"
+    },
+    {
+      "base_blob": "8d35a8d57e1591b632867e80390cae8c046ff70c",
+      "byte_identical": true,
+      "candidate_blob": "8d35a8d57e1591b632867e80390cae8c046ff70c",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_python.jsonl"
+    },
+    {
+      "base_blob": "3066e5a98ffbe1915f546f025439d3c2a230ab0a",
+      "byte_identical": true,
+      "candidate_blob": "3066e5a98ffbe1915f546f025439d3c2a230ab0a",
+      "path": "artifacts/causalis-event-instance-parity-01a/microfixture_wolfram.jsonl"
+    },
+    {
+      "base_blob": "50d7aaaeb15295b1493bcfe343d1ac5aa2639cfe",
+      "byte_identical": true,
+      "candidate_blob": "50d7aaaeb15295b1493bcfe343d1ac5aa2639cfe",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/arborescence_audit.json"
+    },
+    {
+      "base_blob": "3dcef3af2ced8c1a8e2588a8068096a871d05642",
+      "byte_identical": true,
+      "candidate_blob": "3dcef3af2ced8c1a8e2588a8068096a871d05642",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/hostile_controls.json"
+    },
+    {
+      "base_blob": "14a9db752b0f73e979f32493be6372698086401e",
+      "byte_identical": true,
+      "candidate_blob": "14a9db752b0f73e979f32493be6372698086401e",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_primary_graph_parity.json"
+    },
+    {
+      "base_blob": "2898d988dca48f67358ece2c475bfbe4ad6abb5f",
+      "byte_identical": true,
+      "candidate_blob": "2898d988dca48f67358ece2c475bfbe4ad6abb5f",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_python_reconstruction.jsonl"
+    },
+    {
+      "base_blob": "48a8b84b3de9d716c935a1fd8437334a58dd00e9",
+      "byte_identical": true,
+      "candidate_blob": "48a8b84b3de9d716c935a1fd8437334a58dd00e9",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_raw_reconstruction.json"
+    },
+    {
+      "base_blob": "db863eb988ec5da20706c7406f929e0062a97f4b",
+      "byte_identical": true,
+      "candidate_blob": "db863eb988ec5da20706c7406f929e0062a97f4b",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_redex_parity.json"
+    },
+    {
+      "base_blob": "fa3cd908d647aa95b54292de6c847b34ed9cc606",
+      "byte_identical": true,
+      "candidate_blob": "fa3cd908d647aa95b54292de6c847b34ed9cc606",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/independent_wolfram_reconstruction.jsonl"
+    },
+    {
+      "base_blob": "7a14c8cbd33a20069b136143bad0f3f948c6f925",
+      "byte_identical": true,
+      "candidate_blob": "7a14c8cbd33a20069b136143bad0f3f948c6f925",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/manifest.json"
+    },
+    {
+      "base_blob": "a6fbb8be31761d62d492dca81ca1910e0d98d638",
+      "byte_identical": true,
+      "candidate_blob": "a6fbb8be31761d62d492dca81ca1910e0d98d638",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/primary_independent_comparison.json"
+    },
+    {
+      "base_blob": "6824734164ed0824e2edf6d84ddca4de8abed66a",
+      "byte_identical": true,
+      "candidate_blob": "6824734164ed0824e2edf6d84ddca4de8abed66a",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/verification_receipt.json"
+    },
+    {
+      "base_blob": "704262a2e504d89812d837202efaf4e9496180a8",
+      "byte_identical": true,
+      "candidate_blob": "704262a2e504d89812d837202efaf4e9496180a8",
+      "path": "artifacts/causalis-event-instance-parity-01a/r1/wolfram_independent_check.json"
+    },
+    {
+      "base_blob": "a61604e9d567a59605735c9d3283ba98bd4e3d5d",
+      "byte_identical": true,
+      "candidate_blob": "a61604e9d567a59605735c9d3283ba98bd4e3d5d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R000-AA-AA.raw.json"
+    },
+    {
+      "base_blob": "f7f937f7bc14b26bc5bb47d596a7213ca17079b4",
+      "byte_identical": true,
+      "candidate_blob": "f7f937f7bc14b26bc5bb47d596a7213ca17079b4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R001-AA-AB.raw.json"
+    },
+    {
+      "base_blob": "be5df05609ec1f7a281929db3f6070349b35b405",
+      "byte_identical": true,
+      "candidate_blob": "be5df05609ec1f7a281929db3f6070349b35b405",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R002-AA-BA.raw.json"
+    },
+    {
+      "base_blob": "304166704c57998f907fc31aab63b3c0c30d563c",
+      "byte_identical": true,
+      "candidate_blob": "304166704c57998f907fc31aab63b3c0c30d563c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R003-AA-BB.raw.json"
+    },
+    {
+      "base_blob": "dae1af01ba2326aca997988f1886a48d042c7f27",
+      "byte_identical": true,
+      "candidate_blob": "dae1af01ba2326aca997988f1886a48d042c7f27",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R004-AA-AAA.raw.json"
+    },
+    {
+      "base_blob": "dab55124e6ace0588e1e0694397a2f9750b1aedd",
+      "byte_identical": true,
+      "candidate_blob": "dab55124e6ace0588e1e0694397a2f9750b1aedd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R005-AA-AAB.raw.json"
+    },
+    {
+      "base_blob": "0278bf589c95de905ba5c542846e26650c73f3b0",
+      "byte_identical": true,
+      "candidate_blob": "0278bf589c95de905ba5c542846e26650c73f3b0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R006-AA-ABA.raw.json"
+    },
+    {
+      "base_blob": "5844e557a177456f25ba04692bc3802b23fa0f25",
+      "byte_identical": true,
+      "candidate_blob": "5844e557a177456f25ba04692bc3802b23fa0f25",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R007-AA-ABB.raw.json"
+    },
+    {
+      "base_blob": "7742675789e63896f8bd87856b37ca92569b5b35",
+      "byte_identical": true,
+      "candidate_blob": "7742675789e63896f8bd87856b37ca92569b5b35",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R008-AA-BAA.raw.json"
+    },
+    {
+      "base_blob": "44b8facb5ea7be89dffbcb48542b90d452ebf312",
+      "byte_identical": true,
+      "candidate_blob": "44b8facb5ea7be89dffbcb48542b90d452ebf312",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R009-AA-BAB.raw.json"
+    },
+    {
+      "base_blob": "6c4e0eccbf7da3c03e89246d36aac955d3bf73e3",
+      "byte_identical": true,
+      "candidate_blob": "6c4e0eccbf7da3c03e89246d36aac955d3bf73e3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R010-AA-BBA.raw.json"
+    },
+    {
+      "base_blob": "a7402a91efa28ae5e82f7df57b7f609dafcf8c30",
+      "byte_identical": true,
+      "candidate_blob": "a7402a91efa28ae5e82f7df57b7f609dafcf8c30",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R011-AA-BBB.raw.json"
+    },
+    {
+      "base_blob": "2c587df9e9eab58d463c7510143e5156e9150876",
+      "byte_identical": true,
+      "candidate_blob": "2c587df9e9eab58d463c7510143e5156e9150876",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R012-AB-AA.raw.json"
+    },
+    {
+      "base_blob": "98622a5da02f1fe90e9b500235b85dbadcd89dc2",
+      "byte_identical": true,
+      "candidate_blob": "98622a5da02f1fe90e9b500235b85dbadcd89dc2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R013-AB-AB.raw.json"
+    },
+    {
+      "base_blob": "7593eafc5ab2c0adad219988c39cb75222d1409f",
+      "byte_identical": true,
+      "candidate_blob": "7593eafc5ab2c0adad219988c39cb75222d1409f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R014-AB-BA.raw.json"
+    },
+    {
+      "base_blob": "daa3e7d190dc72e185b5ed8d4412175c0d81b61b",
+      "byte_identical": true,
+      "candidate_blob": "daa3e7d190dc72e185b5ed8d4412175c0d81b61b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R015-AB-BB.raw.json"
+    },
+    {
+      "base_blob": "170ff330b37466225c83984ad0909bd41fcb377c",
+      "byte_identical": true,
+      "candidate_blob": "170ff330b37466225c83984ad0909bd41fcb377c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R016-AB-AAA.raw.json"
+    },
+    {
+      "base_blob": "99d525cc39e14787608b9e47fad97b9693d04daa",
+      "byte_identical": true,
+      "candidate_blob": "99d525cc39e14787608b9e47fad97b9693d04daa",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R017-AB-AAB.raw.json"
+    },
+    {
+      "base_blob": "bacd3a3a4d8b031c6d15b9c6091f4884617a726f",
+      "byte_identical": true,
+      "candidate_blob": "bacd3a3a4d8b031c6d15b9c6091f4884617a726f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R018-AB-ABA.raw.json"
+    },
+    {
+      "base_blob": "ec0464c75303ea07ed8e1eccf84e8ab4a40ad1b0",
+      "byte_identical": true,
+      "candidate_blob": "ec0464c75303ea07ed8e1eccf84e8ab4a40ad1b0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R019-AB-ABB.raw.json"
+    },
+    {
+      "base_blob": "cdd18de0cbe810ee898402f05f1e3be76986cb60",
+      "byte_identical": true,
+      "candidate_blob": "cdd18de0cbe810ee898402f05f1e3be76986cb60",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R020-AB-BAA.raw.json"
+    },
+    {
+      "base_blob": "101e4a5d9dd8ba34ace830d09478f791329110e0",
+      "byte_identical": true,
+      "candidate_blob": "101e4a5d9dd8ba34ace830d09478f791329110e0",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R021-AB-BAB.raw.json"
+    },
+    {
+      "base_blob": "749042d0d6937a30c86fc6a8b6cc7135c36dcf88",
+      "byte_identical": true,
+      "candidate_blob": "749042d0d6937a30c86fc6a8b6cc7135c36dcf88",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R022-AB-BBA.raw.json"
+    },
+    {
+      "base_blob": "954cacac92c44637ee78b8c48c8a5df386dea7fb",
+      "byte_identical": true,
+      "candidate_blob": "954cacac92c44637ee78b8c48c8a5df386dea7fb",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R023-AB-BBB.raw.json"
+    },
+    {
+      "base_blob": "d1c6e0a0e3aa822bc903cefc8875d78e2dfafcdd",
+      "byte_identical": true,
+      "candidate_blob": "d1c6e0a0e3aa822bc903cefc8875d78e2dfafcdd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R024-BA-AA.raw.json"
+    },
+    {
+      "base_blob": "368a4e0c56318637d018f7473a2a21da501f7d62",
+      "byte_identical": true,
+      "candidate_blob": "368a4e0c56318637d018f7473a2a21da501f7d62",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R025-BA-AB.raw.json"
+    },
+    {
+      "base_blob": "f58e5d0990567050d7b0c23725a494b0c3dfcd28",
+      "byte_identical": true,
+      "candidate_blob": "f58e5d0990567050d7b0c23725a494b0c3dfcd28",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R026-BA-BA.raw.json"
+    },
+    {
+      "base_blob": "fdeeb223dbbe870527624e274283f6041d7af5c5",
+      "byte_identical": true,
+      "candidate_blob": "fdeeb223dbbe870527624e274283f6041d7af5c5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R027-BA-BB.raw.json"
+    },
+    {
+      "base_blob": "6003e29cb95c39a9e8646c901c8890a52da4396f",
+      "byte_identical": true,
+      "candidate_blob": "6003e29cb95c39a9e8646c901c8890a52da4396f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R028-BA-AAA.raw.json"
+    },
+    {
+      "base_blob": "53c72beb157daf3dc04b41447629214697049cb6",
+      "byte_identical": true,
+      "candidate_blob": "53c72beb157daf3dc04b41447629214697049cb6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R029-BA-AAB.raw.json"
+    },
+    {
+      "base_blob": "90f7e8a4524004acaa246422a10c0f876b7fb8db",
+      "byte_identical": true,
+      "candidate_blob": "90f7e8a4524004acaa246422a10c0f876b7fb8db",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R030-BA-ABA.raw.json"
+    },
+    {
+      "base_blob": "aa680202a3feff9b2d1823c3a1aad9d4104a5a26",
+      "byte_identical": true,
+      "candidate_blob": "aa680202a3feff9b2d1823c3a1aad9d4104a5a26",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R031-BA-ABB.raw.json"
+    },
+    {
+      "base_blob": "13f8fb0b3edbde58b8ccf299c1208becdc39e10e",
+      "byte_identical": true,
+      "candidate_blob": "13f8fb0b3edbde58b8ccf299c1208becdc39e10e",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R032-BA-BAA.raw.json"
+    },
+    {
+      "base_blob": "c19c4d6ebf082e7403ae84e6d64812d182708d14",
+      "byte_identical": true,
+      "candidate_blob": "c19c4d6ebf082e7403ae84e6d64812d182708d14",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R033-BA-BAB.raw.json"
+    },
+    {
+      "base_blob": "865e2f79a6574957f8bbd29ab7d2bf0a626e4365",
+      "byte_identical": true,
+      "candidate_blob": "865e2f79a6574957f8bbd29ab7d2bf0a626e4365",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R034-BA-BBA.raw.json"
+    },
+    {
+      "base_blob": "e45d533c300de67588bdb62007eb5922d038b34c",
+      "byte_identical": true,
+      "candidate_blob": "e45d533c300de67588bdb62007eb5922d038b34c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R035-BA-BBB.raw.json"
+    },
+    {
+      "base_blob": "099088a22ac6c6e6c9df287e8add2d198a5497f5",
+      "byte_identical": true,
+      "candidate_blob": "099088a22ac6c6e6c9df287e8add2d198a5497f5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R036-BB-AA.raw.json"
+    },
+    {
+      "base_blob": "a0ecb0eb8a72aab4b5ed4a63d64b16326d161d3b",
+      "byte_identical": true,
+      "candidate_blob": "a0ecb0eb8a72aab4b5ed4a63d64b16326d161d3b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R037-BB-AB.raw.json"
+    },
+    {
+      "base_blob": "3bf54c28fb4921bfbb7f62528b0d0159834fbcf3",
+      "byte_identical": true,
+      "candidate_blob": "3bf54c28fb4921bfbb7f62528b0d0159834fbcf3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R038-BB-BA.raw.json"
+    },
+    {
+      "base_blob": "1041c63be2429d11ee2beeabc872f2d48bb07a2c",
+      "byte_identical": true,
+      "candidate_blob": "1041c63be2429d11ee2beeabc872f2d48bb07a2c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R039-BB-BB.raw.json"
+    },
+    {
+      "base_blob": "624b3c265c37bd8e5145e7e325ca26cc0ebc2e09",
+      "byte_identical": true,
+      "candidate_blob": "624b3c265c37bd8e5145e7e325ca26cc0ebc2e09",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R040-BB-AAA.raw.json"
+    },
+    {
+      "base_blob": "f2f7060784a35bbe2bb30b696c70e58554e1a568",
+      "byte_identical": true,
+      "candidate_blob": "f2f7060784a35bbe2bb30b696c70e58554e1a568",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R041-BB-AAB.raw.json"
+    },
+    {
+      "base_blob": "c84f896c79190c4b2a5633a6b5bb338a5ffb0767",
+      "byte_identical": true,
+      "candidate_blob": "c84f896c79190c4b2a5633a6b5bb338a5ffb0767",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R042-BB-ABA.raw.json"
+    },
+    {
+      "base_blob": "42a852ec8873697d39a7ea41d8b7e81738d0198d",
+      "byte_identical": true,
+      "candidate_blob": "42a852ec8873697d39a7ea41d8b7e81738d0198d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R043-BB-ABB.raw.json"
+    },
+    {
+      "base_blob": "e6645b3f436c693212b5c9e767935b51e044ef33",
+      "byte_identical": true,
+      "candidate_blob": "e6645b3f436c693212b5c9e767935b51e044ef33",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R044-BB-BAA.raw.json"
+    },
+    {
+      "base_blob": "303637a114771f1eb3db0df510e18a4a40d87042",
+      "byte_identical": true,
+      "candidate_blob": "303637a114771f1eb3db0df510e18a4a40d87042",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R045-BB-BAB.raw.json"
+    },
+    {
+      "base_blob": "2b722843615ec9b50da25e60c2f892abb50df6fd",
+      "byte_identical": true,
+      "candidate_blob": "2b722843615ec9b50da25e60c2f892abb50df6fd",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R046-BB-BBA.raw.json"
+    },
+    {
+      "base_blob": "c0126a934be4b2ca366c4a86097d5fc01f6e207b",
+      "byte_identical": true,
+      "candidate_blob": "c0126a934be4b2ca366c4a86097d5fc01f6e207b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/EXP-RUL-001-R047-BB-BBB.raw.json"
+    },
+    {
+      "base_blob": "cf4efbc3ab8d1d36f3922df365c7962d470de515",
+      "byte_identical": true,
+      "candidate_blob": "cf4efbc3ab8d1d36f3922df365c7962d470de515",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M1.raw.json"
+    },
+    {
+      "base_blob": "f7996837dd865778afd9f1241d60467427bcda9f",
+      "byte_identical": true,
+      "candidate_blob": "f7996837dd865778afd9f1241d60467427bcda9f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M2.raw.json"
+    },
+    {
+      "base_blob": "5b19a5d3921948f24f95a1c662621c5b88d5d4f4",
+      "byte_identical": true,
+      "candidate_blob": "5b19a5d3921948f24f95a1c662621c5b88d5d4f4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M3.raw.json"
+    },
+    {
+      "base_blob": "44a05ef821761697130db4d53afce39e544fa0ba",
+      "byte_identical": true,
+      "candidate_blob": "44a05ef821761697130db4d53afce39e544fa0ba",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M4.raw.json"
+    },
+    {
+      "base_blob": "5ae93f886ffe5cacbebcf910fb86ea8008256a6c",
+      "byte_identical": true,
+      "candidate_blob": "5ae93f886ffe5cacbebcf910fb86ea8008256a6c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M5.raw.json"
+    },
+    {
+      "base_blob": "2a8a470edd16f25e99270f795c3b57f575e1f866",
+      "byte_identical": true,
+      "candidate_blob": "2a8a470edd16f25e99270f795c3b57f575e1f866",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M6.raw.json"
+    },
+    {
+      "base_blob": "d71d184726a0fa06fa8d1bb022dd25a7e037e25a",
+      "byte_identical": true,
+      "candidate_blob": "d71d184726a0fa06fa8d1bb022dd25a7e037e25a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M7.raw.json"
+    },
+    {
+      "base_blob": "7a4ad6b89bc27cc0d5a2a3ffb4421add99a77de4",
+      "byte_identical": true,
+      "candidate_blob": "7a4ad6b89bc27cc0d5a2a3ffb4421add99a77de4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/python/M8.raw.json"
+    },
+    {
+      "base_blob": "70371b425babf517fc30b20d8645547e92d92d64",
+      "byte_identical": true,
+      "candidate_blob": "70371b425babf517fc30b20d8645547e92d92d64",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R000-AA-AA.raw.json"
+    },
+    {
+      "base_blob": "60db40f6e3705bb384e86ab87ff8dace83d0202b",
+      "byte_identical": true,
+      "candidate_blob": "60db40f6e3705bb384e86ab87ff8dace83d0202b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R001-AA-AB.raw.json"
+    },
+    {
+      "base_blob": "03fb21cb64ffe4682b736182ccf001e0d9657265",
+      "byte_identical": true,
+      "candidate_blob": "03fb21cb64ffe4682b736182ccf001e0d9657265",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R002-AA-BA.raw.json"
+    },
+    {
+      "base_blob": "ea53dd411eb21d4b919da23b601bbbf4a57b5a3d",
+      "byte_identical": true,
+      "candidate_blob": "ea53dd411eb21d4b919da23b601bbbf4a57b5a3d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R003-AA-BB.raw.json"
+    },
+    {
+      "base_blob": "c37cf08253b27330bd4a830694c34a0ddba0818d",
+      "byte_identical": true,
+      "candidate_blob": "c37cf08253b27330bd4a830694c34a0ddba0818d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R004-AA-AAA.raw.json"
+    },
+    {
+      "base_blob": "b2de9ea75c6081f2798f73e164423eb1b972efa6",
+      "byte_identical": true,
+      "candidate_blob": "b2de9ea75c6081f2798f73e164423eb1b972efa6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R005-AA-AAB.raw.json"
+    },
+    {
+      "base_blob": "22c464cc8e8a1c6e72dd7027dae920038928fde2",
+      "byte_identical": true,
+      "candidate_blob": "22c464cc8e8a1c6e72dd7027dae920038928fde2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R006-AA-ABA.raw.json"
+    },
+    {
+      "base_blob": "9a4ccfd90d021e1f5b31d2003c8bf752c0c1b0f2",
+      "byte_identical": true,
+      "candidate_blob": "9a4ccfd90d021e1f5b31d2003c8bf752c0c1b0f2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R007-AA-ABB.raw.json"
+    },
+    {
+      "base_blob": "a3afb8e06f6de9c864b58209499cf29233ff61f6",
+      "byte_identical": true,
+      "candidate_blob": "a3afb8e06f6de9c864b58209499cf29233ff61f6",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R008-AA-BAA.raw.json"
+    },
+    {
+      "base_blob": "0829e33ee2eeb45eee4710588aba2dd9ce9a8b5a",
+      "byte_identical": true,
+      "candidate_blob": "0829e33ee2eeb45eee4710588aba2dd9ce9a8b5a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R009-AA-BAB.raw.json"
+    },
+    {
+      "base_blob": "50ac76ef7a85d75ae1d4c7d4b9cebf6c7e03a424",
+      "byte_identical": true,
+      "candidate_blob": "50ac76ef7a85d75ae1d4c7d4b9cebf6c7e03a424",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R010-AA-BBA.raw.json"
+    },
+    {
+      "base_blob": "db986644e10bbc192ee5cc5366cdd96ad0885452",
+      "byte_identical": true,
+      "candidate_blob": "db986644e10bbc192ee5cc5366cdd96ad0885452",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R011-AA-BBB.raw.json"
+    },
+    {
+      "base_blob": "6ba050dbe86d1a7448c7d10a522657f2843113fc",
+      "byte_identical": true,
+      "candidate_blob": "6ba050dbe86d1a7448c7d10a522657f2843113fc",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R012-AB-AA.raw.json"
+    },
+    {
+      "base_blob": "7934aa1b533b28305f1c806496eb550932bc0f6d",
+      "byte_identical": true,
+      "candidate_blob": "7934aa1b533b28305f1c806496eb550932bc0f6d",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R013-AB-AB.raw.json"
+    },
+    {
+      "base_blob": "01af0c1545b4bda231b62b43da63e341823dc5de",
+      "byte_identical": true,
+      "candidate_blob": "01af0c1545b4bda231b62b43da63e341823dc5de",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R014-AB-BA.raw.json"
+    },
+    {
+      "base_blob": "d81f9612206cdd46758c678fbb58c103eab86e91",
+      "byte_identical": true,
+      "candidate_blob": "d81f9612206cdd46758c678fbb58c103eab86e91",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R015-AB-BB.raw.json"
+    },
+    {
+      "base_blob": "b4810c7025ec0d6655d2b420f353f6194a84b131",
+      "byte_identical": true,
+      "candidate_blob": "b4810c7025ec0d6655d2b420f353f6194a84b131",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R016-AB-AAA.raw.json"
+    },
+    {
+      "base_blob": "471e6816da0f634fed1ef0bd3adcd01eae624cdf",
+      "byte_identical": true,
+      "candidate_blob": "471e6816da0f634fed1ef0bd3adcd01eae624cdf",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R017-AB-AAB.raw.json"
+    },
+    {
+      "base_blob": "60ca081f1b974984e50cde7214ce192b0cccd577",
+      "byte_identical": true,
+      "candidate_blob": "60ca081f1b974984e50cde7214ce192b0cccd577",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R018-AB-ABA.raw.json"
+    },
+    {
+      "base_blob": "7429809d31cb7aafb7fd058e4b737363ed8a6440",
+      "byte_identical": true,
+      "candidate_blob": "7429809d31cb7aafb7fd058e4b737363ed8a6440",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R019-AB-ABB.raw.json"
+    },
+    {
+      "base_blob": "4e95b1989e0f23362c17e4e97ff1e00672da0b08",
+      "byte_identical": true,
+      "candidate_blob": "4e95b1989e0f23362c17e4e97ff1e00672da0b08",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R020-AB-BAA.raw.json"
+    },
+    {
+      "base_blob": "a72376705b52920334d1f22674cfeb33eae46783",
+      "byte_identical": true,
+      "candidate_blob": "a72376705b52920334d1f22674cfeb33eae46783",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R021-AB-BAB.raw.json"
+    },
+    {
+      "base_blob": "b921228b62b404b77e7fe69f498f183caea97830",
+      "byte_identical": true,
+      "candidate_blob": "b921228b62b404b77e7fe69f498f183caea97830",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R022-AB-BBA.raw.json"
+    },
+    {
+      "base_blob": "81c01a80298097e40ab69ea7e466bf80f0f43c84",
+      "byte_identical": true,
+      "candidate_blob": "81c01a80298097e40ab69ea7e466bf80f0f43c84",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R023-AB-BBB.raw.json"
+    },
+    {
+      "base_blob": "da8f84d89ebf1ea6a2e228e6fe5ae55a32f55e96",
+      "byte_identical": true,
+      "candidate_blob": "da8f84d89ebf1ea6a2e228e6fe5ae55a32f55e96",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R024-BA-AA.raw.json"
+    },
+    {
+      "base_blob": "86f1f95e7b1ffdfcd79f9d4ff29930141490fd83",
+      "byte_identical": true,
+      "candidate_blob": "86f1f95e7b1ffdfcd79f9d4ff29930141490fd83",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R025-BA-AB.raw.json"
+    },
+    {
+      "base_blob": "5730a6b672f4b223f90bd1f96373764ca982b726",
+      "byte_identical": true,
+      "candidate_blob": "5730a6b672f4b223f90bd1f96373764ca982b726",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R026-BA-BA.raw.json"
+    },
+    {
+      "base_blob": "c68536e9dc62f772655d27bb79e5438515847f4c",
+      "byte_identical": true,
+      "candidate_blob": "c68536e9dc62f772655d27bb79e5438515847f4c",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R027-BA-BB.raw.json"
+    },
+    {
+      "base_blob": "150832728203a17e089d57e70094d33854074437",
+      "byte_identical": true,
+      "candidate_blob": "150832728203a17e089d57e70094d33854074437",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R028-BA-AAA.raw.json"
+    },
+    {
+      "base_blob": "96707cf81c62905b54b374f1ce2267230970e035",
+      "byte_identical": true,
+      "candidate_blob": "96707cf81c62905b54b374f1ce2267230970e035",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R029-BA-AAB.raw.json"
+    },
+    {
+      "base_blob": "4411d18c43d316d6df58dcc7e6119783818ee800",
+      "byte_identical": true,
+      "candidate_blob": "4411d18c43d316d6df58dcc7e6119783818ee800",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R030-BA-ABA.raw.json"
+    },
+    {
+      "base_blob": "d457e77a25a786613ab866fe9abd1a696272c5d3",
+      "byte_identical": true,
+      "candidate_blob": "d457e77a25a786613ab866fe9abd1a696272c5d3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R031-BA-ABB.raw.json"
+    },
+    {
+      "base_blob": "fad3ccb4aab89d5097b0e48fd0e0f35fb110699b",
+      "byte_identical": true,
+      "candidate_blob": "fad3ccb4aab89d5097b0e48fd0e0f35fb110699b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R032-BA-BAA.raw.json"
+    },
+    {
+      "base_blob": "d00b11d302316722a006c40c54a9de488708ee86",
+      "byte_identical": true,
+      "candidate_blob": "d00b11d302316722a006c40c54a9de488708ee86",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R033-BA-BAB.raw.json"
+    },
+    {
+      "base_blob": "4aeb082d78194ed309019a66793a1a6742b90967",
+      "byte_identical": true,
+      "candidate_blob": "4aeb082d78194ed309019a66793a1a6742b90967",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R034-BA-BBA.raw.json"
+    },
+    {
+      "base_blob": "7c5d87fedb47b1ee76d75222903add3a271a31db",
+      "byte_identical": true,
+      "candidate_blob": "7c5d87fedb47b1ee76d75222903add3a271a31db",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R035-BA-BBB.raw.json"
+    },
+    {
+      "base_blob": "ab579341ac218e0c37e9d84023fafd9f55bfd847",
+      "byte_identical": true,
+      "candidate_blob": "ab579341ac218e0c37e9d84023fafd9f55bfd847",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R036-BB-AA.raw.json"
+    },
+    {
+      "base_blob": "e4266b8903315ea9e02d01a909d7257a94831079",
+      "byte_identical": true,
+      "candidate_blob": "e4266b8903315ea9e02d01a909d7257a94831079",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R037-BB-AB.raw.json"
+    },
+    {
+      "base_blob": "0b96887684c010746c70f72393be32d1b857b2e2",
+      "byte_identical": true,
+      "candidate_blob": "0b96887684c010746c70f72393be32d1b857b2e2",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R038-BB-BA.raw.json"
+    },
+    {
+      "base_blob": "794b927d4d300156672d381704fcd03d34d5d0ca",
+      "byte_identical": true,
+      "candidate_blob": "794b927d4d300156672d381704fcd03d34d5d0ca",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R039-BB-BB.raw.json"
+    },
+    {
+      "base_blob": "f99742c285b0529f495076387cb4730d1b946e71",
+      "byte_identical": true,
+      "candidate_blob": "f99742c285b0529f495076387cb4730d1b946e71",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R040-BB-AAA.raw.json"
+    },
+    {
+      "base_blob": "1036afbaea25ab63b8d9c32d1b544bdfd6c90452",
+      "byte_identical": true,
+      "candidate_blob": "1036afbaea25ab63b8d9c32d1b544bdfd6c90452",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R041-BB-AAB.raw.json"
+    },
+    {
+      "base_blob": "ed304315eb405ba2d9515b1c86745741dc70df51",
+      "byte_identical": true,
+      "candidate_blob": "ed304315eb405ba2d9515b1c86745741dc70df51",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R042-BB-ABA.raw.json"
+    },
+    {
+      "base_blob": "549ec70265041c04f2d6780870d10921f4d8e832",
+      "byte_identical": true,
+      "candidate_blob": "549ec70265041c04f2d6780870d10921f4d8e832",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R043-BB-ABB.raw.json"
+    },
+    {
+      "base_blob": "2156b89be9e70b2e6c7ccd49310a05d744eb0f4f",
+      "byte_identical": true,
+      "candidate_blob": "2156b89be9e70b2e6c7ccd49310a05d744eb0f4f",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R044-BB-BAA.raw.json"
+    },
+    {
+      "base_blob": "1f664daf6d4206f0bb3043ddf1f05e60c97daf21",
+      "byte_identical": true,
+      "candidate_blob": "1f664daf6d4206f0bb3043ddf1f05e60c97daf21",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R045-BB-BAB.raw.json"
+    },
+    {
+      "base_blob": "6f2f69eee3e1653dc6555e71ee6bdd74f1c02d7a",
+      "byte_identical": true,
+      "candidate_blob": "6f2f69eee3e1653dc6555e71ee6bdd74f1c02d7a",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R046-BB-BBA.raw.json"
+    },
+    {
+      "base_blob": "69f03c2c6468c51f8a3d0b56a9c7248fee457ee8",
+      "byte_identical": true,
+      "candidate_blob": "69f03c2c6468c51f8a3d0b56a9c7248fee457ee8",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/EXP-RUL-001-R047-BB-BBB.raw.json"
+    },
+    {
+      "base_blob": "ccb0abed7cb8da6de55aa6623655a2c9d37ea4e5",
+      "byte_identical": true,
+      "candidate_blob": "ccb0abed7cb8da6de55aa6623655a2c9d37ea4e5",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M1.raw.json"
+    },
+    {
+      "base_blob": "bc3732ea55abe13bf0a117444b4a18e20c0dfed3",
+      "byte_identical": true,
+      "candidate_blob": "bc3732ea55abe13bf0a117444b4a18e20c0dfed3",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M2.raw.json"
+    },
+    {
+      "base_blob": "4015c09a827fc5595f15250125b2fe1873a83d25",
+      "byte_identical": true,
+      "candidate_blob": "4015c09a827fc5595f15250125b2fe1873a83d25",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M3.raw.json"
+    },
+    {
+      "base_blob": "1fd9a0fe98c981c7458c38d17c36ebf58f6ca922",
+      "byte_identical": true,
+      "candidate_blob": "1fd9a0fe98c981c7458c38d17c36ebf58f6ca922",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M4.raw.json"
+    },
+    {
+      "base_blob": "e6a4a5b4e5e933a962061b1c042a98513e2fe2a4",
+      "byte_identical": true,
+      "candidate_blob": "e6a4a5b4e5e933a962061b1c042a98513e2fe2a4",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M5.raw.json"
+    },
+    {
+      "base_blob": "82a23869d0463404d6eba92d5c59f22a9890a7af",
+      "byte_identical": true,
+      "candidate_blob": "82a23869d0463404d6eba92d5c59f22a9890a7af",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M6.raw.json"
+    },
+    {
+      "base_blob": "07028e4a20dc468b5f58e79290c4b336a803dd19",
+      "byte_identical": true,
+      "candidate_blob": "07028e4a20dc468b5f58e79290c4b336a803dd19",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M7.raw.json"
+    },
+    {
+      "base_blob": "99e50b95d46183c9eb83c6b7b379b13639b6983b",
+      "byte_identical": true,
+      "candidate_blob": "99e50b95d46183c9eb83c6b7b379b13639b6983b",
+      "path": "artifacts/causalis-event-instance-parity-01a/raw/wolfram/M8.raw.json"
+    },
+    {
+      "base_blob": "8fda4b0107043e40da4591005d91866beadda064",
+      "byte_identical": true,
+      "candidate_blob": "8fda4b0107043e40da4591005d91866beadda064",
+      "path": "experiments/causalis-b2-resource-causality-00a/independent_check.py"
+    },
+    {
+      "base_blob": "16560f04b457a66240e5014b276aa7b6cb50991c",
+      "byte_identical": true,
+      "candidate_blob": "16560f04b457a66240e5014b276aa7b6cb50991c",
+      "path": "experiments/causalis-b2-resource-causality-00a/run_b2_campaign.py"
+    },
+    {
+      "base_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "byte_identical": true,
+      "candidate_blob": "0f3cb8a7fc63d0a2226dd36bf95e7f2821eba9a9",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-RESOURCE-CAUSALITY-00A_COMPLETION.md"
+    },
+    {
+      "base_blob": "dcfb383e446831a76ca1194e6512e7b955310f90",
+      "byte_identical": true,
+      "candidate_blob": "dcfb383e446831a76ca1194e6512e7b955310f90",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-EVENT-INSTANCE-PARITY-01A-R1_COMPLETION.md"
+    },
+    {
+      "base_blob": "ba2915788014746b3fc805e83f7e4473a879e094",
+      "byte_identical": true,
+      "candidate_blob": "ba2915788014746b3fc805e83f7e4473a879e094",
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-EVENT-INSTANCE-PARITY-01A_COMPLETION.md"
+    }
+  ],
+  "scientific_code_executed_under_signing_credentials": false,
+  "scientific_dispositions_unchanged": {
+    "divergent": 8,
+    "exact": 48,
+    "fixtures": 56,
+    "general_serializability_theorem": false,
+    "max_causal_depth": 5,
+    "mechanism": "MODEL_REPRODUCED",
+    "transitive_relations": 20866
+  },
+  "state": "VERIFIED",
+  "target_candidate": {
+    "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+    "candidate_digest": "c70a9d2add189ae490ebcb7bc2ae06ee13e966827d6e6c10d7d341c67d880621",
+    "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "pr_number": 156,
+    "repository": "Miskatonic-System/msk-ruliology",
+    "tree_sha": "a9d867a34ad21524a8f835774bca29ad33a8300d"
+  },
+  "target_worktree_clean": true
+}

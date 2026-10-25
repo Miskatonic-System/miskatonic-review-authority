@@ -1,0 +1,5 @@
+# Research assurance classes v1 — proposed
+
+R0 DOCUMENTARY covers nonexecutable documentary changes with bounded scope/integrity and human authorization. R1 EXPERIMENTAL_RESEARCH adds exact-head review, reproducibility, disclosed reviewer provenance, authenticated admission and explicit approval. R2 SECURITY_OR_AUTHORITY_CHANGE includes admission/signing/workflow/access-control changes and requires dedicated threat controls, independent security review and protected governance ratification. R3 HIGH_CONSEQUENCE_OPERATION additionally requires a separately ratified mechanism appropriate to production/private-key/destructive consequences; a signed model verdict alone is insufficient.
+
+Only the exact CAUSALIS PR156 nonproduction R1 research case may use EXTERNAL_EVIDENCE_ADMISSION_V1 initially. The assurance policy's implementation is itself R2 and cannot admit or ratify itself through the new route. Every other repository, PR and future head is denied. LOCAL_REVIEW_V2_1 retains its original guarantees and implementation. No legacy cloud authority is restored. Broader adoption requires a separate reviewed work order and authorization.

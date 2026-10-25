@@ -1,0 +1,302 @@
+{
+  "$id": "https://miskatonic.example/schemas/research-admission-receipt-v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admission_route": {
+      "const": "EXTERNAL_EVIDENCE_ADMISSION_V1"
+    },
+    "authority_policy_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "commit_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^[a-zA-Z0-9_./-]+$",
+          "type": "string"
+        },
+        "repository": {
+          "const": "Miskatonic-System/miskatonic-review-authority"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "commit_sha",
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "authority_root_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "commit_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^[a-zA-Z0-9_./-]+$",
+          "type": "string"
+        },
+        "repository": {
+          "const": "Miskatonic-System/miskatonic-review-authority"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "commit_sha",
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "authorization_decision": {
+      "const": "EXPLICIT_BOUNDED_RESEARCH_RISK_ACCEPTED"
+    },
+    "authorization_evidence_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "authorization_principal": {
+      "additionalProperties": false,
+      "properties": {
+        "github_id": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "github_login": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "github_type": {
+          "const": "User"
+        }
+      },
+      "required": [
+        "github_id",
+        "github_login",
+        "github_type"
+      ],
+      "type": "object"
+    },
+    "base_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "candidate_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "check_run_id": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "ci_qualification_state": {
+      "const": "HOSTED_CI_INFRASTRUCTURE_UNAVAILABLE_WITH_COMPENSATING_EVIDENCE"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "decision": {
+      "const": "ADMITTED_RESEARCH_CONTRACT_ONLY"
+    },
+    "evidence_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "head_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "enum": [
+          "DISTINCT_AGENT_REPORTED",
+          "SHARED_PROVIDER",
+          "SHARED_FILESYSTEM",
+          "NO_OS_ISOLATED_REVIEW",
+          "NO_SIGNED_REVIEWER_VERDICT",
+          "HUMAN_RISK_ACCEPTANCE_NOT_SCIENTIFIC_REVIEW",
+          "APPROVER_PRODUCER_TRANSPORT_OVERLAP_DISCLOSED",
+          "GENERATED_ARTIFACTS_HASH_BOUND_NOT_FULLY_REVIEWED",
+          "FINITE_COHORT_ONLY",
+          "MODEL_REPRODUCED_NOT_PROVEN",
+          "NO_GENERAL_SERIALIZABILITY_THEOREM",
+          "HOSTED_CI_NOT_PASS",
+          "LEGACY_TARGET_SCHEMA_INCOMPATIBLE",
+          "RELEASE_AND_MERGE_SEPARATE"
+        ]
+      },
+      "maxItems": 14,
+      "minItems": 14,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "local_review_executed": {
+      "const": false
+    },
+    "pr_number": {
+      "const": 156
+    },
+    "prior_verification_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "producer_approver_account_overlap": {
+      "type": "boolean"
+    },
+    "receipt_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "receipt_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "release_authorized": {
+      "const": false
+    },
+    "repository": {
+      "const": "Miskatonic-System/msk-ruliology"
+    },
+    "request_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "review_packet_manifest_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "review_report_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "reviewer_identity": {
+      "const": "reported-agent:r2_independent_review:openai-codex"
+    },
+    "reviewer_independence_class": {
+      "const": "DISTINCT_AGENT_SHARED_PROVIDER_AND_FILESYSTEM"
+    },
+    "risk_class": {
+      "const": "R1_EXPERIMENTAL_RESEARCH"
+    },
+    "schema_version": {
+      "const": "research-admission-receipt-v1"
+    },
+    "signature": {
+      "additionalProperties": false,
+      "properties": {
+        "algorithm": {
+          "const": "RSASSA-PKCS1-v1_5-SHA256"
+        },
+        "key_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "value_base64": {
+          "minLength": 64,
+          "pattern": "^[A-Za-z0-9+/]+={0,2}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "algorithm",
+        "key_id",
+        "value_base64"
+      ],
+      "type": "object"
+    },
+    "signature_algorithm": {
+      "const": "RSASSA-PKCS1-v1_5-SHA256"
+    },
+    "signing_key_identity": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "target_policy_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "commit_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "path": {
+          "pattern": "^[a-zA-Z0-9_./-]+$",
+          "type": "string"
+        },
+        "repository": {
+          "const": "Miskatonic-System/miskatonic-review-authority"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repository",
+        "commit_sha",
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "tree_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "workflow_run_id": {
+      "minimum": 1,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "admission_route",
+    "risk_class",
+    "repository",
+    "pr_number",
+    "base_sha",
+    "head_sha",
+    "tree_sha",
+    "candidate_digest",
+    "authority_root_identity",
+    "authority_policy_identity",
+    "target_policy_identity",
+    "review_report_sha256",
+    "reviewer_identity",
+    "reviewer_independence_class",
+    "prior_verification_digest",
+    "review_packet_manifest_digest",
+    "authorization_principal",
+    "authorization_evidence_digest",
+    "authorization_decision",
+    "ci_qualification_state",
+    "limitations",
+    "decision",
+    "release_authorized",
+    "local_review_executed",
+    "created_at",
+    "workflow_run_id",
+    "check_run_id",
+    "signature_algorithm",
+    "signing_key_identity",
+    "receipt_digest",
+    "request_digest",
+    "evidence_digest",
+    "producer_approver_account_overlap",
+    "signature"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.11, pytest-8.4.2, pluggy-1.6.0
+rootdir: AUTHOR_WORKSPACE/worktrees/review-authority-risk-based-admission-00a
+configfile: pyproject.toml
+collected 59 items
+
+tests/test_research_admission.py ......................................s [ 66%]
+....................                                                     [100%]
+
+-------- generated xml file: VALIDATION_OUTPUT/portable-tests.xml --------
+======================== 58 passed, 1 skipped in 8.79s =========================

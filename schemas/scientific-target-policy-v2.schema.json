@@ -1,0 +1,186 @@
+{
+  "$id": "https://miskatonic.example/schemas/scientific-target-policy-v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allowed_modify_patterns": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "allowed_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "evidence_base_path": {
+      "type": "string"
+    },
+    "expected_base_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "expected_head_branch": {
+      "type": "string"
+    },
+    "expected_head_sha": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    },
+    "expected_pr_number": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "forbidden_modify_patterns": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "forbidden_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "independent_r2_review": {
+      "additionalProperties": false,
+      "properties": {
+        "historical_r1_review_is_not_r2_qualification": {
+          "const": true
+        },
+        "report_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "report_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "reviewed_head_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "reviewed_tree_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "reviewer_identity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scope": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "ACCEPT",
+            "ACCEPT_WITH_LIMITATIONS"
+          ]
+        }
+      },
+      "required": [
+        "historical_r1_review_is_not_r2_qualification",
+        "report_path",
+        "report_sha256",
+        "reviewed_head_sha",
+        "reviewed_tree_sha",
+        "reviewer_identity",
+        "scope",
+        "verdict"
+      ],
+      "type": "object"
+    },
+    "key_evidence_diff_files": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "lfs_expected_payloads": {
+      "additionalProperties": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "pinned_evidence_digests": {
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "certification_snapshot_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "execution_ledger_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "execution_result_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "review_authority_input_digest": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "scientific_registry_id": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review_authority_input_digest",
+        "scientific_registry_id",
+        "certification_snapshot_id",
+        "execution_ledger_digest",
+        "execution_result_digest"
+      ],
+      "type": "object"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "required_evidence_files": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "scientific-target-policy-v2"
+    },
+    "verification_profile": {
+      "enum": [
+        "causalis_b2_r1"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "policy_version",
+    "repository",
+    "expected_base_sha",
+    "expected_head_sha",
+    "expected_pr_number",
+    "expected_head_branch",
+    "allowed_paths",
+    "allowed_modify_patterns",
+    "forbidden_paths",
+    "forbidden_modify_patterns",
+    "evidence_base_path",
+    "required_evidence_files",
+    "pinned_evidence_digests"
+  ],
+  "title": "ScientificTargetPolicyV2Design",
+  "type": "object"
+}

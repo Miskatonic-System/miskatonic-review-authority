@@ -29,7 +29,7 @@ jobs:
           git init .
           git remote add origin "https://github.com/${{ github.repository }}.git"
           auth=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
-          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch --depth=1 origin "$TARGET_SHA"
+          git -c http.extraheader="AUTHORIZATION: basic $auth" fetch origin "$TARGET_SHA"
           git checkout --detach FETCH_HEAD
 
       - name: Record Python runtime

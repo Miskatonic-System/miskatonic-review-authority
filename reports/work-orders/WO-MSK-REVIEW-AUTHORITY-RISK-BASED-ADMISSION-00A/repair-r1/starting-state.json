@@ -1,0 +1,12 @@
+{
+  "scope": "BOUNDED_REPAIR_APPROVED_FOR_EXECUTION",
+  "release_authority": false,
+  "predecessor": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+  "authority_main": "a87e863173950c7f73072d1647780b3492ab0a43",
+  "target_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+  "target_tree": "a9d867a34ad21524a8f835774bca29ad33a8300d",
+  "pr35_draft_unmerged": true,
+  "pr156_draft_unmerged": true,
+  "starting_worktree_clean": true,
+  "independent_revise_report_sha256": "eb724f437e1b23ebab1f421b41f3265d922948509c99ac9a8c1a15ee5ec059cd"
+}

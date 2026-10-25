@@ -1,0 +1,505 @@
+{
+  "candidate": {
+    "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+    "candidate_digest": "c70a9d2add189ae490ebcb7bc2ae06ee13e966827d6e6c10d7d341c67d880621",
+    "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "pr_number": 156,
+    "repository": "Miskatonic-System/msk-ruliology",
+    "tree_sha": "a9d867a34ad21524a8f835774bca29ad33a8300d"
+  },
+  "classification_counts": {
+    "FULL_CONTENT_REVIEWED": 0,
+    "FULL_DIFF_REVIEWED": 27,
+    "HASH_BOUND_GENERATED_ARTIFACT": 26,
+    "LFS_PAYLOAD_IDENTITY_BOUND": 0
+  },
+  "completeness_proof": {
+    "all_paths_accounted_for": true,
+    "no_unclassified_paths": true,
+    "total_changed": 53,
+    "total_classified": 53
+  },
+  "files": [
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "d83ee56b1db77a623d530bfd5d235df9e54c24c4",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 6846,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "6930a8c71b376b083567f8ceabf3f6dce4b5c2e8",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 28449,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "a292a45282d47eb9525947a6f2bca53fefb6163e",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1340,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "d53cde64b857f12618894224b09b20789e054cf3",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_causal_semantics_classification.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 7521,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "86856a1454025c263e2d63df42ed565d8f0642b6",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_event_identity_contract.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 6490,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "f5188262265eb22200c5d0c7a74a71641bb99083",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 71406,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "3c2c04860af9ef5168556dbfed110f135277fcea",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 2762769,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "6c2fbe1751ea0cde4bf9ff0380a1fc1e9e69cbce",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 2693,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "6d075d50cc0cc21eff17f22d3dd475464799ad3e",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 44037,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "1b14caf2b87e84502b395d683ec54311f2b65d13",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 11618,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "81146c8571999b1cab929a47bd2df83825c843d6",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_signature_and_merge_erratum.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 2631,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "14103a036d8e7cd6fe20c5f228765f1181b778a2",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 126806,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "e443387a187c41350ede250e7a46dfe1b243d4ac",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/independent_b2_r1_review.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 16935,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "1c40ea765814aea11402da63d333b46a6b5d0b8d",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 8962,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "5d2c6b6bd1ddffba7f26c2e4d4d45b855e1fb753",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 13162,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "ecbc881c2cf834308e306ce9a0f97002dc59c82f",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_builder_check.log",
+      "scientific_payload_digest": null,
+      "size_bytes": 76,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "97c1eab0b730d3541b817acd5f42e177f4cfd163",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_failure_reproduction.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 908,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "13b7746f02c843e3aaeda3c20d4f015fd7b3898a",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_gate_status.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1212,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "cfef1fa92b1968c9dfee348e37bfde791e5027f3",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_hosted_ci_observation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1419,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "c575b2e67d5131537288a277d4132d4bec015194",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_independent_review.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 240,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "2298a2c0a6063b3f7942d78385257855b7f6a65d",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_negative_controls.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 21455,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "d6ebe42fcd0db334e6ba2a18d2d9e309effd3beb",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_preservation_verification.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 98945,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "4f55933b73b4b68862864a0bec72a955f5784fef",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_proposed_builder_resolution.patch",
+      "scientific_payload_digest": null,
+      "size_bytes": 901,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "125fcce8341237556cda478f5ba9a02af099b210",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_regression_receipt.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 144960,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "53d540c63ec2909103ed25d66173fd95604b2980",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_review_authority_binding.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 686,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "a9c6839529f7c8db9023ae4ce04334247c489d53",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_scientific_output_parity.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 2929,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "699d7c0a2549a60ebc667ac6e76c8aa27a33f56b",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_source_identity_contract.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 3431,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "48008426dd639105f4313a1e39c605116e792fdd",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/r2_starting_reconciliation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 3261,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/execution_01_stopped/wolfram-invocations.log",
+      "scientific_payload_digest": null,
+      "size_bytes": 0,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "5b65448026111e55d905b2843e0a9d9b16c973c9",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_check.log",
+      "scientific_payload_digest": null,
+      "size_bytes": 34,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "d7d2f442951cfac626d19498532682c07e311c36",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_builder_resolution_authorization.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 820,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "60e7a852c7a14e838733f73584bf1e61b625fdbd",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_changed_file_inventory.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 5510,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "617781347b9b9c8130ac5af19138c33c6976970a",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_failure_reproduction.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 3943,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "70408e394d20f799c5c8ff2fbbae98b8672c9a3c",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_gate_status.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1331,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "cfef1fa92b1968c9dfee348e37bfde791e5027f3",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_hosted_ci_observation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1419,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "028d761bee7e9b67ecc420e86a0d423fc8f1201d",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_independent_review.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 847,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "c0760d4ba5c103c87a5de35a7410a266ef1ea069",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_negative_controls.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 21466,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "e431ccff45f0028bf837793910ccca2f2fb01ceb",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_preservation_verification.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 99028,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "4f55933b73b4b68862864a0bec72a955f5784fef",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_proposed_builder_resolution.patch",
+      "scientific_payload_digest": null,
+      "size_bytes": 901,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "e24f1e39a1762c91251b84632a697ffe3d89a134",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_regression_receipt.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 6916,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "ddab2a3119c916d0ad681c4f8b97cba588404dd6",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_review_authority_binding.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 1327,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "3cf82662f247b557773dea3019abbe954b8b644b",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_scientific_output_parity.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 2684,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "8c9dc6aed4e3c60402e1e51d85ace43d45c91526",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identities.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 4856,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "b9372b3c85cc9dda7d48bcbe9f1bfd12fd479e61",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_source_identity_contract.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 3789,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "48008426dd639105f4313a1e39c605116e792fdd",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/r2_starting_reconciliation.json",
+      "scientific_payload_digest": null,
+      "size_bytes": 3261,
+      "status": "A"
+    },
+    {
+      "classification": "HASH_BOUND_GENERATED_ARTIFACT",
+      "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "lfs_oid": null,
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r2/wolfram-invocations.log",
+      "scientific_payload_digest": null,
+      "size_bytes": 0,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "d32cfa4b44517943dcb3c7d0177a6182d021d5c3",
+      "lfs_oid": null,
+      "path": "experiments/causalis-b2-exact-edge-reconciliation-00a-r1/build_r1_evidence.py",
+      "scientific_payload_digest": null,
+      "size_bytes": 39508,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "d83ee56b1db77a623d530bfd5d235df9e54c24c4",
+      "lfs_oid": null,
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R1_COMPLETION.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 6846,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "9721ec98999a12e473be09e8d767bff13f6da464",
+      "lfs_oid": null,
+      "path": "reports/WO-RULIOLOGY-CAUSALIS-B2-EXACT-EDGE-RECONCILIATION-00A-R2_COMPLETION.md",
+      "scientific_payload_digest": null,
+      "size_bytes": 1550,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "f5be0478d96078964360835e7f993544936dc353",
+      "lfs_oid": null,
+      "path": "src/msk_ruliology/causalis_b2_r1_edge_reconciliation.py",
+      "scientific_payload_digest": null,
+      "size_bytes": 65592,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "99755e134b518d9fbf0e6b7fa77bf9ba45443de9",
+      "lfs_oid": null,
+      "path": "src/msk_ruliology/causalis_b2_resource_causality.py",
+      "scientific_payload_digest": null,
+      "size_bytes": 23807,
+      "status": "M"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "0bee00687a7e369029481995ccdde6217a749a65",
+      "lfs_oid": null,
+      "path": "tests/test_causalis_b2_r1_edge_reconciliation.py",
+      "scientific_payload_digest": null,
+      "size_bytes": 23844,
+      "status": "A"
+    },
+    {
+      "classification": "FULL_DIFF_REVIEWED",
+      "git_blob_sha": "c12db71ef91c19afcf1c153b170045d955e9437d",
+      "lfs_oid": null,
+      "path": "tests/test_causalis_b2_resource_causality.py",
+      "scientific_payload_digest": null,
+      "size_bytes": 12569,
+      "status": "M"
+    }
+  ],
+  "independent_reconciliation": "Every row, Git status/blob, classification and complete source diff re-read against exact Git objects. Generated artifact identities are not semantic review.",
+  "manifest_digest": "ae4462ccbf84ffb352ba461e8896ae54a4a64ebad56ecf50483240158d14b41a",
+  "packet_digest": "d32ca839e13046d8f6ea075e95821553778c13c087229e8ef101adcafe0398e8",
+  "state": "VERIFIED"
+}

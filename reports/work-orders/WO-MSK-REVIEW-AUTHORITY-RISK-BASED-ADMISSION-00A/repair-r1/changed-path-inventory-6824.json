@@ -1,0 +1,484 @@
+{
+  "complete_pr": {
+    "base": "a87e863173950c7f73072d1647780b3492ab0a43",
+    "count": 68,
+    "paths": [
+      {
+        "git_blob": "5c00d40376fb28f65987fcc60f9c048ca12037ff",
+        "path": ".github/workflows/admit-research-evidence.yml",
+        "sha256": "0bc6a3f2fe69aaeba7ed197a8641f5ee3b001ce8e9f6f17bca62d8bf29f4cfae",
+        "status": "A"
+      },
+      {
+        "git_blob": "3fd7e93d5dc4297bc58e3d1dd6f056cc0f6d9eb1",
+        "path": ".github/workflows/authority-ci.yml",
+        "sha256": "0cccfdc088cc52556a9d72536e8382a4dee71fae10f6891970b3690763a809fd",
+        "status": "M"
+      },
+      {
+        "git_blob": "e7b218bb30137ba28b47a33783059acfafca09e3",
+        "path": "docs/research-admission-v1/activation-and-custody.md",
+        "sha256": "1ec407953575a60d02f464514cfd8d17530c9d7187e547eb56ce4f058e8890aa",
+        "status": "A"
+      },
+      {
+        "git_blob": "b1e728a8c4a68e928067349e9fb8846f6d567272",
+        "path": "docs/research-admission-v1/authority-policy-schema-compatibility.md",
+        "sha256": "17a6c05ceca0b824df86356cd7776095f228a6cababc8dc5968588cabf47ec31",
+        "status": "A"
+      },
+      {
+        "git_blob": "42523b1220fe90721051fab8a141c23b386bd76d",
+        "path": "docs/research-admission-v1/external-evidence-admission-contract.md",
+        "sha256": "e75c3b180f858c44f30392f574916f5a5c6245a823cc538464e769f8e4caf34c",
+        "status": "A"
+      },
+      {
+        "git_blob": "b8c16f9cd91381774cb3c02b37cfd51f1700ae74",
+        "path": "docs/research-admission-v1/failure-semantics.md",
+        "sha256": "209a1c8b06c992961197ab5aa36045d022780fb006c04cd29c9e5392574c63ec",
+        "status": "A"
+      },
+      {
+        "git_blob": "7973cee0ec6a3de312bd015ab6e571576ca68447",
+        "path": "docs/research-admission-v1/miskatonic-review-authority-threat-model.md",
+        "sha256": "99154525118dd95507b34433ea3f2f8d6a657cb296c6a66de35f31f1a5a91a86",
+        "status": "A"
+      },
+      {
+        "git_blob": "816b2106b53acd0eb594fda7be8391ef731a5a63",
+        "path": "docs/research-admission-v1/review-assurance-risk-classes.md",
+        "sha256": "b869367becb88f9d6e4fcc9574c096ee1f12451485f9b5a3edd6bf1d035145c5",
+        "status": "A"
+      },
+      {
+        "git_blob": "cb71384a67a46ba8967a0d763418af06b1f17cf5",
+        "path": "docs/research-admission-v1/reviewer-independence-demarcation.md",
+        "sha256": "8a2d285763465dad233473347da573013d9d81352a1d9ebca6381cc6b6bfeef9",
+        "status": "A"
+      },
+      {
+        "git_blob": "adf9d7aa987498996930afbb6560784981efea91",
+        "path": "policy/research-admission/causalis-b2-r2-v1.json",
+        "sha256": "9854428efe571e6e5ae47c8e2145d1c93c0993aa101222725bd8f45e5e317556",
+        "status": "A"
+      },
+      {
+        "git_blob": "b8c903f2fd6f0c3c2e38eba8008b3b073c8bf4de",
+        "path": "policy/research-admission/limitations-v1.json",
+        "sha256": "2cd6fb0a6f3e9f3dd190d99f29a4fefbb27f3ac4101d6abc84caee2385de6574",
+        "status": "A"
+      },
+      {
+        "git_blob": "f2cd27a98c53763dcd14d20772beff1871e8002a",
+        "path": "policy/research-admission/requirements-v1.txt",
+        "sha256": "cf524c8b0b7c184faf6ca54cb17dc9f3d1360e294a2c6af72b01a4665ec61881",
+        "status": "A"
+      },
+      {
+        "git_blob": "1b2d5e71a6b2f5006942270eb71d4ac77f629511",
+        "path": "pyproject.toml",
+        "sha256": "75ad5e2e90e6b1a01ce01586fe6157d639bd83d9365c04253c592eb6e1470a34",
+        "status": "M"
+      },
+      {
+        "git_blob": "aef275dee3322e356667b09cf402bc430063014b",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A_COMPLETION.md",
+        "sha256": "57c33cc175a264fb10150e45b0f8be5b4be743bba4cbceeb90842b53610864cb",
+        "status": "A"
+      },
+      {
+        "git_blob": "4714592a4b2a9d272e325f81ec9ba455cf7b709c",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/authorization-and-ratification-receipt.md",
+        "sha256": "829b47a55772e4a822973e7aacfa485f80ae4a2c4f9717628839be4bafdce014",
+        "status": "A"
+      },
+      {
+        "git_blob": "b98d7e93116b02dc99a45c2f7621f6f0ef7763bf",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/changed-path-coverage-verification.json",
+        "sha256": "36ca3a7d1fbb107b1e2078600a321255c44570a2df02f4ea76488854044a5d7e",
+        "status": "A"
+      },
+      {
+        "git_blob": "2c502fecf8f8cb6b7421590f61cd1fbd81199d1f",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/ci-authenticated-job-evidence.json",
+        "sha256": "4c0e202e28133127e93d5b75d6c2e43a79cf0a8827896815b22dbd7b707b9d29",
+        "status": "A"
+      },
+      {
+        "git_blob": "007d1f9034b675bcb97b64c512b56bee9ccfa2a8",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/ci-infrastructure-exception-assessment.json",
+        "sha256": "d23fe8bf47019f7354b71b95dd9ebec8c607588512d535d19e4094f5e83f9447",
+        "status": "A"
+      },
+      {
+        "git_blob": "bd63a930dbf2978df443384c9836e7721133b9f4",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/baseline.xml",
+        "sha256": "6e8e099616788abdee442b75c32497d5a07f5bc1cdca30daeb0d95809e99e818",
+        "status": "A"
+      },
+      {
+        "git_blob": "b6ebb411626d3edaae3e9885c9f533a6afb9b094",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/candidate-full.xml",
+        "sha256": "e28467f4ed441d2ba059a497ee13cd4c6f3d66ccef87e6b54a4506a3ead14d2a",
+        "status": "A"
+      },
+      {
+        "git_blob": "b887ea0ea9a658c3cdb9953449bf37f76eaf6868",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compensating-evidence.json",
+        "sha256": "5a0e3334af14f2626fb9a8eebfef6439b7c5dbe74afc58c14b070eb4c598ff21",
+        "status": "A"
+      },
+      {
+        "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compilation.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": "A"
+      },
+      {
+        "git_blob": "29b97862bd1d598da0d7704ed4a82be366912b72",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/focused-resumed.xml",
+        "sha256": "6eac67a658da6ed9301d070a5fe30286464c847f6b8aecc402378f5ace377e96",
+        "status": "A"
+      },
+      {
+        "git_blob": "6fdae25f2512217e76933f9d520c33fc06900865",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/format.log",
+        "sha256": "f114d83b30c5c657ee43a847a45bafccaea255d82673feb87c26d252c61e29c1",
+        "status": "A"
+      },
+      {
+        "git_blob": "1f5f344d054fae10f39140fb7199c99321d9190a",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/lint.log",
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "status": "A"
+      },
+      {
+        "git_blob": "630f611d626bb261fa1d624fac02aec019c8737b",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/exact-head-evidence-reconciliation.json",
+        "sha256": "0d7f81189cf46c7817ac9612a0963e9ca2ea4c8e53e0630d4ab9fee33060141f",
+        "status": "A"
+      },
+      {
+        "git_blob": "bab664a0c0008bc6659655e5c2170fca4363fa9e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/historical-preservation-verification.json",
+        "sha256": "ad1ee0471c695f285c18ddc3078f714b566f96961225342ace7939498785145b",
+        "status": "A"
+      },
+      {
+        "git_blob": "f8f5221316e63df84c86e6fd0c730d4a4bc5112e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/independent-review-packet.md",
+        "sha256": "e321a3eda6595fbdbca62c596d5580fd685fcb4de8e89770f628928e90cb9892",
+        "status": "A"
+      },
+      {
+        "git_blob": "50804b990ba9553e2fa523a4b687ac12933e88c8",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/negative-control-results.json",
+        "sha256": "6fa84d632a14e260c29452bf084d7392631d7e7459faffd857f39f971324f0cf",
+        "status": "A"
+      },
+      {
+        "git_blob": "cc38a3e01a6312e657c1d98d694b9194ee31f2db",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/new-schema-validation.json",
+        "sha256": "cc0f6ee36c02bdc0a2724f53eab9a0867e15db6662157f028f3f5c630635be9f",
+        "status": "A"
+      },
+      {
+        "git_blob": "e7d4a2803120be13f0e0a3308fb5c76c4e8891f7",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/prior-verification.json",
+        "sha256": "35bc7443ffea68589bc4a6ce076ec3dd9217f909adfde1453f2e27bea2a68af0",
+        "status": "A"
+      },
+      {
+        "git_blob": "aa5181f89a89fb8b288c26422dcbddadbdb00376",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/production-dependency-identities.json",
+        "sha256": "73874807018c3940c7891da5366170a36d748e986d936f9b3140675915e1a005",
+        "status": "A"
+      },
+      {
+        "git_blob": "31b7b1f71982dc4172aeb5cb14440b739a912de3",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/regression-and-compatibility-results.json",
+        "sha256": "81b223db297e9b14b0301a97c0464a68c9a7f4b8b1e6c467790a5211697c8a26",
+        "status": "A"
+      },
+      {
+        "git_blob": "71d56386a34d45a5d5b1bd2ad2804736f5a8c14f",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/actionlint-tool-identity.json",
+        "sha256": "62e4c5bcc715679eb3e6ea4ab5f874c222da38aa0582faabce038d924d09ea69",
+        "status": "A"
+      },
+      {
+        "git_blob": "f0909cdbe68ea4dc3bb36dea5bc18c383cf71f08",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-review.md",
+        "sha256": "eb724f437e1b23ebab1f421b41f3265d922948509c99ac9a8c1a15ee5ec059cd",
+        "status": "A"
+      },
+      {
+        "git_blob": "f22bc825ff0d1cd86c5250095ae50e1cf8da5525",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-validation.json",
+        "sha256": "35eb194275030565cf1a267bc3e167bce4562d5f2fce6e5ed934dacbd926e076",
+        "status": "A"
+      },
+      {
+        "git_blob": "477bec6e9b3b8b26c59525a40980f3ca0dde1fd6",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/repair-rationale.md",
+        "sha256": "ad30c2c408fd01492ecf67333b09ed8360a563492ff5551f64c1b1d4f52f4041",
+        "status": "A"
+      },
+      {
+        "git_blob": "92c69478cba3f8e88781047d9b9f7e63950ed05e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/starting-state.json",
+        "sha256": "6e3ff895d13da4e70d3af6d268c54a7d764bf9b9868b1f3f9fc218c5668e6de3",
+        "status": "A"
+      },
+      {
+        "git_blob": "af4105b6dd9d6b1e32f9e2182e9db7adb0a41d0e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/security-and-credential-exposure-audit.json",
+        "sha256": "37eea8adc8b912ac181c99ad475a31f6b2bdb98d31296ed2b449a3030dcd1471",
+        "status": "A"
+      },
+      {
+        "git_blob": "b9079f8ba240f8832da60d4dc47c58ab385e8991",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/security-and-credential-exposure-audit.md",
+        "sha256": "cddaa2864e4a8c1b6788cf403c10b63db2ce6174bc952ede5b4d8f17a1460101",
+        "status": "A"
+      },
+      {
+        "git_blob": "79ff14febfca1755fcec5cf4d1e86f36fca8c602",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/starting-github-evidence.json",
+        "sha256": "138818a6ef7fbe8bdce118c2d12abaa79d7336274a42f58754d45cf66375adf8",
+        "status": "A"
+      },
+      {
+        "git_blob": "f1f05d259b5583bd5d24d3099d982a9a47288b4e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/starting-state-reconciliation.json",
+        "sha256": "69631590334b3e81a2e60aa1fbf09e15662c66e4c6edb6a9869ec3b80ff70ed8",
+        "status": "A"
+      },
+      {
+        "git_blob": "a16a4eeb70dd4fec78b69c3c2404a1abb4ace964",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/unratified-execution-rejection.json",
+        "sha256": "e73efc266652643199966184ae3967586206ee6a21a11aa857db4f51a723e9e9",
+        "status": "A"
+      },
+      {
+        "git_blob": "8cd81bce4eed1613e5e6c826c31d6bb6ae01bd91",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.log",
+        "sha256": "560a4a3b1632995a640955e160a7f4f7b93c51b016aa350fe88c4e9190c5da8f",
+        "status": "A"
+      },
+      {
+        "git_blob": "2c87048f14300531ddbea092c775ae61f385b86d",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-baseline.xml",
+        "sha256": "05ed8a50d35e6a6c4936a53891781587e99815d0814679c30520b3ddb9f64cb7",
+        "status": "A"
+      },
+      {
+        "git_blob": "7b4ffb393b3d71b4193856e33611488d5f845de5",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.log",
+        "sha256": "bff56aca1af8252496a5b5bb091659cf998bfe9639a33340cfe467a0f114a22a",
+        "status": "A"
+      },
+      {
+        "git_blob": "e578fe5d1aac3ee0d3fd878f94782c119e33caa4",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/authority-full.xml",
+        "sha256": "af541a1b0e4c71d7263b01bfb95d2f16f00f9606698279087f54fad7d2a65363",
+        "status": "A"
+      },
+      {
+        "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/compilation.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": "A"
+      },
+      {
+        "git_blob": "ddcd0f8f66f25c19eeacd57ec4dac96669cf18f2",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/format.log",
+        "sha256": "177f260a5645724013185e4b140c7045cc39e56c0c97b120f5cb23599f85f0de",
+        "status": "A"
+      },
+      {
+        "git_blob": "1f5f344d054fae10f39140fb7199c99321d9190a",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/lint.log",
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+        "status": "A"
+      },
+      {
+        "git_blob": "9f4f9f0d6e198cd45ab5d11bb5620d3dddb62d29",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.log",
+        "sha256": "0112f4f61d986ff176c59913af3a9ea24372df633fdf4f506b537544403684f3",
+        "status": "A"
+      },
+      {
+        "git_blob": "d89c63f3965f276fd7a75b5f1b8c988dbac6519f",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/portable-tests.xml",
+        "sha256": "44dd0a199f9c3b6d39dc47f046f6df4230a2336a357564cac9f15261c6a6cf29",
+        "status": "A"
+      },
+      {
+        "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/wolfram-invocations.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status": "A"
+      },
+      {
+        "git_blob": "6634238d093265eb825d40de85defec52d80a9ae",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/validation/workflow-audit.log",
+        "sha256": "d645c5a59ab56a24ad458d3b9233cc70ba80f69e0f8b9b7744027fbcc6c0b55f",
+        "status": "A"
+      },
+      {
+        "git_blob": "6187aeaf00fefe49e695f65801925a1dc052bdd5",
+        "path": "roots/research-admission-authority-v1.json",
+        "sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163",
+        "status": "A"
+      },
+      {
+        "git_blob": "6b565707101358b14498e335d09110d7893f645a",
+        "path": "schemas/research-admission-authority-root-v1.schema.json",
+        "sha256": "3aed65aa1c04c7ac2e4904d13d5e43629235fbfd66375fb0a3e86ea8bfb974e8",
+        "status": "A"
+      },
+      {
+        "git_blob": "2f406e6770c38f8640adce90576ff38707d30035",
+        "path": "schemas/research-admission-policy-v1.schema.json",
+        "sha256": "eded889d312359c14e2ba30b2f3008e531c5dc7614f97fcd9ec8b46952e0b9cd",
+        "status": "A"
+      },
+      {
+        "git_blob": "ece95ee7aed41316b7ee66525630bb6957cad2c6",
+        "path": "schemas/research-admission-receipt-v1.schema.json",
+        "sha256": "cc17ead7641c53be4a11c7a12c9dd8aa74315093b8636b3b927f549686b3aaa4",
+        "status": "A"
+      },
+      {
+        "git_blob": "64eb1343c19dc1670d31c79ec00222f4965e9495",
+        "path": "schemas/research-admission-request-v1.schema.json",
+        "sha256": "e89d6afa463b254e8fb9ec75aa8397eced73609f91fe6d53ca2ab93c8f94cb52",
+        "status": "A"
+      },
+      {
+        "git_blob": "e5caf2822029e9b9f3f6535fd707dfb07940f099",
+        "path": "schemas/research-authority-ratification-v1.schema.json",
+        "sha256": "e5b389a8fe248b325f15077c965b9e0f9b72b4ea38a52005e5359cdd66da57d5",
+        "status": "A"
+      },
+      {
+        "git_blob": "499411520cec743ccbf2f73b9b80c1003709eb10",
+        "path": "schemas/research-human-authorization-v1.schema.json",
+        "sha256": "ae392293c4a9bdf48b56d612e37b33fd363afa0218e65a1ef423d6aa32987609",
+        "status": "A"
+      },
+      {
+        "git_blob": "ba52bad6497cc53a033323106e51cc9bd513817d",
+        "path": "schemas/scientific-target-policy-v2.schema.json",
+        "sha256": "1ac65805ca9dfa2564331ab6e788c2788a7e69832bd8d784a8929c9ddf988ef8",
+        "status": "A"
+      },
+      {
+        "git_blob": "a25b5cffa6b9a85fc2eafbd5cf1302b4e167ea2e",
+        "path": "scripts/build_research_admission_root.py",
+        "sha256": "fcfb26803f342dacdddf4a02539c92eee9c022079661f7b12cf17d322285656b",
+        "status": "A"
+      },
+      {
+        "git_blob": "e4cde07c84ee26f8aa64930ea7c9589325c219e5",
+        "path": "src/miskatonic_review_authority/cli.py",
+        "sha256": "e64a2b94b585765adceb4388dab1c73a9a03394156950b8738d2d4ff80f06d44",
+        "status": "M"
+      },
+      {
+        "git_blob": "32a2284fb922fc17aaad18ef8d7297bf607db369",
+        "path": "src/miskatonic_review_authority/research_admission.py",
+        "sha256": "068a8a8dbdfe0a7e2b878cb5a4e77a1c1cdb630b27caa38f9c88990f255ee54d",
+        "status": "A"
+      },
+      {
+        "git_blob": "7b4e9198d1d86b18b31c1f1d62ab112fdbf8dfb6",
+        "path": "src/miskatonic_review_authority/research_admission_github.py",
+        "sha256": "83bf31d76cbec6727a52e859567c2b8b9a15a6d6c440cb278c4b7c3740d702a8",
+        "status": "A"
+      },
+      {
+        "git_blob": "17ea2ada380e394e403f3271e7a4d2a8a23eab54",
+        "path": "tests/test_research_admission.py",
+        "sha256": "76b425efaaf8f6e7e3d8bcd4c10bb77b247b675b46b76ad725e92e0d24536ee4",
+        "status": "A"
+      },
+      {
+        "git_blob": "9e47ceef720bb2ab6de1cc306a695aadfa940155",
+        "path": "tests/test_research_admission_workflows.py",
+        "sha256": "3fd46f7252d65e75a45375fa67b44f9a573fae75139a2297f50f6ff22d20fa84",
+        "status": "A"
+      }
+    ]
+  },
+  "head": "6824f17d0fc39e8b20f6ec3b48912bb446dadb4c",
+  "repair_only": {
+    "base": "55ccdde031957e6fa68cdab97327f056a2ac50fa",
+    "count": 10,
+    "paths": [
+      {
+        "git_blob": "5c00d40376fb28f65987fcc60f9c048ca12037ff",
+        "path": ".github/workflows/admit-research-evidence.yml",
+        "sha256": "0bc6a3f2fe69aaeba7ed197a8641f5ee3b001ce8e9f6f17bca62d8bf29f4cfae",
+        "status": "M"
+      },
+      {
+        "git_blob": "1b2d5e71a6b2f5006942270eb71d4ac77f629511",
+        "path": "pyproject.toml",
+        "sha256": "75ad5e2e90e6b1a01ce01586fe6157d639bd83d9365c04253c592eb6e1470a34",
+        "status": "M"
+      },
+      {
+        "git_blob": "71d56386a34d45a5d5b1bd2ad2804736f5a8c14f",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/actionlint-tool-identity.json",
+        "sha256": "62e4c5bcc715679eb3e6ea4ab5f874c222da38aa0582faabce038d924d09ea69",
+        "status": "A"
+      },
+      {
+        "git_blob": "f0909cdbe68ea4dc3bb36dea5bc18c383cf71f08",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-review.md",
+        "sha256": "eb724f437e1b23ebab1f421b41f3265d922948509c99ac9a8c1a15ee5ec059cd",
+        "status": "A"
+      },
+      {
+        "git_blob": "f22bc825ff0d1cd86c5250095ae50e1cf8da5525",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/rejected-55ccdde0-validation.json",
+        "sha256": "35eb194275030565cf1a267bc3e167bce4562d5f2fce6e5ed934dacbd926e076",
+        "status": "A"
+      },
+      {
+        "git_blob": "477bec6e9b3b8b26c59525a40980f3ca0dde1fd6",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/repair-rationale.md",
+        "sha256": "ad30c2c408fd01492ecf67333b09ed8360a563492ff5551f64c1b1d4f52f4041",
+        "status": "A"
+      },
+      {
+        "git_blob": "92c69478cba3f8e88781047d9b9f7e63950ed05e",
+        "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/repair-r1/starting-state.json",
+        "sha256": "6e3ff895d13da4e70d3af6d268c54a7d764bf9b9868b1f3f9fc218c5668e6de3",
+        "status": "A"
+      },
+      {
+        "git_blob": "6187aeaf00fefe49e695f65801925a1dc052bdd5",
+        "path": "roots/research-admission-authority-v1.json",
+        "sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163",
+        "status": "M"
+      },
+      {
+        "git_blob": "17ea2ada380e394e403f3271e7a4d2a8a23eab54",
+        "path": "tests/test_research_admission.py",
+        "sha256": "76b425efaaf8f6e7e3d8bcd4c10bb77b247b675b46b76ad725e92e0d24536ee4",
+        "status": "M"
+      },
+      {
+        "git_blob": "9e47ceef720bb2ab6de1cc306a695aadfa940155",
+        "path": "tests/test_research_admission_workflows.py",
+        "sha256": "3fd46f7252d65e75a45375fa67b44f9a573fae75139a2297f50f6ff22d20fa84",
+        "status": "A"
+      }
+    ]
+  },
+  "tree": "6fa36bb27213b93aa5bbee793ba7c1e7affc0cbf"
+}

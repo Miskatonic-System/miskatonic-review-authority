@@ -1,0 +1,86 @@
+{
+  "admission_route": "EXTERNAL_EVIDENCE_ADMISSION_V1",
+  "approval_identity": null,
+  "approval_state": "MUST_BE_RESOLVED_FROM_AUTHENTICATED_PROTECTED_REVIEW",
+  "approval_timestamp": null,
+  "authorization_principal": {
+    "github_id": 267743825,
+    "github_login": "kowen9024AI",
+    "github_type": "User"
+  },
+  "candidate": {
+    "base_sha": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+    "candidate_digest": "c70a9d2add189ae490ebcb7bc2ae06ee13e966827d6e6c10d7d341c67d880621",
+    "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+    "pr_number": 156,
+    "repository": "Miskatonic-System/msk-ruliology",
+    "tree_sha": "a9d867a34ad21524a8f835774bca29ad33a8300d"
+  },
+  "ci_qualification_state": "HOSTED_CI_INFRASTRUCTURE_UNAVAILABLE_WITH_COMPENSATING_EVIDENCE",
+  "ci_runs": [
+    {
+      "id": 40127087396,
+      "name": "Test"
+    },
+    {
+      "id": 40127087410,
+      "name": "Lint"
+    },
+    {
+      "id": 40127087284,
+      "name": "Schema Validation"
+    }
+  ],
+  "compensating_evidence_path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-RISK-BASED-ADMISSION-00A/compensating-evidence/compensating-evidence.json",
+  "compensating_evidence_sha256": "5a0e3334af14f2626fb9a8eebfef6439b7c5dbe74afc58c14b070eb4c598ff21",
+  "eligibility_rationale": "Exact finite research candidate with preserved evidence, deterministic prior PASS and an immutable disclosed external review; no production authority, deployment or private-key operation is delegated to the scientific repository. Every other case remains ineligible.",
+  "expected_app_id": 4497300,
+  "expected_packet_counts": {
+    "FULL_CONTENT_REVIEWED": 0,
+    "FULL_DIFF_REVIEWED": 27,
+    "HASH_BOUND_GENERATED_ARTIFACT": 26,
+    "LFS_PAYLOAD_IDENTITY_BOUND": 0
+  },
+  "expires_at": "2026-11-07T23:59:59Z",
+  "limitations": [
+    "DISTINCT_AGENT_REPORTED",
+    "SHARED_PROVIDER",
+    "SHARED_FILESYSTEM",
+    "NO_OS_ISOLATED_REVIEW",
+    "NO_SIGNED_REVIEWER_VERDICT",
+    "HUMAN_RISK_ACCEPTANCE_NOT_SCIENTIFIC_REVIEW",
+    "APPROVER_PRODUCER_TRANSPORT_OVERLAP_DISCLOSED",
+    "GENERATED_ARTIFACTS_HASH_BOUND_NOT_FULLY_REVIEWED",
+    "FINITE_COHORT_ONLY",
+    "MODEL_REPRODUCED_NOT_PROVEN",
+    "NO_GENERAL_SERIALIZABILITY_THEOREM",
+    "HOSTED_CI_NOT_PASS",
+    "LEGACY_TARGET_SCHEMA_INCOMPATIBLE",
+    "RELEASE_AND_MERGE_SEPARATE"
+  ],
+  "policy_authority": "github-app:miskatonic-review-authority",
+  "policy_id": "causalis-b2-r2-pr156-only",
+  "policy_version": "1.0.0",
+  "predecessor_authority_commit": "a87e863173950c7f73072d1647780b3492ab0a43",
+  "producer_binding_sha256": "1473696b5d84cf9bb593d846bc8a8604d5515e1b9906cd9b127cf826551a36e2",
+  "producer_bindings_path": "policy/trusted-producers.json",
+  "producer_transport_identity": {
+    "evidence_class": "REPORTED_AND_PR_OWNER_ACCOUNT_CORROBORATED",
+    "github_id": 267743825,
+    "github_login": "kowen9024AI"
+  },
+  "review_report_path": "reviews/msk-ruliology-causalis-b2-r2-089cec23.md",
+  "review_report_sha256": "afe7911a3f32271faf02221e34fd5ad730a1bd6dee73787c04fe65db226e9c22",
+  "review_verdict": "ACCEPT_WITH_LIMITATIONS",
+  "reviewer_identity": "reported-agent:r2_independent_review:openai-codex",
+  "reviewer_independence": "DISTINCT_AGENT_SHARED_PROVIDER_AND_FILESYSTEM",
+  "revoked": false,
+  "risk_acceptance_required": true,
+  "risk_class": "R1_EXPERIMENTAL_RESEARCH",
+  "schema_version": "research-admission-exception-v1",
+  "scope": "NON_PRODUCTION_RESEARCH",
+  "single_use": true,
+  "status": "PROPOSED_UNTIL_AUTHENTICATED_RATIFICATION",
+  "target_policy_path": "policy/targets/msk-ruliology-causalis-b2-r1-v2.json",
+  "target_policy_sha256": "baeda24b30f23712b146ce383f7159485c8359487542ed2bd34c3a40e9d95b34"
+}

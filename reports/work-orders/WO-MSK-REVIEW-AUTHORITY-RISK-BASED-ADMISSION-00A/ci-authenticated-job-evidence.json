@@ -1,0 +1,205 @@
+[
+  {
+    "jobs": [
+      {
+        "annotations": [
+          {
+            "annotation_level": "failure",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          },
+          {
+            "annotation_level": "notice",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          }
+        ],
+        "job": {
+          "check_run_url": "https://api.github.com/repos/Miskatonic-System/msk-ruliology/check-runs/120970719691",
+          "completed_at": "2026-10-24T19:50:12Z",
+          "conclusion": "failure",
+          "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+          "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087396/job/120970719691",
+          "id": 120970719691,
+          "name": "test (3.12)",
+          "run_id": 40127087396,
+          "started_at": "2026-10-24T19:50:09Z",
+          "status": "completed",
+          "steps": []
+        }
+      },
+      {
+        "annotations": [
+          {
+            "annotation_level": "failure",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          },
+          {
+            "annotation_level": "notice",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          }
+        ],
+        "job": {
+          "check_run_url": "https://api.github.com/repos/Miskatonic-System/msk-ruliology/check-runs/120970720137",
+          "completed_at": "2026-10-24T19:50:12Z",
+          "conclusion": "failure",
+          "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+          "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087396/job/120970720137",
+          "id": 120970720137,
+          "name": "test (3.11)",
+          "run_id": 40127087396,
+          "started_at": "2026-10-24T19:50:09Z",
+          "status": "completed",
+          "steps": []
+        }
+      }
+    ],
+    "run": {
+      "conclusion": "failure",
+      "event": "pull_request",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087396",
+      "id": 40127087396,
+      "name": "Test",
+      "status": "completed"
+    }
+  },
+  {
+    "jobs": [
+      {
+        "annotations": [
+          {
+            "annotation_level": "failure",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          },
+          {
+            "annotation_level": "notice",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          }
+        ],
+        "job": {
+          "check_run_url": "https://api.github.com/repos/Miskatonic-System/msk-ruliology/check-runs/120970719946",
+          "completed_at": "2026-10-24T19:50:11Z",
+          "conclusion": "failure",
+          "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+          "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087410/job/120970719946",
+          "id": 120970719946,
+          "name": "lint",
+          "run_id": 40127087410,
+          "started_at": "2026-10-24T19:50:09Z",
+          "status": "completed",
+          "steps": []
+        }
+      }
+    ],
+    "run": {
+      "conclusion": "failure",
+      "event": "pull_request",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087410",
+      "id": 40127087410,
+      "name": "Lint",
+      "status": "completed"
+    }
+  },
+  {
+    "jobs": [
+      {
+        "annotations": [
+          {
+            "annotation_level": "failure",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          },
+          {
+            "annotation_level": "notice",
+            "blob_href": "https://github.com/Miskatonic-System/msk-ruliology/blob/089cec23afe6c15df9d7f085f4a0e3c298bd776a/.github",
+            "end_column": null,
+            "end_line": 1,
+            "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+            "path": ".github",
+            "raw_details": "",
+            "start_column": null,
+            "start_line": 1,
+            "title": ""
+          }
+        ],
+        "job": {
+          "check_run_url": "https://api.github.com/repos/Miskatonic-System/msk-ruliology/check-runs/120970719460",
+          "completed_at": "2026-10-24T19:50:11Z",
+          "conclusion": "failure",
+          "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+          "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087284/job/120970719460",
+          "id": 120970719460,
+          "name": "validate-schemas",
+          "run_id": 40127087284,
+          "started_at": "2026-10-24T19:50:09Z",
+          "status": "completed",
+          "steps": []
+        }
+      }
+    ],
+    "run": {
+      "conclusion": "failure",
+      "event": "pull_request",
+      "head_sha": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+      "html_url": "https://github.com/Miskatonic-System/msk-ruliology/actions/runs/40127087284",
+      "id": 40127087284,
+      "name": "Schema Validation",
+      "status": "completed"
+    }
+  }
+]
