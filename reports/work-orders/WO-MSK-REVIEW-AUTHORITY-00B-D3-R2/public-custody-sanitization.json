@@ -1,0 +1,73 @@
+{
+  "no_reported_test_result_changed": true,
+  "public_test_output_transformations": [
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/baseline-full.log",
+      "public_copy_sha256": "ddee38f2eca1ad4bc240973ed6d8a724b0c007080d153eb353c9ef1bfed4e49d",
+      "raw_retained_sha256": "95aeb2c25dc88ac9e4e633f784393aad664d3b0d73654dfe84b26689a48b6679",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/baseline-full.xml",
+      "public_copy_sha256": "bdf286b7cf465dd16f0ec93defd94b50bf286dfe0ab27b9143985f813eec06b6",
+      "raw_retained_sha256": "f3b2bfaeed2bb5cde84e32da2bd85466b38eccf5373a12642b1c26c5bd785aeb",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-first.log",
+      "public_copy_sha256": "85c05ef21e2baa7b194826f35c14ca02c91fcba5f9323da2bd6b5140cc454337",
+      "raw_retained_sha256": "6caa0a3da5e7db7b7cd926480a05bf100b06db3eccce2b279bae059257776d58",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-first.xml",
+      "public_copy_sha256": "b32a694e9082d325894d89c60bbe7e695d85ffe9d6b2ee6ed5471b45c0326bd6",
+      "raw_retained_sha256": "6ef44d7b8a044e1dac42d9bf72c5396f1093a823db6a31de1f79f42695555aec",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-after-fixture-fix.log",
+      "public_copy_sha256": "59c893890eb02435e9413a3c89e65d786a65ab704efba7ff3096ac58508c4fd4",
+      "raw_retained_sha256": "4657d3279d7b91468549d08b7eac995d92283e8f4e94739e7f9cbee20ddf89f1",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-after-fixture-fix.xml",
+      "public_copy_sha256": "eac991511c417f39d3fc4d521a31eeb6d6427e849cfd86fb725e3c6f5bb491c0",
+      "raw_retained_sha256": "a883130a3b4eaff24356e4b8a1b58aa6eb7e32a1fc26782f3178f32442fa5638",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-first-full.log",
+      "public_copy_sha256": "964b0147a72733557eed51a4e6cdc1e1a5a6daa31400c2355befcacc4d2aa369",
+      "raw_retained_sha256": "d278ebafc99046538e7995365a85ff9cdaff8475428272a567b63d38e004a091",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-first-full.xml",
+      "public_copy_sha256": "0c0c94f42a531d2abc3fe4abf958929d3b114acea77eb4d9beade6988d01e0cd",
+      "raw_retained_sha256": "33723cd13181f715aa65abfef103e47da2d1422407ed40d6561b59fd188e44f5",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-admission.log",
+      "public_copy_sha256": "526d84adb5904fad9dcbb60213dcdead76b24389dc5c122ec6f43eb706d57980",
+      "raw_retained_sha256": "fbba2e74029862b4125191aba8110e48ea7aff8a711e19525b89d05969ec487b",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-admission.xml",
+      "public_copy_sha256": "0a37e8caedbf6d7c52eb62eb114f2f83177d4cdbe08f8a1edd8c8534041d4d19",
+      "raw_retained_sha256": "793b7791262586117fc1dfd30462e97ced4b47e666888ca1b195094b53af4075",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/static-checks.log",
+      "public_copy_sha256": "8b195b602a252799d1199adeb18ce74c87b80b85a1842292aa3e6d84efcf57cf",
+      "raw_retained_sha256": "8b195b602a252799d1199adeb18ce74c87b80b85a1842292aa3e6d84efcf57cf",
+      "transformation": "Remove JUnit hostname attributes; redact personal workspace/temp roots. Preserve results and first-failure diagnostics."
+    }
+  ],
+  "raw_evidence_preserved_outside_public_repository": true,
+  "raw_hostnames_or_private_workspace_paths_published": false
+}

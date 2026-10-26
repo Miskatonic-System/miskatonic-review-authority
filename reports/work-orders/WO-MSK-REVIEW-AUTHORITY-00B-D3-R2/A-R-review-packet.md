@@ -1,0 +1,26 @@
+# WO-MSK-REVIEW-AUTHORITY-00B-D3-R2 — review-stage A–R packet
+
+Disposition: **DIAGNOSTIC_REPAIR_INSTRUMENTATION_ONLY**. This committed packet records implementation validation. The complete final HEAD/tree, frozen-head rerun and independent verdict are published as immutable PR custody so the report does not claim its own self-referential commit identity.
+
+| Item | Evidence and status |
+|---|---|
+| A — Starting identities | Canonical authority65a9b4a57ed2f84a4a75ea7e30b8ff64d2af51c8/tree47a4ab0aeb51a9f70da0accd01689fb19f8a8cc1 and target089cec23afe6c15df9d7f085f4a0e3c298bd776a/treea9d867a34ad21524a8f835774bca29ad33a8300d matched origin before editing. |
+| B — Historical failures | diagnosis.json binds actual runs40265776575 and40367852203, exact log digests, credential issuance/revocation, empty prior protected comment and absence of signed admission/check/ledger. |
+| C — Operation/root cause | Historical failing operation and root cause remain undetermined because the original code collapsed fetch and checkout errors. Fake transports isolate known stages; controlled real Git is local only. No network/authentication root cause is asserted. |
+| D — Source behavior | Git init, fetch, checkout, object verification, installation-scope and evidence-reconciliation causes use existing failure_cause_code; public failure decision/schema remain compatible and fail closed.300-second subprocess bounds, commit/tree/HEAD checks and suppressed credential-bearing exception chains added. |
+| E — Reproduction | negative-control-matrix.json and18 new cases cover success, missing objects, fetch/checkout failures, auth rejection, unavailable Git, timeout, malformed responses, insufficient scope, cleanup and secret sentinels; no target code or live authority key used. |
+| F — First outcomes | First new harness run16failed/2passed is retained; variable-shadowing fixture defect corrected, then18passed. Baseline first full197passed, candidate first full215passed; no silent rerun-to-pass. |
+| G — Focused regression | Existing admission/negative-authorization/credential and workflow tests plus new cases:88passed; full215passed retains all197 baseline test IDs. |
+| H — Static validation | Root builder --check, strict root/policy/schema definitions, actionlint, workflow action audit, changed-code lint/format and compilation pass. Legacy target-policy V1 schema incompatibility remains disclosed. |
+| I — Preservation |53 target paths account for27 full-diff-reviewed and26 hash-bound generated;207 predecessor paths and8 frozen R1 JSON outputs unchanged. Original R1 ancestry and S11 Git source hash retained; no new scientific campaign or Wolfram calls. |
+| J — Credential exposure | Only constant enums serialized. Subprocess text, credentials, headers, HTTP bodies, key contents and process environments excluded; sentinel checks inspect serialized decisions, messages, formatted traces and captured output. Public test copies redact host/workspace metadata while raw originals/digests remain retained. |
+| K — Authority objects | Only backend implementation-object hashes change in proposed research root; original root bytes retained in predecessor-research-admission-root.json. Policy, all schemas, workflows, signer and Local Review V2.1 are unchanged. |
+| L — Governance dependencies | R2_SECURITY_OR_AUTHORITY_CHANGE; new root/tree invalidates reuse of old human ratification6407727704 for this repair. No route activation or source update on canonical main. See governance-impact.json. |
+| M — Scientific limits | Frozen48exact/8divergent findings remain finite-cohort only: R004,R014,R018,R020,R021,R022,R030,R047. MODEL_REPRODUCED is not proven Wolfram behavior; finite topological replay is not a general serializability theorem. |
+| N — Independent review | Pending final complete-head independent technical review; full report and exact digest will be published on the Draft PR without changing the reviewed candidate. Separate-agent/shared-provider/filesystem limits must be disclosed. No self-approval. |
+| O — Hosted CI | No admission workflow dispatch is permitted. Ordinary Draft-PR validation may run; its actual result must be recorded separately. Local suite success is not hosted CI or institutional approval. |
+| P — Release boundaries | No authority merge, new ratification, protected approval, genuine receipt signature, authenticated admission check or target PR156 merge. PR156 stays draft/unmerged at its frozen head. |
+| Q — Remaining limitations | Instrumentation does not recover historical suppressed stderr or prove a transport root cause. Existing target CI infrastructure and legacy schema limitations, shared review environment and inherited F3 test debt remain disclosed. |
+| R — Continuation | Obtain final exact-head independent acceptance, then separately authorized authority integration/root ratification qualification. Only after that may another controlled diagnostic run be considered. No protected approval is requested here. |
+
+Original canonical policy expiry remains2026-11-07T23:59:59Z. Admission and target release remain separate. The original complete work order governs this proposal; this packet is not a signed admission or authorization receipt.

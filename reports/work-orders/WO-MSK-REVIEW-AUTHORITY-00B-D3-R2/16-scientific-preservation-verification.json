@@ -1,0 +1,65 @@
+{
+  "all_byte_identical": true,
+  "all_eight_unchanged": true,
+  "authority_worktree_clean": true,
+  "base": "d90892e3c2fdd66f2ffb13b17f7302b8689a9ced",
+  "builder_executed": false,
+  "existing_classifications": {
+    "divergent": 8,
+    "exact": 48
+  },
+  "frozen_r1_outputs": [
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_aggregate_metric_reconciliation.json",
+      "sha256": "eb45d41ac5ff59cb930025ef6435b437eabdd637e207e78f5bf99b8e75c72577"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_canonical_predecessor.json",
+      "sha256": "8d5ed0fd0bad00dbb72f99c1b8a1e692a63279bcb61e58343f0e9d58039e76a4"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+      "sha256": "e180f811030395eed72521873ff03600a06c85ee1ef91675f2261453d1f8d3a4"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_mismatch_witnesses.json",
+      "sha256": "58b0717e014fc9fc98fd553017f63e3f9c3c39e2023f1f5fa5e30e4361f3bf4f"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_negative_controls.json",
+      "sha256": "02e6496f52c998dfadca914d7cb7d76aeecdf7126d083ac8d4ba3bdddb9b1dd5"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_positive_parity_controls.json",
+      "sha256": "0621ddea41e3babfdd45bcbf11592d5dde4b5eeb8010c60ab84bd1b01b79e68a"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_scientific_claim_supersession.json",
+      "sha256": "5b0e974bd4aa0a0357961ba249a255a1e51f8f60bf5942cb2c2a85575274bdc1"
+    },
+    {
+      "path": "artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_wolfram_edge_relation_audit.json",
+      "sha256": "a3ec9c3f76f11b99113969314370fec6304dd64e8f0e4f7989e5f11214f8c782"
+    }
+  ],
+  "historical_s11_source": {
+    "git_ref": "34c8c2d3a8f52a674e71e770b7a29d621fc8fb8b:src/msk_ruliology/causalis_b2_resource_causality.py",
+    "sha256": "3f5e9e1b5f9dbae14e32364bb5963e350d66ba60509b2c631b0ec122888ca3b3"
+  },
+  "local_review_v2_1_and_cloud_history_unchanged": true,
+  "new_numerical_campaign": false,
+  "new_wolfram_calls": 0,
+  "original_r1_ancestor": "34c8c2d3a8f52a674e71e770b7a29d621fc8fb8b",
+  "predecessor_manifest": {
+    "git_ref": "089cec23afe6c15df9d7f085f4a0e3c298bd776a:artifacts/causalis-b2-exact-edge-reconciliation-00a-r1/b2_r1_historical_artifact_preservation.json",
+    "repository": "Miskatonic-System/msk-ruliology",
+    "sha256": "e180f811030395eed72521873ff03600a06c85ee1ef91675f2261453d1f8d3a4"
+  },
+  "predecessors_checked": 207,
+  "scientific_code_executed": false,
+  "scientific_findings": "REPORTED_FROZEN_UNCHANGED; no numerical recampaign or new interpretation",
+  "state": "VERIFIED_GIT_AND_WORKTREE_BYTES",
+  "target_head": "089cec23afe6c15df9d7f085f4a0e3c298bd776a",
+  "target_worktree_clean": true,
+  "verified_path_hash_records_digest": "3a81e64d01778d91bd261caaae221bdabfc15ba4237deddaa1283e98ae9e11f7"
+}

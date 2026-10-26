@@ -1,0 +1,140 @@
+{
+  "actual_junit_public_copy": "validation/candidate-first-full.xml",
+  "auth_rejection_limit": "Controlled rejected transport reports fetch stage; no untrusted stderr is interpreted as a production authentication diagnosis.",
+  "case_count": 18,
+  "failed_transport_cases": [
+    {
+      "case": "init",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_INIT_NONZERO_EXIT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "fetch",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_FETCH_NONZERO_EXIT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "auth_rejected",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_FETCH_NONZERO_EXIT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "checkout",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_CHECKOUT_NONZERO_EXIT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "missing_commit",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_OBJECT_VERIFICATION_NONZERO_EXIT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "git_unavailable",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_INIT_UNAVAILABLE",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "timeout",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_FETCH_TIMEOUT",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "invocation",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_CHECKOUT_INVOCATION_FAILED",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "malformed",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_OBJECT_VERIFICATION_MALFORMED_RESPONSE",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "malformed_return",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_FETCH_MALFORMED_RESPONSE",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "object_type",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_OBJECT_VERIFICATION_TYPE_MISMATCH",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "wrong_tree",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_OBJECT_VERIFICATION_TREE_MISMATCH",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "wrong_head",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_GIT_OBJECT_VERIFICATION_HEAD_MISMATCH",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "scope",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_INSTALLATION_SCOPE_MISMATCH",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "evidence",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_EVIDENCE_RECONCILIATION_FAILED",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    },
+    {
+      "case": "unknown_evidence",
+      "credential_session_revoked": true,
+      "failure_cause_code": "CANDIDATE_EVIDENCE_RECONCILIATION_FAILED",
+      "outcome": "PASS_EXPECTED_REJECTION",
+      "secret_sentinel_absent_from_serialized_decision_exception_trace_and_captured_output": true,
+      "success_evidence_or_receipt": false
+    }
+  ],
+  "positive_controls": [
+    "Fake Git fetch+checkout with both object/HEAD/tree checks",
+    "Real local-only controlled Git repository; successful acquisition and existing-repository HEAD mismatch rejection"
+  ],
+  "test_file": "tests/test_candidate_acquisition.py"
+}

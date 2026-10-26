@@ -1,0 +1,682 @@
+FFFFFFFFFFFFFFFF..                                                       [100%]
+=================================== FAILURES ===================================
+____ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[init] ____
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'init'}, ...}
+failure = 'init', cause = 'CANDIDATE_GIT_INIT_NONZERO_EXIT'
+capsys = <_pytest.capture.CaptureFixture object at 0x747408775a90>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+___ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[fetch] ____
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'fetch'}, ...}
+failure = 'fetch', cause = 'CANDIDATE_GIT_FETCH_NONZERO_EXIT'
+capsys = <_pytest.capture.CaptureFixture object at 0x747408298a50>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[auth_rejected] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'auth_rejected'}, ...}
+failure = 'auth_rejected', cause = 'CANDIDATE_GIT_FETCH_NONZERO_EXIT'
+capsys = <_pytest.capture.CaptureFixture object at 0x747408298f50>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+__ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[checkout] __
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'checkout'}, ...}
+failure = 'checkout', cause = 'CANDIDATE_GIT_CHECKOUT_NONZERO_EXIT'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474083f6520>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[missing_commit] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'missing_commit'}, ...}
+failure = 'missing_commit'
+cause = 'CANDIDATE_GIT_OBJECT_VERIFICATION_NONZERO_EXIT'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474083f68b0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[git_unavailable] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'git_unavailable'}, ...}
+failure = 'git_unavailable', cause = 'CANDIDATE_GIT_INIT_UNAVAILABLE'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474082fccb0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+__ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[timeout] ___
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'timeout'}, ...}
+failure = 'timeout', cause = 'CANDIDATE_GIT_FETCH_TIMEOUT'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474083bbbd0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[invocation] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'invocation'}, ...}
+failure = 'invocation', cause = 'CANDIDATE_GIT_CHECKOUT_INVOCATION_FAILED'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474081945a0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[malformed] __
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'malformed'}, ...}
+failure = 'malformed'
+cause = 'CANDIDATE_GIT_OBJECT_VERIFICATION_MALFORMED_RESPONSE'
+capsys = <_pytest.capture.CaptureFixture object at 0x74740826ce50>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[malformed_return] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'malformed_return'}, ...}
+failure = 'malformed_return', cause = 'CANDIDATE_GIT_FETCH_MALFORMED_RESPONSE'
+capsys = <_pytest.capture.CaptureFixture object at 0x74740826d450>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[object_type] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'object_type'}, ...}
+failure = 'object_type'
+cause = 'CANDIDATE_GIT_OBJECT_VERIFICATION_TYPE_MISMATCH'
+capsys = <_pytest.capture.CaptureFixture object at 0x74740814d040>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[wrong_tree] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'wrong_tree'}, ...}
+failure = 'wrong_tree'
+cause = 'CANDIDATE_GIT_OBJECT_VERIFICATION_TREE_MISMATCH'
+capsys = <_pytest.capture.CaptureFixture object at 0x74740822b3e0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[wrong_head] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'wrong_head'}, ...}
+failure = 'wrong_head'
+cause = 'CANDIDATE_GIT_OBJECT_VERIFICATION_HEAD_MISMATCH'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474082ab3f0>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'CANDIDATE_FETCH_FAILED'
+E         
+E         - CANDIDATE_FETCH_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+___ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[scope] ____
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'scope'}, ...}
+failure = 'scope', cause = 'CANDIDATE_INSTALLATION_SCOPE_MISMATCH'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474082aa350>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'GITHUB_APP_T...COPE_MISMATCH'
+E         
+E         - GITHUB_APP_TOKEN_SCOPE_MISMATCH
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+__ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[evidence] __
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'evidence'}, ...}
+failure = 'evidence', cause = 'CANDIDATE_EVIDENCE_RECONCILIATION_FAILED'
+capsys = <_pytest.capture.CaptureFixture object at 0x74740819d230>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'PRIOR_VERIFICATION_FAILED'
+E         
+E         - PRIOR_VERIFICATION_FAILED
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+_ test_pipeline_failure_is_stage_bound_revoked_and_credential_free[unknown_evidence] _
+
+pipeline = {'calls': [], 'key': 'GITHUB_REF', 'later': [], 'mode': {'failure': 'unknown_evidence'}, ...}
+failure = 'unknown_evidence', cause = 'CANDIDATE_EVIDENCE_RECONCILIATION_FAILED'
+capsys = <_pytest.capture.CaptureFixture object at 0x7474082f4950>
+
+    @pytest.mark.parametrize("failure,cause", CASES, ids=[c[0] for c in CASES])
+    def test_pipeline_failure_is_stage_bound_revoked_and_credential_free(
+        pipeline, failure, cause, capsys
+    ):
+        p = pipeline
+        p["mode"]["failure"] = failure
+        with pytest.raises(ra.AdmissionError) as caught:
+            gh.run_actions_phase(
+                REPO,
+                p["target"],
+                phase="admit",
+                private_key=str(p["key"]),
+                ratification_pr=35,
+                ratification_comment=7,
+                run_id=123,
+                authority_token="TEST_ONLY_AUTHORITY",
+                output=p["output"],
+            )
+        decision = caught.value.decision
+        expected = (
+            "GITHUB_APP_TOKEN_SCOPE_MISMATCH"
+            if failure == "scope"
+            else "PRIOR_VERIFICATION_FAILED"
+            if failure == "evidence"
+            else "ADMISSION_UNKNOWN_ERROR"
+            if failure == "unknown_evidence"
+            else "CANDIDATE_FETCH_FAILED"
+        )
+>       assert decision.decision_code == expected
+E       AssertionError: assert 'SIGNING_CRED...L_UNAVAILABLE' == 'ADMISSION_UNKNOWN_ERROR'
+E         
+E         - ADMISSION_UNKNOWN_ERROR
+E         + SIGNING_CREDENTIAL_UNAVAILABLE
+
+tests/test_candidate_acquisition.py:241: AssertionError
+----- generated xml file: <LOCAL_CUSTODY>/focused-first.xml ------
+=========================== short test summary info ============================
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[init]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[fetch]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[auth_rejected]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[checkout]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[missing_commit]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[git_unavailable]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[timeout]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[invocation]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[malformed]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[malformed_return]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[object_type]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[wrong_tree]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[wrong_head]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[scope]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[evidence]
+FAILED tests/test_candidate_acquisition.py::test_pipeline_failure_is_stage_bound_revoked_and_credential_free[unknown_evidence]
+16 failed, 2 passed in 0.25s

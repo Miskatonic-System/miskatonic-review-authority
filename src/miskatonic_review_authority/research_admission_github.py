@@ -9,6 +9,7 @@ from __future__ import annotations
 import base64
 import copy
 import os
+import re
 import subprocess
 import tempfile
 import urllib.error
@@ -47,6 +48,107 @@ from .research_admission import (
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
         return None
+
+
+def _candidate_error(stage: str, cause: str) -> AdmissionError:
+    # Only internal enums reach this boundary; never derive diagnostics from
+    # subprocess output, exception text, HTTP bodies or process environments.
+    error = AdmissionError("CANDIDATE_FETCH_FAILED")
+    error.decision = replace(error.decision, failure_cause_code=f"{stage}_{cause}")
+    return error
+
+
+def _candidate_git(stage: str, *args: str, env: dict | None = None) -> bytes:
+    try:
+        proc = subprocess.run(
+            ["git", *args],
+            env=env,
+            capture_output=True,
+            check=False,
+            timeout=300,
+        )
+    except subprocess.TimeoutExpired:
+        raise _candidate_error(stage, "TIMEOUT") from None
+    except FileNotFoundError:
+        raise _candidate_error(stage, "UNAVAILABLE") from None
+    except (OSError, ValueError):
+        raise _candidate_error(stage, "INVOCATION_FAILED") from None
+    if type(proc.returncode) is not int or type(proc.stdout) is not bytes:
+        raise _candidate_error(stage, "MALFORMED_RESPONSE")
+    if proc.returncode != 0:
+        raise _candidate_error(stage, "NONZERO_EXIT")
+    return proc.stdout
+
+
+def _candidate_value(target: Path, *args: str, oid: bool = False) -> bytes:
+    stage = "CANDIDATE_GIT_OBJECT_VERIFICATION"
+    value = _candidate_git(stage, "-C", str(target), *args)
+    if oid:
+        valid = re.fullmatch(rb"[0-9a-f]{40}\n", value) is not None
+    else:
+        valid = value in (b"commit\n", b"tree\n", b"blob\n", b"tag\n")
+    if not valid:
+        raise _candidate_error(stage, "MALFORMED_RESPONSE")
+    return value
+
+
+def _acquire_candidate(target: Path, policy: dict, token: str) -> None:
+    """Acquire frozen Git data only, with stage-specific, credential-free errors."""
+    try:
+        target.mkdir(parents=True, exist_ok=True)
+        fresh = not (target / ".git").exists()
+    except OSError:
+        raise _candidate_error("CANDIDATE_GIT_INIT", "IO_FAILED") from None
+    head = policy["candidate"]["head_sha"]
+    base = policy["candidate"]["base_sha"]
+    tree = policy["candidate"]["tree_sha"]
+    if fresh:
+        _candidate_git("CANDIDATE_GIT_INIT", "init", str(target))
+        env = dict(os.environ)
+        env.update(
+            GIT_CONFIG_COUNT="1",
+            GIT_CONFIG_KEY_0="http.extraheader",
+            GIT_CONFIG_VALUE_0="Authorization: Basic "
+            + base64.b64encode(("x-access-token:" + token).encode()).decode(),
+            GIT_LFS_SKIP_SMUDGE="1",
+        )
+        _candidate_git(
+            "CANDIDATE_GIT_FETCH",
+            "-C",
+            str(target),
+            "fetch",
+            "https://github.com/" + TARGET + ".git",
+            head,
+            base,
+            env=env,
+        )
+    # A successful fetch response alone is not evidence that the declared Git
+    # objects exist. Validate both commits and the candidate tree before checkout.
+    for commit in (head, base):
+        if _candidate_value(target, "cat-file", "-t", commit) != b"commit\n":
+            raise _candidate_error("CANDIDATE_GIT_OBJECT_VERIFICATION", "TYPE_MISMATCH")
+    if (
+        _candidate_value(target, "rev-parse", "--verify", head + "^{tree}", oid=True)
+        != (tree + "\n").encode()
+    ):
+        raise _candidate_error("CANDIDATE_GIT_OBJECT_VERIFICATION", "TREE_MISMATCH")
+    if fresh:
+        _candidate_git(
+            "CANDIDATE_GIT_CHECKOUT",
+            "-C",
+            str(target),
+            "-c",
+            "core.hooksPath=/dev/null",
+            "checkout",
+            "--detach",
+            head,
+            env={**os.environ, "GIT_LFS_SKIP_SMUDGE": "1"},
+        )
+    if (
+        _candidate_value(target, "rev-parse", "--verify", "HEAD", oid=True)
+        != (head + "\n").encode()
+    ):
+        raise _candidate_error("CANDIDATE_GIT_OBJECT_VERIFICATION", "HEAD_MISMATCH")
 
 
 class GitHub:
@@ -135,11 +237,16 @@ def target_token(
         effects["credential_session_issued"] = True
         effects["target_client"] = client
         repos = client.api("GET", "/installation/repositories?per_page=100")
-        require(
+        if not (
             repos.get("total_count") == 1
-            and [r.get("full_name") for r in repos.get("repositories", [])] == [TARGET],
-            "GITHUB_APP_TOKEN_SCOPE_MISMATCH",
-        )
+            and [r.get("full_name") for r in repos.get("repositories", [])] == [TARGET]
+        ):
+            error = AdmissionError("GITHUB_APP_TOKEN_SCOPE_MISMATCH")
+            error.decision = replace(
+                error.decision,
+                failure_cause_code="CANDIDATE_INSTALLATION_SCOPE_MISMATCH",
+            )
+            raise error
         return client
     except AdmissionError:
         raise
@@ -677,53 +784,20 @@ def _run_actions_phase(
     )
     verify_ratification(authority, root, policy, preliminary)
     target_api = target_token(private_key, policy["expected_app_id"], effects=effects)
-    target.mkdir(parents=True, exist_ok=True)
-    if not (target / ".git").exists():
-        # Fetch only frozen data; no candidate scripts, hooks, tests, imports or filters execute.
-        subprocess.run(["git", "init", str(target)], check=True, capture_output=True)
-        # Token remains in the child environment rather than process arguments or logs.
-        env = dict(os.environ)
-        env.update(
-            GIT_CONFIG_COUNT="1",
-            GIT_CONFIG_KEY_0="http.extraheader",
-            GIT_CONFIG_VALUE_0="Authorization: Basic "
-            + base64.b64encode(
-                ("x-access-token:" + target_api._token).encode()
-            ).decode(),
-            GIT_LFS_SKIP_SMUDGE="1",
+    _acquire_candidate(target, policy, target_api._token)
+    try:
+        evidence = reconcile_candidate(authority, target, policy)
+    except Exception as exc:  # noqa: BLE001 - untrusted diagnostics must never escape.
+        error = (
+            exc
+            if isinstance(exc, AdmissionError)
+            else AdmissionError("ADMISSION_UNKNOWN_ERROR")
         )
-        proc = subprocess.run(
-            [
-                "git",
-                "-C",
-                str(target),
-                "fetch",
-                "https://github.com/" + TARGET + ".git",
-                policy["candidate"]["head_sha"],
-                policy["candidate"]["base_sha"],
-            ],
-            env=env,
-            capture_output=True,
-            check=False,
+        error.decision = replace(
+            error.decision,
+            failure_cause_code="CANDIDATE_EVIDENCE_RECONCILIATION_FAILED",
         )
-        require(proc.returncode == 0, "CANDIDATE_FETCH_FAILED")
-        proc = subprocess.run(
-            [
-                "git",
-                "-C",
-                str(target),
-                "-c",
-                "core.hooksPath=/dev/null",
-                "checkout",
-                "--detach",
-                policy["candidate"]["head_sha"],
-            ],
-            env={**os.environ, "GIT_LFS_SKIP_SMUDGE": "1"},
-            capture_output=True,
-            check=False,
-        )
-        require(proc.returncode == 0, "CANDIDATE_FETCH_FAILED")
-    evidence = reconcile_candidate(authority, target, policy)
+        raise error from None
     facts, runs = collect_facts(
         authority,
         root,
@@ -791,7 +865,7 @@ def run_actions_phase(*args, **kwargs) -> dict:
     effects = {}
     try:
         return _run_actions_phase(*args, **kwargs, effects=effects)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - credential-bearing chains stay suppressed.
         client = effects.get("target_client")
         if client is not None:
             try:
@@ -813,7 +887,7 @@ def run_actions_phase(*args, **kwargs) -> dict:
             credential_session_issued=effects.get("credential_session_issued", False),
             credential_session_revoked=effects.get("credential_session_revoked", False),
         )
-        raise error from exc
+        raise error from None
     finally:
         client = effects.get("target_client")
         if client is not None and not effects.get("credential_session_revoked", False):

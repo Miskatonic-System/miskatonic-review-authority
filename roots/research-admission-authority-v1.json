@@ -179,9 +179,9 @@
       "sha256": "068a8a8dbdfe0a7e2b878cb5a4e77a1c1cdb630b27caa38f9c88990f255ee54d"
     },
     {
-      "git_blob_sha": "7b4e9198d1d86b18b31c1f1d62ab112fdbf8dfb6",
+      "git_blob_sha": "37779c9b90866f92e8be904663d8d2274731fd77",
       "path": "src/miskatonic_review_authority/research_admission_github.py",
-      "sha256": "83bf31d76cbec6727a52e859567c2b8b9a15a6d6c440cb278c4b7c3740d702a8"
+      "sha256": "edc82b264d445563fba96c0e50ae25e50872edf1ac628fb548e53d309dedaef7"
     },
     {
       "git_blob_sha": "17979a7d9cbeca836e935980e7dc40671ee4c428",
