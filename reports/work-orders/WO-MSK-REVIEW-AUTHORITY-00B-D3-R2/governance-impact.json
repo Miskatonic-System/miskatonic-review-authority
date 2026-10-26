@@ -1,0 +1,35 @@
+{
+  "activated_routes_or_new_admission_runs": false,
+  "base_authority_commit": "65a9b4a57ed2f84a4a75ea7e30b8ff64d2af51c8",
+  "dependency_effects": [
+    "New implementation hash changes the proposed authority-root digest and accepted tree.",
+    "Old human ratification and old protected approvals cannot qualify the new authority tree or future run.",
+    "Fresh independent exact-head review, separate merge authorization and appropriate refreshed root/ratification qualification required before canonical execution."
+  ],
+  "implementation_commit_tested": "762767c759f8d8b224bc7aaa1ce7912c93fe1aa8",
+  "implementation_manifest_changes": [
+    {
+      "before": {
+        "git_blob_sha": "7b4e9198d1d86b18b31c1f1d62ab112fdbf8dfb6",
+        "path": "src/miskatonic_review_authority/research_admission_github.py",
+        "sha256": "83bf31d76cbec6727a52e859567c2b8b9a15a6d6c440cb278c4b7c3740d702a8"
+      },
+      "proposed": {
+        "git_blob_sha": "37779c9b90866f92e8be904663d8d2274731fd77",
+        "path": "src/miskatonic_review_authority/research_admission_github.py",
+        "sha256": "edc82b264d445563fba96c0e50ae25e50872edf1ac628fb548e53d309dedaef7"
+      }
+    }
+  ],
+  "old_ratification_applies_to_repair": false,
+  "old_root_sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163",
+  "original_accepted_head": "75471bb500650066a92e44d36cc938e1a67baafb",
+  "original_accepted_tree": "47a4ab0aeb51a9f70da0accd01689fb19f8a8cc1",
+  "original_ratification_comment_id": 6407727704,
+  "policy_schemas_workflows_signing_code_changed": false,
+  "policy_sha256": "9854428efe571e6e5ae47c8e2145d1c93c0993aa101222725bd8f45e5e317556",
+  "producer": "OpenAI Codex coding agent; reported current author, not the independent reviewer",
+  "proposed_root_sha256": "51e93a4699dc76a2dc574b88e1b376876b3a9c8d54365773c6c07f64d79e73b0",
+  "risk_class": "R2_SECURITY_OR_AUTHORITY_CHANGE",
+  "state": "PROPOSED_UNRATIFIED_UNMERGED"
+}

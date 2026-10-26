@@ -1,0 +1,92 @@
+{
+  "files": [
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/08-target-evidence-reconciliation.json",
+      "sha256": "441ab4d9ef4cb28e5f327ce24f5c51aa5f99df8f1d816e2df589967f6d809106"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/16-scientific-preservation-verification.json",
+      "sha256": "7b99084fe58e25458b59934a9d8124f886754f01cd77d68972cf415a90bd2a63"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/A-R-review-packet.md",
+      "sha256": "e15570ee022f3ca8e9bc37e710e612f1bcdca3a9dffe8d44dbe4ec9deeff6d37"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/diagnosis.json",
+      "sha256": "2dc60d95a5498049782d933538ce7d3730c7e2b40bcc404c90225c773a058bf1"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/governance-impact.json",
+      "sha256": "fb4e0d5b6ccbef05b18bd4dc8c9902143d1360bb8e771c89b0ef31fa4f641502"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/negative-control-matrix.json",
+      "sha256": "a2b4bd808f2676f78353c50892a8a30a528d9467ce1dc6cdb19d787f0e3283f3"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/package-environment.json",
+      "sha256": "35b5be91ada5d1ec53a97973e9e6eb82fc7457bf55b3e9ecee64b796cba2ee4b"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/predecessor-research-admission-root.json",
+      "sha256": "46022146a6f0f99b9fc5844351d4a022dfccd227d9890de18d8c0d9edf164163"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/public-custody-sanitization.json",
+      "sha256": "40c43cfd8b3d3961d7656f0ce1fd776f4e45d73357ed8cdd10c94759f212bf85"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/regression-receipt.json",
+      "sha256": "1528c2ceeb8dd5f3a30f227ad1bc7ba5c934eca5aa87a953068014057a1fd5ab"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/scientific-preservation-path-hashes.json",
+      "sha256": "eb8773eed1e283ac12b4c40de9fa34d1c018e5fc2b59b42e2984da9933609cef"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/baseline-full.log",
+      "sha256": "ddee38f2eca1ad4bc240973ed6d8a724b0c007080d153eb353c9ef1bfed4e49d"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/baseline-full.xml",
+      "sha256": "bdf286b7cf465dd16f0ec93defd94b50bf286dfe0ab27b9143985f813eec06b6"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-admission.log",
+      "sha256": "526d84adb5904fad9dcbb60213dcdead76b24389dc5c122ec6f43eb706d57980"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-admission.xml",
+      "sha256": "0a37e8caedbf6d7c52eb62eb114f2f83177d4cdbe08f8a1edd8c8534041d4d19"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-first-full.log",
+      "sha256": "964b0147a72733557eed51a4e6cdc1e1a5a6daa31400c2355befcacc4d2aa369"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/candidate-first-full.xml",
+      "sha256": "0c0c94f42a531d2abc3fe4abf958929d3b114acea77eb4d9beade6988d01e0cd"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-after-fixture-fix.log",
+      "sha256": "59c893890eb02435e9413a3c89e65d786a65ab704efba7ff3096ac58508c4fd4"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-after-fixture-fix.xml",
+      "sha256": "eac991511c417f39d3fc4d521a31eeb6d6427e849cfd86fb725e3c6f5bb491c0"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-first.log",
+      "sha256": "85c05ef21e2baa7b194826f35c14ca02c91fcba5f9323da2bd6b5140cc454337"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/focused-first.xml",
+      "sha256": "b32a694e9082d325894d89c60bbe7e695d85ffe9d6b2ee6ed5471b45c0326bd6"
+    },
+    {
+      "path": "reports/work-orders/WO-MSK-REVIEW-AUTHORITY-00B-D3-R2/validation/static-checks.log",
+      "sha256": "8b195b602a252799d1199adeb18ce74c87b80b85a1842292aa3e6d84efcf57cf"
+    }
+  ]
+}

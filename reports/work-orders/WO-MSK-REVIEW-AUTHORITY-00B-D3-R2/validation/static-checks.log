@@ -1,0 +1,5 @@
+PROPOSED root reproduces byte-identically; no ratification claimed
+All external actions and reusable workflows are pinned to full commit SHAs.
+All checks passed!
+2 files already formatted
+All strict JSON schema definitions, proposed root/policy, actionlint, workflow audit, changed-code lint/format and compilation passed. Legacy target V1 incompatibility remains disclosed.

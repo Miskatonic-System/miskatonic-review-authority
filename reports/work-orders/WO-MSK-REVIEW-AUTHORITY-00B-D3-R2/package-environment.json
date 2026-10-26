@@ -1,0 +1,55 @@
+{
+  "packages": [
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "name": "pytest",
+      "version": "8.4.2"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.9.1"
+    },
+    {
+      "name": "ruff",
+      "version": "0.16.8"
+    }
+  ],
+  "pip_module": "Not installed in reused task venv; inventory obtained using standard importlib.metadata, no environment modification",
+  "python": "3.13.11",
+  "system_python_for_root_builder_and_compilation": "Python 3.14.7"
+}
